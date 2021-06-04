@@ -1,0 +1,38 @@
+DEVICE: cuda                    # device used for training
+
+MODEL:
+  NAME: 'hrnet'                   # name of the model you are using
+  SUB_NAME: 'w18'                 # sub name of the model you are using 
+
+DATASET:
+  ROOT: '../datasets/imagenet'    # dataset root path
+  NUM_CLASSES: 1000
+
+TRAIN:
+  SAVE_DIR: './output'            # output folder name used for saving the trained model and logs
+  IMAGE_SIZE: [224, 224]          # image size used in training the model
+  EPOCHS: 100                     # number of epochs to train
+  BATCH_SIZE: 8                   # batch size used to train
+  WORKERS: 8                      # number of workers used in training dataloader
+  LR: 0.01                        # initial learning rate used in optimizer
+  DECAY: 0.0005                   # decay rate use in optimizer
+  STEP_LR:                        # step LR scheduler parameters
+    STEP_SIZE: 30                 # when epoch reaches this step size, lr will be reduced
+    GAMMA: 0.1                    # lr reduce rate
+  EVAL_INTERVAL: 20               # interval to evaluate the model during training
+  SEED: 123                       # random seed number
+
+EVAL:
+  MODEL_PATH: 'output/best.pth'   # trained model path
+  IMAGE_SIZE: [224, 224]          # evaluation image size
+  BATCH_SIZE: 8                   # evaluation batch size
+  WORKERS: 4                      # number of workers used in evalaution dataloader
+  
+TEST:
+  MODEL_PATH: 'output/best.pth'   # trained model path
+  MODE: image                     # inference mode (image)
+  FILE: 'test_imgs'               # filename or foldername (image mode)
+  IMG_SIZE: [224, 224]            # inference image size
+  DEVICE: cuda                    # device used for inference
+  PRECISION: fp32                 # model and I/O precision (fp16, fp32)
+  OUTPUT: 'results'               # output results folder path
