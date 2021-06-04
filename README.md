@@ -68,7 +68,7 @@ gMLP-B | 81.6 | 73 | 15.8 | 224 | 224
 
 ## Configuration 
 
-Create a configuration file in `configs`. Sample configuration for ImageNet dataset can be found [here](configs/camvid.yaml). Then edit the fields you think if it is needed. This configuration file is needed for all of training, evaluation and prediction scripts.
+Create a configuration file in `configs`. Sample configuration for ImageNet dataset can be found [here](configs/defaults.yaml). Then edit the fields you think if it is needed. This configuration file is needed for all of training, evaluation and prediction scripts.
 
 ## Training
 
