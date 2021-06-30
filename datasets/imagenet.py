@@ -22,6 +22,8 @@ class ImageNet(ImageFolder):
 
 
 if __name__ == '__main__':
+    from torch.utils.data import DataLoader
     imagenet = ImageNet('C:\\Users\\sithu\\Documents\\Datasets\\imagenet-mini', split='val')
-    img, cls = next(iter(imagenet))
-    print(img.size, CLASSES[cls])
+    dataloader = DataLoader(imagenet, batch_size=4)
+    print(len(imagenet))
+    print(len(dataloader))

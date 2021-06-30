@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 from typing import Type, Optional, Union
-
+from torchvision.models.resnet import resnet101
 
 class BasicBlock(nn.Module):
     expansion: int = 1
@@ -76,11 +76,11 @@ resnet_settings = {
 
 
 class ResNet(nn.Module):
-    def __init__(self, model_name: str = '50', pretrained: str = None, num_classes: int = 1000) -> None:
+    def __init__(self, model_name: str = '50', pretrained: str = None, num_classes: int = 1000, **kwargs) -> None:
         super().__init__()
         self.inplanes = 64
 
-        assert model_name in ['18', '34', '50', '101', '152'], "ResNet model name should be '18' or '34' or '50' or '101' or '152'"
+        assert model_name in resnet_settings.keys(), f"ResNet model name should be in {list(resnet_settings.keys())}"
         block, layers = resnet_settings[model_name]
 
         self.conv1 = nn.Conv2d(3, self.inplanes, 7, 2, 3, bias=False)

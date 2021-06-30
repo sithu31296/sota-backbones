@@ -1,8 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.nn.modules import conv
-from torch.nn.modules.activation import ReLU
 
 
 class BasicBlock(nn.Module):
@@ -157,8 +155,9 @@ hrnet_settings = {
 
 
 class HRNet(nn.Module):
-    def __init__(self, model_name: str = 'w18', pretrained: str = None, num_classes: int = 1000) -> None:
+    def __init__(self, model_name: str = 'w18', pretrained: str = None, num_classes: int = 1000, **kwargs) -> None:
         super().__init__()
+        assert model_name in hrnet_settings.keys(), f"HRNet model name should be in {list(hrnet_settings.keys())}"
 
         self.conv1 = nn.Conv2d(3, 64, 3, 2, 1, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
