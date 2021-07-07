@@ -1,14 +1,19 @@
 # FastCls
 
-* [Introduction](##Introduction)
-* [Features](##Features)
-* [Model Zoo](##Model-Zoo)
-* [Configuration](##Configuration)
-* [Training](##Training)
-* [Evaluation](##Evaluation)
-* [Inference](##Inference)
-* [Optimization](##Optimization)
-* [Other Pipelines](##Other-Pipelines)
+* [Introduction](#introduction)
+* [Features](#features)
+* [Model Zoo](#model-zoo)
+* [Configuration](#configuration)
+* [Training](#training)
+    * [Single GPU](#single-gpu)
+    * [Multiple GPUs](#multiple-gpus)
+    * [Knowledge Distillation](#knowledge-distillation)
+* [Evaluation](#evaluation)
+* [Inference](#inference)
+* [Optimization](#optimization)
+    * [Quantization](#quantization)
+    * [Pruning](#pruning)
+* [Other Pipelines](#other-pipelines)
 
 ## Introduction
 
@@ -121,12 +126,12 @@ Create a configuration file in `configs`. Sample configuration for ImageNet data
 
 ## Training
 
-### Single GPU/CPU
+### Single GPU
 ```bash
 $ python tools/train.py --cfg configs/CONFIG_FILE_NAME.yaml
 ```
 
-### Multiple-GPUs
+### Multiple GPUs
 
 Traing with 2 GPUs:
 
