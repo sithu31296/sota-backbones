@@ -1,7 +1,7 @@
 import argparse
-import onnxruntime
 import time
 import numpy as np
+import tensorflow as tf
 from pathlib import Path
 from PIL import Image
 import sys
@@ -9,14 +9,19 @@ sys.path.insert(0, '.')
 from datasets.imagenet import CLASSES
 
 
-class ONNXInfer:
+class TFLiteInfer:
     def __init__(self, model_path: str) -> None:
-        # onnx model session
-        self.session = onnxruntime.InferenceSession(model_path)
-        self.input_name = self.session.get_inputs()[0].name
+        # tflite interpreter
+        self.interpreter = tf.lite.Interpreter(model_path)
+        self.interpreter.allocate_tensors()
+
+        input_details = self.interpreter.get_input_details()[0]
+        output_details = self.interpreter.get_output_details()[0]
+        self.input_index = input_details['index']
+        self.output_idnex = output_details['index']
 
         # preprocess parameters
-        self.size = self.session.get_inputs()[0].shape[-2:]
+        self.size = input_details['shape'][-2:]
         self.mean = np.array([0.485, 0.456, 0.406]).reshape(-1, 1, 1)
         self.std = np.array([0.229, 0.224, 0.225]).reshape(-1, 1, 1)
 
@@ -47,9 +52,11 @@ class ONNXInfer:
         image = self.preprocess(image)
 
         start = time.time()
-        pred = self.session.run(None, {self.input_name: image})
+        self.interpreter.set_tensor(self.input_index, image)
+        self.interpreter.invoke()
+        pred = self.interpreter.get_tensor(self.output_idnex)
         end = time.time()
-        print(f"ONNX Model Inference Time: {(end-start)*1000:.2f}ms")
+        print(f"TFLite Model Inference Time: {(end-start)*1000:.2f}ms")
 
         cls_name = self.postprocess(pred)
         return cls_name
@@ -57,12 +64,12 @@ class ONNXInfer:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model-path', type=str, default='output/mixer_B.onnx')
+    parser.add_argument('--model-path', type=str, default='output/mixer_B.tflite')
     parser.add_argument('--file', type=str, default='test_imgs')
     args = parser.parse_args()
 
     file_path = Path(args.file)
-    model = ONNXInfer(args.model_path)
+    model = TFLiteInfer(args.model_path)
 
     if file_path.is_file():
         image = Image.open(file_path)

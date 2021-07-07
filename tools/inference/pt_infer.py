@@ -47,7 +47,7 @@ class PTInfer:
         start = time_synchronized()
         pred = self.model(image)
         end = time_synchronized()
-        print(f"Model Inference Time: {(end-start)*1000:.2f}ms")
+        print(f"PyTorch Model Inference Time: {(end-start)*1000:.2f}ms")
 
         cls_name = self.postprocess(pred)
         return cls_name

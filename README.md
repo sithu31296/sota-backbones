@@ -12,6 +12,7 @@
 * [Inference](#inference)
     * [PyTorch Inference](#pytorch-inference)
     * [ONNX Inference](#onnx-inference)
+    * [TFLite Inference](#tflite-inference)
 * [Optimization](#optimization)
     * [Quantization](#quantization)
     * [Pruning](#pruning)
@@ -62,8 +63,8 @@ Training
 
 Model Conversion
 * [ONNX](https://github.com/onnx/onnx)
+* [TFLite](https://www.tensorflow.org/lite)
 * [TensorRT](https://github.com/NVIDIA/TensorRT) (Coming Soon)
-* [TFLite](https://www.tensorflow.org/lite) (Coming Soon)
 
 Model Inspection
 * [Benchmark](https://pytorch.org/tutorials/recipes/recipes/benchmark.html) [[Implementation](./tools/inspect/benchmark.py)]
@@ -154,9 +155,9 @@ $ python tools/val.py --cfg configs/CONFIG_FILE_NAME.yaml
 
 ## Inference
 
-### PyTorch Inference
+Make sure to set `MODEL_PATH` of the configuration file to model's weights.
 
-Make sure to set `MODEL_PATH` of the configuration file to your trained model directory.
+### PyTorch Inference
 
 ```bash
 $ python tools/inference/pt_infer.py --cfg configs/CONFIG_FILE_NAME.yaml
@@ -164,12 +165,39 @@ $ python tools/inference/pt_infer.py --cfg configs/CONFIG_FILE_NAME.yaml
 
 ### ONNX Inference
 
-You need to install ONNXRuntime via `pip install onnxruntime`.
+Install necessary tools:
+* ONNX-Simplifier via `pip install onnx-simplifier`.
+* ONNXRuntime via `pip install onnxruntime`.
 
-Before inferencing with ONNXRuntime, first convert pytorch model to onnx model with [pt_to_onnx](./tools/convert/pt_to_onnx.py).
+Convert the PyTorch model to onnx model:
 
 ```bash
-$ python tools/inference/onnx_infer.py --cfg configs/CONFIG_FILE_NAME.yaml
+$ python tools/convert/pt_to_onnx.py --cfg configs/CONFIG_FILE_NAME.yaml
+```
+
+Run an inference with:
+
+```bash
+$ python tools/inference/onnx_infer.py --model-path ONNX_MODEL_PATH.onnx --file TEST_IMG_DIR
+```
+
+### TFLite Inference
+
+Install necessary tools:
+* ONNX-Simplifier via `pip install onnx-simplifier`.
+* Tensorflow2 via `pip install tensorflow`.
+* ONNX-Tensorflow via `pip install onnx-tf`.
+
+Convert the PyTorch model to tflite model:
+
+```bash
+$ python tools/convert/pt_to_tflite.py --cfg configs/CONFIG_FILE_NAME.yaml
+```
+
+Run an inference with:
+
+```bash
+$ python tools/inference/tflite_infer.py --model-path TFLITE_MODEL_PATH.tflite --file TEST_IMG_DIR
 ```
 
 ## Optimization
