@@ -24,6 +24,7 @@
 !cfg/yolov3*.cfg
 
 storage.googleapis.com
+test_imgs/
 runs/*
 data/*
 !data/images/zidane.jpg

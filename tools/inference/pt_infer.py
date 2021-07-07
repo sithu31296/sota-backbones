@@ -1,9 +1,10 @@
 import torch
 import argparse
 import yaml
+from torch import Tensor
 from pathlib import Path
 from torchvision import io
-from torchvision import transforms
+from torchvision import transforms as T
 
 import sys
 sys.path.insert(0, '.')
@@ -12,32 +13,44 @@ from datasets.imagenet import CLASSES
 from utils.utils import time_synchronized
 
 
-class Model:
+class PTInfer:
     def __init__(self, cfg) -> None:
-        self.device = torch.device(cfg['TEST']['DEVICE'])
+        self.device = torch.device(cfg['DEVICE'])
         self.model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], cfg['MODEL_PATH'], cfg['DATASET']['NUM_CLASSES'], cfg['TEST']['IMAGE_SIZE'][0])
         self.model = self.model.to(self.device)
         self.model.eval()
 
-        self.img_transforms = transforms.Compose(
-            transforms.Resize(cfg['TEST']['IMAGE_SIZE']),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-        )
+        self.img_transforms = T.Compose([
+            T.Resize(cfg['TEST']['IMAGE_SIZE']),
+            T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
 
-    @torch.no_grad()
-    def predict(self, image) -> str:
+    def preprocess(self, image: Tensor) -> Tensor:
+        # scale to [0.0, 1.0]
         image = image.float()
         image /= 255
-        image = self.img_transforms(image).unsqueeze(0).to(self.device)
+
+        # normalize
+        image = self.img_transforms(image)
         
+        # add batch dimension
+        image = image.unsqueeze(0).to(self.device)
+        return image
+
+    def postprocess(self, prob: Tensor) -> str:
+        cls_id = torch.argmax(prob)
+        return CLASSES[cls_id]
+
+    @torch.no_grad()
+    def predict(self, image: Tensor) -> str:
+        image = self.preprocess(image)
         start = time_synchronized()
         pred = self.model(image)
         end = time_synchronized()
-        print(f"Model Inference Time: {(end-start)*1000}ms")
+        print(f"Model Inference Time: {(end-start)*1000:.2f}ms")
 
-        cls_id = torch.argmax(pred)
-
-        return CLASSES[cls_id]
+        cls_name = self.postprocess(pred)
+        return cls_name
 
     
 if __name__ == '__main__':
@@ -49,20 +62,17 @@ if __name__ == '__main__':
         cfg = yaml.load(f, Loader=yaml.FullLoader)
 
     file_path = Path(cfg['TEST']['FILE'])
-    results_path = Path(cfg['TEST']['OUTPUT'])
-    if not results_path.exists(): results_path.mkdir()
-
-    model = Model(cfg)
+    model = PTInfer(cfg)
 
     if cfg['TEST']['MODE'] == 'image':
         if file_path.is_file():
-            image = io.read_image(file_path)
+            image = io.read_image(str(file_path))
             cls_name = model.predict(image)
             print(f"File: {str(file_path)} >>>>> {cls_name.capitalize()}")
         else:
             files = file_path.glob('*jpg')
             for file in files:
-                image = io.read_image(file_path / file)
+                image = io.read_image(str(file))
                 cls_name = model.predict(image)
                 print(f"File: {str(file)} >>>>> {cls_name.capitalize()}")
     else:

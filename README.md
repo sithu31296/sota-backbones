@@ -1,4 +1,4 @@
-# FastCls
+# Image Classification Pipeline
 
 * [Introduction](#introduction)
 * [Features](#features)
@@ -10,6 +10,8 @@
     * [Knowledge Distillation](#knowledge-distillation)
 * [Evaluation](#evaluation)
 * [Inference](#inference)
+    * [PyTorch Inference](#pytorch-inference)
+    * [ONNX Inference](#onnx-inference)
 * [Optimization](#optimization)
     * [Quantization](#quantization)
     * [Pruning](#pruning)
@@ -59,9 +61,9 @@ Training
 * [DDP](https://pytorch.org/docs/stable/notes/ddp.html) 
 
 Model Conversion
-* [ONNX]()
-* [TensorRT]()
-* [TFLite]()
+* [ONNX](https://github.com/onnx/onnx)
+* [TensorRT](https://github.com/NVIDIA/TensorRT) (Coming Soon)
+* [TFLite](https://www.tensorflow.org/lite) (Coming Soon)
 
 Model Inspection
 * [Benchmark](https://pytorch.org/tutorials/recipes/recipes/benchmark.html) [[Implementation](./tools/inspect/benchmark.py)]
@@ -75,9 +77,6 @@ Optimization
 Deployment
 * [Flask+Vue App]() (Coming Soon)
 * [FastAPI App]() (Coming Soon)
-* [ONNXRuntime Inference]()
-* [TensorRT Inference]() (Coming Soon)
-* [TFLite Inferense]() (Coming Soon)
 
 
 ## Model Zoo
@@ -155,10 +154,22 @@ $ python tools/val.py --cfg configs/CONFIG_FILE_NAME.yaml
 
 ## Inference
 
+### PyTorch Inference
+
 Make sure to set `MODEL_PATH` of the configuration file to your trained model directory.
 
 ```bash
-$ python tools/infer.py --cfg configs/CONFIG_FILE_NAME.yaml
+$ python tools/inference/pt_infer.py --cfg configs/CONFIG_FILE_NAME.yaml
+```
+
+### ONNX Inference
+
+You need to install ONNXRuntime via `pip install onnxruntime`.
+
+Before inferencing with ONNXRuntime, first convert pytorch model to onnx model with [pt_to_onnx](./tools/convert/pt_to_onnx.py).
+
+```bash
+$ python tools/inference/onnx_infer.py --cfg configs/CONFIG_FILE_NAME.yaml
 ```
 
 ## Optimization
