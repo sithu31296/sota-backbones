@@ -76,7 +76,7 @@ resnet_settings = {
 
 
 class ResNet(nn.Module):
-    def __init__(self, model_name: str = '50', pretrained: str = None, num_classes: int = 1000, **kwargs) -> None:
+    def __init__(self, model_name: str = '50', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
         self.inplanes = 64
 

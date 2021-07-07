@@ -155,7 +155,7 @@ hrnet_settings = {
 
 
 class HRNet(nn.Module):
-    def __init__(self, model_name: str = 'w18', pretrained: str = None, num_classes: int = 1000, **kwargs) -> None:
+    def __init__(self, model_name: str = 'w18', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
         assert model_name in hrnet_settings.keys(), f"HRNet model name should be in {list(hrnet_settings.keys())}"
 

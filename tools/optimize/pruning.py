@@ -14,7 +14,7 @@ from pathlib import Path
 from tabulate import tabulate
 import sys
 sys.path.insert(0, '.')
-from models import choose_models
+from models import get_model
 from utils.utils import setup_cudnn, get_model_size, test_model_latency
 
 
@@ -47,16 +47,14 @@ def prune_model(model: nn.Module, method: str = 'l1', amount: float = 0.3):
 
 
 def main(cfg):
-    setup_cudnn()
-    model_name = cfg['MODEL']['NAME']
-    model_sub_name = cfg['MODEL']['SUB_NAME']
+    setup_cudnn() 
     save_dir = Path(cfg['SAVE_DIR'])
     if not save_dir.exists(): save_dir.mkdir()
-    save_model = save_dir / f"{model_name}_{model_sub_name}_pruned.pt"
+    save_model = save_dir / f"{cfg['MODEL']['NAME']}_{cfg['MODEL']['VARIANT']}_pruned.pt"
 
     inputs = torch.randn(1, 3, *cfg['TRAIN']['IMAGE_SIZE'])
 
-    model = choose_models(model_name)(model_sub_name, pretrained=None, num_classes=cfg['DATASET']['NUM_CLASSES'], image_size=cfg['TRAIN']['IMAGE_SIZE'][0])  
+    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], cfg['MODEL_PATH'], cfg['DATASET']['NUM_CLASSES'], cfg['TRAIN']['IMAGE_SIZE'][0])
     model_size = get_model_size(model)
     model_time = test_model_latency(model, inputs)
     model_accuracy = 85.34
@@ -68,8 +66,8 @@ def main(cfg):
     pruned_model_accuracy = 84.04
 
     table = [
-        [f"Original {model_name}_{model_sub_name}", f"{model_size:.2f}", f"{model_time:.2f}", f"{model_accuracy:.2f}"],
-        [f"Pruned {model_name}_{model_sub_name}", f"{pruned_model_size:.2f}", f"{pruned_model_time:.2f}", f"{pruned_model_accuracy:.2f}"],
+        [f"Original {cfg['MODEL']['NAME']}_{cfg['MODEL']['VARIANT']}", f"{model_size:.2f}", f"{model_time:.2f}", f"{model_accuracy:.2f}"],
+        [f"Pruned {cfg['MODEL']['NAME']}_{cfg['MODEL']['VARIANT']}", f"{pruned_model_size:.2f}", f"{pruned_model_time:.2f}", f"{pruned_model_accuracy:.2f}"],
         ["Improvement", f"+{int((model_size - pruned_model_size) / model_size * 100)}%", f"+{int((model_time - pruned_model_time) / model_time * 100)}%", f"-{(model_accuracy - pruned_model_accuracy) / model_accuracy * 100:.2f}%"]
     ]
 

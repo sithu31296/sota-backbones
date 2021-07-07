@@ -59,7 +59,7 @@ from torch.quantization import quantize_dynamic, fuse_modules, get_default_qconf
 from torch.utils.mobile_optimizer import optimize_for_mobile
 import sys
 sys.path.insert(0, '.')
-from models import choose_models
+from models import get_model
 from utils.utils import setup_cudnn, get_model_size, test_model_latency
 
 
@@ -80,16 +80,13 @@ def quantize_model(model, method='dynamic', backend='qnnpack'):
     return quantized_model
 
 
-
 def main(cfg):
     setup_cudnn()
-    model_name = cfg['MODEL']['NAME']
-    model_sub_name = cfg['MODEL']['SUB_NAME']
     save_dir = Path(cfg['SAVE_DIR'])
     if not save_dir.exists(): save_dir.mkdir()
-    save_model = save_dir / f"{model_name}_{model_sub_name}_optimized.pt"
+    save_model = save_dir / f"{cfg['MODEL']['NAME']}_{cfg['MODEL']['VARIANT']}_optimized.pt"
 
-    model = choose_models(model_name)(model_sub_name, pretrained=None, num_classes=cfg['DATASET']['NUM_CLASSES'], image_size=cfg['TRAIN']['IMAGE_SIZE'][0])  
+    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], None, cfg['DATASET']['NUM_CLASSES'], cfg['TRAIN']['IMAGE_SIZE'][0])
     model.eval()
     # fuse conv bn relu into single module
     # it may save on memory access, make the model run faster and improve its accuracy
@@ -106,7 +103,7 @@ def main(cfg):
 
     # save for lite interpreter
     if cfg['QUANTIZE']['LITE_INTER']:
-        optimized_model._save_for_lite_interpreter(save_dir / f"{model_name}_{model_sub_name}_optimized_lite.ptl")
+        optimized_model._save_for_lite_interpreter(save_dir / f"{cfg['MODEL']['NAME']}_{cfg['MODEL']['VARIANT']}_optimized_lite.ptl")
         # ptl = torch.jit.load(save_dir / f"{model_name}_{model_sub_name}_moptimized_lite.ptl")
     
     print("Starting benchmarking...")
@@ -127,8 +124,8 @@ def main(cfg):
     quantized_model_accuracy = 84.04
 
     table = [
-        [f"Original {model_name}_{model_sub_name} (FP32)", f"{model_size:.2f}", f"{model_time:.2f}", f"{model_accuracy:.2f}"],
-        [f"Quantized {model_name}_{model_sub_name} (INT8)", f"{quantized_model_size:.2f}", f"{quantized_model_time:.2f}", f"{quantized_model_accuracy:.2f}"],
+        [f"Original {cfg['MODEL']['NAME']}_{cfg['MODEL']['VARIANT']} (FP32)", f"{model_size:.2f}", f"{model_time:.2f}", f"{model_accuracy:.2f}"],
+        [f"Quantized {cfg['MODEL']['NAME']}_{cfg['MODEL']['VARIANT']} (INT8)", f"{quantized_model_size:.2f}", f"{quantized_model_time:.2f}", f"{quantized_model_accuracy:.2f}"],
         ["Improvement", f"+{int((model_size - quantized_model_size) / model_size * 100)}%", f"+{int((model_time - quantized_model_time) / model_time * 100)}%", f"-{(model_accuracy - quantized_model_accuracy) / model_accuracy * 100:.2f}%"]
     ]
 

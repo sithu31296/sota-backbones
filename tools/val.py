@@ -4,13 +4,13 @@ import torch
 from tqdm import tqdm
 from tabulate import tabulate
 from torch.utils.data import DataLoader
-from torchvision import transforms as T
 
 import sys
 sys.path.insert(0, '.')
-from models import choose_models
-from datasets.imagenet import ImageNet
-from utils.utils import fix_seeds
+from models import get_model
+from datasets import get_dataset
+from datasets.transforms import get_transforms
+from utils.utils import fix_seeds, setup_cudnn
 from utils.metrics import accuracy
 
 
@@ -41,20 +41,13 @@ def evaluate(dataloader, model, device, loss_fn = None):
 
 
 def main(cfg):
-    fix_seeds(cfg['TRAIN']['SEED'])
     device = torch.device(cfg['DEVICE'])
 
-    model = choose_models(cfg['MODEL']['NAME'])(cfg['MODEL']['SUB_NAME'], pretrained=cfg['EVAL']['MODEL_PATH'], num_classes=cfg['DATASET']['NUM_CLASSES'], image_size=cfg['EVAL']['IMAGE_SIZE'][0])   
+    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], cfg['MODEL_PATH'], cfg['DATASET']['NUM_CLASSES'], cfg['EVAL']['IMAGE_SIZE'][0])
     model = model.to(device)
 
-    val_transform = T.Compose(
-        T.Resize(tuple(map(lambda x: int(x / 0.9), cfg['EVAL']['IMAGE_SIZE']))),
-        T.CenterCrop(cfg['EVAL']['IMAGE_SIZE']),
-        T.ToTensor(),
-        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    )
-
-    val_dataset = ImageNet(cfg['DATASET']['ROOT'], split='val', transform=val_transform)
+    _, val_transform = get_transforms(cfg)
+    _, val_dataset = get_dataset(cfg, val_transform=val_transform)
     val_dataloader = DataLoader(val_dataset, batch_size=cfg['EVAL']['BATCH_SIZE'], num_workers=cfg['EVAL']['WORKERS'], pin_memory=True)
 
     _, top1_acc, top5_acc = evaluate(val_dataloader, model, device)
@@ -75,4 +68,6 @@ if __name__ == '__main__':
     with open(args.cfg) as f:
         cfg = yaml.load(f, Loader=yaml.FullLoader)
 
+    fix_seeds(cfg['TRAIN']['SEED'])
+    setup_cudnn()
     main(cfg)

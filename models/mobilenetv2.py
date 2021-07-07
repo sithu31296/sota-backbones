@@ -34,7 +34,7 @@ class InvertedResidual(nn.Module):
 
 
 class MobileNetV2(nn.Module):
-    def __init__(self, model_name: str = None, pretrained: str = None, num_classes: int = 1000, **kwargs):
+    def __init__(self, model_name: str = None, pretrained: str = None, num_classes: int = 1000, *args, **kwargs):
         super().__init__()
         inverted_residual_setting = [
             # t, c, n, s

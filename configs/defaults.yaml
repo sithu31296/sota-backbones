@@ -1,53 +1,67 @@
-DEVICE: cpu                      # device used for training
-SAVE_DIR: './output'              # output folder name used for saving the trained model and logs
-MODEL_PATH: './output/mixer_B.pth'     # trained model path
+DEVICE: cpu                             # device used for training
+SAVE_DIR: './output'                    # output folder name used for saving the trained model and logs
+MODEL_PATH: './output/mixer_B.pth'      # trained model path (used for evaluation, inference and optimization)
 
 MODEL:
-  NAME: 'mixer'                   # name of the model you are using
-  SUB_NAME: 'B'                 # sub name of the model you are using 
+  NAME: 'mixer'                         # name of the model you are using
+  VARIANT: 'B'                          # sub name of the model you are using 
 
 DATASET:
-  ROOT: '../datasets/imagenet'    # dataset root path
+  NAME: imagenet                        # dataset name
+  ROOT: '../datasets/imagenet'          # dataset root path
   NUM_CLASSES: 1000
 
 TRAIN:
-  IMAGE_SIZE: [224, 224]          # image size used in training the model
-  EPOCHS: 100                     # number of epochs to train
-  BATCH_SIZE: 8                   # batch size used to train
-  WORKERS: 8                      # number of workers used in training dataloader
-  LR: 0.01                        # initial learning rate used in optimizer
-  DECAY: 0.0005                   # decay rate use in optimizer
-  STEP_LR:                        # step LR scheduler parameters
-    STEP_SIZE: 30                 # when epoch reaches this step size, lr will be reduced
-    GAMMA: 0.1                    # lr reduce rate
-  EVAL_INTERVAL: 20               # interval to evaluate the model during training
-  SEED: 123                       # random seed number
-  AMP: false                      # use Automatic Mixed Precision training or not
+  IMAGE_SIZE: [224, 224]                # image size used in training the model
+  EPOCHS: 100                           # number of epochs to train
+  BATCH_SIZE: 8                         # batch size used to train
+  WORKERS: 8                            # number of workers used in training dataloader
+  LR: 0.01                              # initial learning rate used in optimizer
+  DECAY: 0.0005                         # decay rate use in optimizer
+  LOSS: label_smooth                    # loss function name (vanilla, label_smooth, soft_target)
+  SCHEDULER:
+    NAME: steplr
+    PARAMS: (30, 0.1)
+  EVAL_INTERVAL: 20                     # interval to evaluate the model during training
+  SEED: 123                             # random seed number
+  AMP: false                            # use Automatic Mixed Precision training or not
+  DDP: 
+    ENABLE: false                       # use ddp training
+    REPEATED_AUG: true                  # each gpu will see different augmented version of same images
 
 EVAL:
-  IMAGE_SIZE: [224, 224]          # evaluation image size
-  BATCH_SIZE: 8                   # evaluation batch size
-  WORKERS: 4                      # number of workers used in evalaution dataloader
+  IMAGE_SIZE: [224, 224]                # evaluation image size
+  BATCH_SIZE: 8                         # evaluation batch size
+  WORKERS: 4                            # number of workers used in evalaution dataloader
   
 TEST:
-  MODE: image                     # inference mode (image)
-  FILE: 'test_imgs'               # filename or foldername (image mode)
-  IMAGE_SIZE: [224, 224]          # inference image size
-  PRECISION: fp32                 # model and I/O precision (fp16, fp32)
+  MODE: image                           # inference mode (image)
+  FILE: 'test_imgs'                     # filename or foldername (image mode)
+  IMAGE_SIZE: [224, 224]                # inference image size
 
 PROFILE:
-  IMAGE_SIZE: [224, 224]          # profile image size
-  MEMORY: true                    # profile memory usage
-  SHAPE: false                    # profile input shape
-  SORT: 'time_total'              # sort the result by "time_total" or "memory_usage"
-  SAVE: false                     # save the profile result in json
+  IMAGE_SIZE: [224, 224]                # profile image size
+  MEMORY: true                          # profile memory usage
+  SHAPE: false                          # profile input shape
+  SORT: 'time_total'                    # sort the result by "time_total" or "memory_usage"
+  SAVE: false                           # save the profile result in json
 
 QUANTIZE:
-  METHOD: dynamic                 # quantization method (dynamic, static, qat) (for CNN models, use static or qat, for Transformer and MLP models, use dynamic)
-  BACKEND: qnnpack                # backend engine (qnnpack for ARM, fbgemm for x86)
-  MOBILE_OPT: false               # use optimize for mobile
-  LITE_INTER: false               # save for using with lite interpreter
+  METHOD: dynamic                       # quantization method (dynamic, static, qat) (for CNN models, use static or qat, for Transformer and MLP models, use dynamic)
+  BACKEND: qnnpack                      # backend engine (qnnpack for ARM, fbgemm for x86)
+  MOBILE_OPT: false                     # use optimize for mobile
+  LITE_INTER: false                     # save for using with lite interpreter
 
 PRUNE:
-  METHOD: l1                      # pruning method (l1 or random)
-  AMOUNT: 0.3                     # remove connections percentage (0 to 1)
+  METHOD: l1                            # pruning method (l1 or random)
+  AMOUNT: 0.3                           # removing connections percentage (0 to 1)
+
+KD:
+  ENABLE: false                         # train with knowledge distillation
+  METHOD: vanilla                       # knowledge distillation method
+  TEACHER:                                    
+    NAME: mixer                         # teacher model name
+    VARIANT: L                          # teacher model sub-name
+    PRETRAINED: 'mixer_L.pth'           # teacher model weights path
+  ALPHA: 0.95                           # [0.99, 0.95, 0.5, 0.1, 0.05]
+  TEMP: 6                               # [20, 10, 8, 6, 4.5, 3, 2, 1.5]

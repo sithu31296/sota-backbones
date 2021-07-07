@@ -1,4 +1,3 @@
-import os
 import torch
 import argparse
 import yaml
@@ -8,15 +7,15 @@ from torchvision import transforms
 
 import sys
 sys.path.insert(0, '.')
-from models import choose_models
+from models import get_model
 from datasets.imagenet import CLASSES
-from utils.utils import time_synschronized
+from utils.utils import time_synchronized
 
 
 class Model:
     def __init__(self, cfg) -> None:
         self.device = torch.device(cfg['TEST']['DEVICE'])
-        self.model = choose_models(cfg['MODEL']['NAME'])(cfg['MODEL']['SUB_NAME'], pretrained=cfg['TEST']['MODEL_PATH'], num_classes=cfg['DATASET']['NUM_CLASSES'], image_size=cfg['TEST']['IMAGE_SIZE'][0])    
+        self.model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], cfg['MODEL_PATH'], cfg['DATASET']['NUM_CLASSES'], cfg['TEST']['IMAGE_SIZE'][0])
         self.model = self.model.to(self.device)
         self.model.eval()
 
@@ -31,9 +30,9 @@ class Model:
         image /= 255
         image = self.img_transforms(image).unsqueeze(0).to(self.device)
         
-        start = time_synschronized()
+        start = time_synchronized()
         pred = self.model(image)
-        end = time_synschronized()
+        end = time_synchronized()
         print(f"Model Inference Time: {(end-start)*1000}ms")
 
         cls_id = torch.argmax(pred)

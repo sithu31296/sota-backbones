@@ -2,11 +2,13 @@
 
 * [Introduction](##Introduction)
 * [Features](##Features)
-* [Model Comparison](##Model-Comparison)
+* [Model Zoo](##Model-Zoo)
 * [Configuration](##Configuration)
 * [Training](##Training)
 * [Evaluation](##Evaluation)
 * [Inference](##Inference)
+* [Optimization](##Optimization)
+* [Other Pipelines](##Other-Pipelines)
 
 ## Introduction
 
@@ -27,6 +29,7 @@ Models
     * [MobileNetv2]()
     * [ResNet](https://arxiv.org/abs/1512.03385)
     * [EfficientNetV2](https://arxiv.org/abs/2104.00298v3) (Coming Soon)
+
 * Transformer
     * [VOLO](https://arxiv.org/abs/2106.13112v1) (Coming Soon)
     * [XCiT](https://arxiv.org/abs/2106.09681)
@@ -40,15 +43,29 @@ Models
     * [gMLP](https://arxiv.org/abs/2105.08050v2) 
     * [ResMLP](https://arxiv.org/abs/2105.03404) 
     * [MLP Mixer](https://arxiv.org/abs/2105.01601)
-    
-PyTorch Features
+
+Knowledge Distillation
+* [Vanilla KD](https://arxiv.org/abs/1503.02531)
+* [TAKD](https://arxiv.org/abs/1902.03393) (Coming Soon)
+* [CRD](http://arxiv.org/abs/1910.10699) (Coming Soon)
+
+Training
 * [AMP](https://pytorch.org/docs/stable/notes/amp_examples.html)
-* [Benchmark](https://pytorch.org/tutorials/recipes/recipes/benchmark.html) [[Implementation](./tools/benchmark.py)]
-* [Profiler](https://pytorch.org/docs/stable/profiler.html) [[Implementation](./tools/model_profile.py)]
-* [Quantization](https://pytorch.org/docs/stable/quantization.html) [[Implementation](./tools/quantize.py)]
-* [Mobile Optimizer](https://pytorch.org/docs/stable/mobile_optimizer.html) [[Implementation](./tools/quantize.py)]
-* [Pruning](https://pytorch.org/tutorials/intermediate/pruning_tutorial.html) [[Implementation](./tools/prune.py)]
-* [DDP](https://pytorch.org/docs/stable/notes/ddp.html) (Coming Soon)
+* [DDP](https://pytorch.org/docs/stable/notes/ddp.html) 
+
+Model Conversion
+* [ONNX]()
+* [TensorRT]()
+* [TFLite]()
+
+Model Inspection
+* [Benchmark](https://pytorch.org/tutorials/recipes/recipes/benchmark.html) [[Implementation](./tools/inspect/benchmark.py)]
+* [Profiler](https://pytorch.org/docs/stable/profiler.html) [[Implementation](./tools/inspect/model_profile.py)]
+
+Optimization
+* [Quantization](https://pytorch.org/docs/stable/quantization.html) 
+* [Mobile Optimizer](https://pytorch.org/docs/stable/mobile_optimizer.html) 
+* [Pruning](https://pytorch.org/tutorials/intermediate/pruning_tutorial.html)
 
 Deployment
 * [Flask+Vue App]() (Coming Soon)
@@ -58,7 +75,7 @@ Deployment
 * [TFLite Inferense]() (Coming Soon)
 
 
-## Model Comparison
+## Model Zoo
 
 Model | Patch Size | ImageNet1k Top-1 Accuracy (%) | Params (M)  | FLOPs (B) | Image Size | Throughput (image/s) | Peak Memory (MB) | Weights
 --- | --- | --- | --- | --- | --- | --- | --- | ---
@@ -104,11 +121,28 @@ Create a configuration file in `configs`. Sample configuration for ImageNet data
 
 ## Training
 
+### Single GPU/CPU
 ```bash
 $ python tools/train.py --cfg configs/CONFIG_FILE_NAME.yaml
 ```
 
+### Multiple-GPUs
+
+Traing with 2 GPUs:
+
+```bash
+$ python -m torch.distributed.launch --nproc_per_node=2 --use_env tools/train.py --cfg configs/CONFIG_FILE_NAME.yaml
+```
+
+### Knowledge Distillation
+
+Change `ENABLE` field in `KD` of the configuration file to `True` and also change the additional parameters. The weights file for the teacher model must be supplied via `PRETRAINED` field.
+
+The training command is the same as in above.
+
 ## Evaluation
+
+Make sure to set `MODEL_PATH` of the configuration file to your trained model directory.
 
 ```bash
 $ python tools/val.py --cfg configs/CONFIG_FILE_NAME.yaml
@@ -116,7 +150,32 @@ $ python tools/val.py --cfg configs/CONFIG_FILE_NAME.yaml
 
 ## Inference
 
+Make sure to set `MODEL_PATH` of the configuration file to your trained model directory.
+
 ```bash
 $ python tools/infer.py --cfg configs/CONFIG_FILE_NAME.yaml
 ```
 
+## Optimization
+
+### Quantization
+
+Change `QUANTIZE` parameters in the configuration file and run the following. The quantized model will be saved in `SAVE_DIR`.
+
+```bash
+$ python tools/optimize/quantize.py --cfg configs/CONFIG_FILE_NAME.yaml
+```
+
+### Pruning
+
+Change `PRUNE` parameters in the configuration file and run the following. The pruned model will be saved in `SAVE_DIR`.
+
+```bash
+$ python tools/optimize/pruning.py --cfg configs/CONFIG_FILE_NAME.yaml
+```
+
+
+## Other Pipelines
+
+* [Semantic-Segmentation-Pipeline](https://github.com/sithu31296/Semantic-Segmentation-Pipeline)
+* [Re-Identification-Pipeline](https://github.com/sithu31296/Re-Identification-Pipeline)
