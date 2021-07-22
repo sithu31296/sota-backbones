@@ -47,6 +47,7 @@ Models
     * [ViT](https://arxiv.org/abs/2010.11929v2)
     
 * MLP
+    * [ASMLP](https://arxiv.org/abs/2107.08391v1)
     * [ViP](https://arxiv.org/abs/2106.12368v1)
     * [gMLP](https://arxiv.org/abs/2105.08050v2) 
     * [ResMLP](https://arxiv.org/abs/2105.03404) 
@@ -116,6 +117,9 @@ gMLP-B | 16 | 81.6 | 73 | **15.8** | 224 | - | - | N/A
 ViP-S | 7 | 81.5 | **25** | - | 224 | **719** | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
 ViP-M | 7 | 82.7 | 55 | - | 224 | 418 | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
 ViP-L | 7 | 83.2 | 88 | - | 224 | 298 | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
+ASMLP-T | 4 | 81.3 | 28 | 4.4 | 224 | 1047 | - | N/A
+ASMLP-S | 4 | 83.1 | 50 | 8.5 | 224 | 619 | - | N/A
+ASMLP-B | 4 | 83.3 | 88 | 15.2 | 224 | 455 | - | N/A
 
 > Notes: All models' results are from their papers or official repos. Throughput is measured with V100GPU. Weights are converted from official repos. Only models trained on ImageNet1k are compared.
 
