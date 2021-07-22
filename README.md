@@ -42,12 +42,13 @@ Models
     * [VOLO](https://arxiv.org/abs/2106.13112v1) (Coming Soon)
     * [XCiT](https://arxiv.org/abs/2106.09681)
     * [CaiT](https://arxiv.org/abs/2103.17239) 
+    * [CvT](https://arxiv.org/abs/2103.15808) (Coming Soon)
     * [LV-ViT](https://arxiv.org/abs/2104.10858v2)
     * [DeiT](https://arxiv.org/abs/2012.12877) 
     * [ViT](https://arxiv.org/abs/2010.11929v2)
     
 * MLP
-    * [ASMLP](https://arxiv.org/abs/2107.08391v1)
+    * [ASMLP](https://arxiv.org/abs/2107.08391v1) (Coming Soon)
     * [ViP](https://arxiv.org/abs/2106.12368v1)
     * [gMLP](https://arxiv.org/abs/2105.08050v2) 
     * [ResMLP](https://arxiv.org/abs/2105.03404) 
@@ -95,6 +96,8 @@ DeiT-S | 16 | 81.2 | **22** | **4.6** | 224 | **940.4** | **217.2** | [download]
 DeiT-B | 16 | 83.4 | 87 | **17.5** | 224 |  292.3 | 573.7 | [download](https://drive.google.com/drive/folders/1nhj-RSAHcpN3e5G0eryKBcnUwlyE_YYv?usp=sharing)
 LV-ViT-S | 16 | 83.3 | **26** | **22.2** | 224 | - | - | [download](https://github.com/zihangJiang/TokenLabeling/releases/download/1.0/lvvit_s-26M-224-83.3.pth.tar)
 LV-ViT-M | 16 | **84.0** | 56 | 42.2 | 224 | - | - | [download](https://github.com/zihangJiang/TokenLabeling/releases/download/1.0/lvvit_m-56M-224-84.0.pth.tar)
+CvT-13 | 7 | 81.6 | 20 | 4.5 | 224 | - | - | N/A
+CvT-21 | 7 | 82.5 | 32 | 7.1 | 224 | - | - | N/A
 CaiT-S24 | 16 | **85.1** | 47 | 32.2 | 384 | - | - | [download](https://drive.google.com/drive/folders/1YrbN3zdz1jykz5D-CY6ND7A7schH8E19?usp=sharing)
 CaiT-S36 | 16 | **85.4** | 68 | 48 | 384 | - | - | [download](https://drive.google.com/drive/folders/1YrbN3zdz1jykz5D-CY6ND7A7schH8E19?usp=sharing)
 CaiT-M36 | 16 | **86.1** | 271 | 173.3 | 384 | - | - | [download](https://drive.google.com/drive/folders/1YrbN3zdz1jykz5D-CY6ND7A7schH8E19?usp=sharing)
