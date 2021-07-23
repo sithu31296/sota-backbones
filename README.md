@@ -51,6 +51,7 @@ Models
     * [ViT](https://arxiv.org/abs/2010.11929v2)
     
 * MLP
+    * [CycleMLP](https://arxiv.org/abs/2107.10224) (Coming Soon)
     * [ASMLP](https://arxiv.org/abs/2107.08391v1) (Coming Soon)
     * [ViP](https://arxiv.org/abs/2106.12368v1)
     * [gMLP](https://arxiv.org/abs/2105.08050v2) 
@@ -134,6 +135,11 @@ ViP-L | 83.2 | 88 | - | 298 | - | [download](https://drive.google.com/drive/fold
 ASMLP-T | 81.3 | **28** | **4.4** | **1047** | - | N/A
 ASMLP-S | 83.1 | 50 | **8.5** | 619 | - | N/A
 ASMLP-B | 83.3 | 88 | **15.2** | 455 | - | N/A
+CycleMLP-B1 | 78.9 | 15 | **2.1** | - | - | N/A
+CycleMLP-B2 | 81.6 | 27 | **3.9** | - | - | N/A
+CycleMLP-B3 | 82.4 | 38 | **6.9** | - | - | N/A
+CycleMLP-B4 | 83.0 | 52 | **10.1** | - | - | N/A
+CycleMLP-B5 | 83.2 | 76 | **12.3** | - | - | N/A
 
 > Notes: All models' results are from their papers or official repos. Throughput is measured with V100GPU. Weights are converted from official repos. Only models trained on ImageNet1k are compared. Huge parameters models (>200M) are not included. If the distilled version of the model exists, its result is reported. Image size is 224x224 unless otherwise specified.
 
