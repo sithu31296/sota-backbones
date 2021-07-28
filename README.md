@@ -40,6 +40,7 @@ Models
     * [EfficientNetV2](https://arxiv.org/abs/2104.00298v3) (Coming Soon)
 
 * Transformer
+    * [CoTNet](https://arxiv.org/abs/2107.12292) (Coming Soon)
     * [CSWin](https://arxiv.org/abs/2107.00652v2) (Coming Soon)
     * [VOLO](https://arxiv.org/abs/2106.13112v1) (Coming Soon)
     * [Refiner](https://arxiv.org/abs/2106.03714v1) (Coming Soon)
@@ -123,6 +124,9 @@ VOLO-D1 | **84.2** | **27** | **6.8** | - | -  | N/A
 VOLO-D2 | **85.2** | 59 | **14.1** | - | -  | N/A
 VOLO-D3 | **85.4** | 86 | 20.6 | - | - | N/A
 VOLO-D4 | **85.7** | 193 | 43.8 | - | -  | N/A
+SE-CoTNetD-50 | 81.6 | **23.1** | **4.1** | - | - | N/A
+SE-CoTNetD-101 | 83.2 | 40.9 | **8.5** | - | - | N/A
+SE-CoTNetD-152 | **84.0** | 55.8 | **17.0** | - | - | N/A
 Mixer-B | 76.4 | 59 | **12.7** | - | - | N/A
 ResMLP-S12 | 76.6 | **15** | **3.0** | **1415.1** | **179.5** | [download](https://dl.fbaipublicfiles.com/deit/resmlp_12_dist.pth)
 ResMLP-S24 | 79.4 | 30 | **6.0** | **715.4** | **235.3** | [download](https://dl.fbaipublicfiles.com/deit/resmlp_24_dist.pth)
