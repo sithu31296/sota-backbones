@@ -54,14 +54,10 @@ Knowledge Distillation
 
 ## Model Zoo
 
-Model | ImageNet1k Top-1 Accuracy (%) | Params (M)  | FLOPs (B) | Throughput (image/s) | Peak Memory (MB) | Weights
+Model | ImageNet1k Top-1 Acc (%) | Params (M)  | GFLOPs | Throughput (image/s) | Peak Mem (MB) | Weights
 --- | --- | --- | --- | --- | --- | --- 
-ResNet-50 | 77.15 | - | - | - | - | N/A
-ResNet-101 | 78.25 | - | - | - | - | N/A
-ResNet-152 | 78.57 | 60 | - | - | - | N/A
 MobileNetV2 | 72.0 | **3.4** | - | - | - | N/A
-MobileNetV3-S | 67.4 | **2.5** | - | - | - | N/A
-MobileNetV3-L | 75.2 | **5.4** | - | - | - | N/A
+MobileNetV3 | 75.2 | **5.4** | - | - | - | N/A
 EffNetV2-S | 83.9 | **24** | - | - | - | N/A
 EffNetV2-M | **85.1** | 55 | - | - | - | N/A
 EffNetV2-L | **85.7** | 121 | - | - | - | N/A
