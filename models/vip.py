@@ -64,9 +64,9 @@ class PatchEmbedding(nn.Module):
 
 
 class Downsample(nn.Module):
-    def __init__(self, in_embed_dim, out_embed_dim, patch_size=16):
+    def __init__(self, c1, c2, patch_size=16):
         super().__init__()
-        self.proj = nn.Conv2d(in_embed_dim, out_embed_dim, patch_size, patch_size)
+        self.proj = nn.Conv2d(c1, c2, patch_size, patch_size)
 
     def forward(self, x: torch.Tensor):
         x = x.permute(0, 3, 1, 2)
@@ -83,7 +83,7 @@ vip_settings = {
 
 
 class ViP(nn.Module):
-    def __init__(self, model_name: str = 'S', pretrained: str = None, num_classes: int = 1000, image_size: int = 224) -> None:
+    def __init__(self, model_name: str = 'S', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
         assert model_name in vip_settings.keys(), f"Vision Permutator model name should be in {list(vip_settings.keys())}"
         patch_size, layers, segment_dims, embed_dims = vip_settings[model_name]

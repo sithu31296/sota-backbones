@@ -158,6 +158,6 @@ if __name__ == '__main__':
     with open(args.cfg) as f:
         cfg = yaml.load(f, Loader=yaml.FullLoader)
 
-    fix_seeds(cfg['TRAIN']['SEED'])
+    fix_seeds(123)
     setup_cudnn()
     main(cfg)

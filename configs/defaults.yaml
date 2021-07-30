@@ -23,7 +23,6 @@ TRAIN:
     NAME: steplr
     PARAMS: (30, 0.1)
   EVAL_INTERVAL: 20                     # interval to evaluate the model during training
-  SEED: 123                             # random seed number
   AMP: false                            # use Automatic Mixed Precision training or not
   DDP: 
     ENABLE: false                       # use ddp training
@@ -38,23 +37,6 @@ TEST:
   MODE: image                           # inference mode (image)
   FILE: 'test_imgs'                     # filename or foldername (image mode)
   IMAGE_SIZE: [224, 224]                # inference image size
-
-PROFILE:
-  IMAGE_SIZE: [224, 224]                # profile image size
-  MEMORY: true                          # profile memory usage
-  SHAPE: false                          # profile input shape
-  SORT: 'time_total'                    # sort the result by "time_total" or "memory_usage"
-  SAVE: false                           # save the profile result in json
-
-QUANTIZE:
-  METHOD: dynamic                       # quantization method (dynamic, static, qat) (for CNN models, use static or qat, for Transformer and MLP models, use dynamic)
-  BACKEND: qnnpack                      # backend engine (qnnpack for ARM, fbgemm for x86)
-  MOBILE_OPT: false                     # use optimize for mobile
-  LITE_INTER: false                     # save for using with lite interpreter
-
-PRUNE:
-  METHOD: l1                            # pruning method (l1 or random)
-  AMOUNT: 0.3                           # removing connections percentage (0 to 1)
 
 KD:
   ENABLE: false                         # train with knowledge distillation

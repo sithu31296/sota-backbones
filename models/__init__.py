@@ -1,3 +1,4 @@
+from pathlib import Path
 from .hrnet import HRNet
 from .resnet import ResNet
 from .mlpmixer import MLPMixer
@@ -10,7 +11,7 @@ from .lvvit import LVViT
 from .cait import CaiT
 from .xcit import XciT
 from .vip import ViP
-from pathlib import Path
+from .cyclemlp import CycleMLP
 
 __all__ = {
     "hrnet": HRNet,
@@ -27,6 +28,7 @@ __all__ = {
     "resmlp": ResMLP,
     "gmlp": gMLP,
     "vip": ViP,
+    'cyclemlp': CycleMLP,
 }
 
 def get_model(model_name: str, model_variant: str, pretrained: str = None, num_classes: int = 1000, image_size: int = 224):

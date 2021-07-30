@@ -27,7 +27,7 @@ class PatchEmbedding(nn.Module):
         self.num_patches = self.grid_size[0] * self.grid_size[1]
         self.proj = nn.Conv2d(3, embed_dim, patch_size, patch_size)
 
-    def forward(self, x: torch.Tensor):
+    def forward(self, x: torch.Tensor) -> Tensor:
         x = self.proj(x)                   # b x hidden_dim x 14 x 14
         x = x.flatten(2).swapaxes(1, 2)     # b x (14*14) x hidden_dim
 
