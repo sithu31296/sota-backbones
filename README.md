@@ -46,7 +46,6 @@ Models
     
 * MLP
     * [CycleMLP](https://arxiv.org/abs/2107.10224) ([Code](https://github.com/ShoufaChen/CycleMLP))
-    * [ASMLP](https://arxiv.org/abs/2107.08391v1) (Coming Soon)
     * [ViP](https://arxiv.org/abs/2106.12368v1)
     * [gMLP](https://arxiv.org/abs/2105.08050v2) 
     * [ResMLP](https://arxiv.org/abs/2105.03404) 
@@ -104,9 +103,6 @@ gMLP-B | 81.6 | 73 | **15.8** | - | - | N/A
 ViP-S | 81.5 | **25** | - | **719** | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
 ViP-M | 82.7 | 55 | - | 418 | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
 ViP-L | 83.2 | 88 | - | 298 | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
-ASMLP-T | 81.3 | **28** | **4.4** | **1047** | - | N/A
-ASMLP-S | 83.1 | 50 | **8.5** | 619 | - | N/A
-ASMLP-B | 83.3 | 88 | **15.2** | 455 | - | N/A
 CycleMLP-B1 | 78.9 | 15 | **2.1** | - | - | [download](https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B1.pth)
 CycleMLP-B2 | 81.6 | 27 | **3.9** | - | - | [download](https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B2.pth)
 CycleMLP-B3 | 82.4 | 38 | **6.9** | - | - | [download](https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B3.pth)
