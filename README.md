@@ -27,25 +27,23 @@ Datasets
 Models
 * CNN
     * [HRNet](https://arxiv.org/abs/1908.07919)
-    * [MobileNetV3](https://arxiv.org/abs/1905.02244v5) (Coming Soon)
+    * [MobileNetV3](https://arxiv.org/abs/1905.02244v5) 
     * [MobileNetV2](https://arxiv.org/abs/1801.04381v4)
     * [ResNet](https://arxiv.org/abs/1512.03385)
-    * [EfficientNetV2](https://arxiv.org/abs/2104.00298v3) (Coming Soon)
+    * [EfficientNetV2](https://arxiv.org/abs/2104.00298v3)
 
 * Transformer
-    * [CoTNet](https://arxiv.org/abs/2107.12292) (Coming Soon)
     * [CSWin](https://arxiv.org/abs/2107.00652v2) (Coming Soon)
     * [VOLO](https://arxiv.org/abs/2106.13112v1) (Coming Soon)
     * [Refiner](https://arxiv.org/abs/2106.03714v1) (Coming Soon)
     * [XCiT](https://arxiv.org/abs/2106.09681)
     * [CaiT](https://arxiv.org/abs/2103.17239) 
-    * [CvT](https://arxiv.org/abs/2103.15808) (Coming Soon)
     * [LV-ViT](https://arxiv.org/abs/2104.10858v2)
     * [DeiT](https://arxiv.org/abs/2012.12877) 
     * [ViT](https://arxiv.org/abs/2010.11929v2)
     
 * MLP
-    * [CycleMLP](https://arxiv.org/abs/2107.10224) ([Code](https://github.com/ShoufaChen/CycleMLP))
+    * [CycleMLP](https://arxiv.org/abs/2107.10224) 
     * [ViP](https://arxiv.org/abs/2106.12368v1)
     * [gMLP](https://arxiv.org/abs/2105.08050v2) 
     * [ResMLP](https://arxiv.org/abs/2105.03404) 
@@ -78,8 +76,6 @@ CaiT-S36 (384) | **85.4** | 68 | 48 | - | - | [download](https://drive.google.co
 Refiner-S | 83.6 | **25** | - | - | - | N/A
 Refiner-M | **84.6** | 55 | - | - | - | N/A
 Refiner-L | **84.9** | 81 | - | - | - | N/A
-CvT-13 | 81.6 | **20** | **4.5** | - | - | N/A
-CvT-21 | 82.5 | 32 | **7.1** | - | - | N/A
 XCiT-T24 | 82.6 | **12** | - | - | - | [download](https://drive.google.com/drive/folders/10lvfB8sXdRuZve5xn6pebJN6TT2GaYhP?usp=sharing)
 XCiT-S24 | **84.9** | **26** | - | - | - | [download](https://drive.google.com/drive/folders/10lvfB8sXdRuZve5xn6pebJN6TT2GaYhP?usp=sharing)
 XCiT-M24 | **85.1** | 84 | - | - | - | [download](https://drive.google.com/drive/folders/10lvfB8sXdRuZve5xn6pebJN6TT2GaYhP?usp=sharing)
@@ -91,18 +87,16 @@ VOLO-D1 | **84.2** | **27** | **6.8** | - | -  | N/A
 VOLO-D2 | **85.2** | 59 | **14.1** | - | -  | N/A
 VOLO-D3 | **85.4** | 86 | 20.6 | - | - | N/A
 VOLO-D4 | **85.7** | 193 | 43.8 | - | -  | N/A
-SE-CoTNetD-50 | 81.6 | **23.1** | **4.1** | - | - | N/A
-SE-CoTNetD-101 | 83.2 | 40.9 | **8.5** | - | - | N/A
-SE-CoTNetD-152 | **84.0** | 55.8 | **17.0** | - | - | N/A
+VOLO-D5 | **86.1** | 296 | - | - | - | N/A
 Mixer-B | 76.4 | 59 | **12.7** | - | - | N/A
 ResMLP-S12 | 76.6 | **15** | **3.0** | **1415.1** | **179.5** | [download](https://dl.fbaipublicfiles.com/deit/resmlp_12_dist.pth)
 ResMLP-S24 | 79.4 | 30 | **6.0** | **715.4** | **235.3** | [download](https://dl.fbaipublicfiles.com/deit/resmlp_24_dist.pth)
 ResMLP-S36 | 81.0 | 116 | 23.0 | 231.3 | 663.0 | [download](https://dl.fbaipublicfiles.com/deit/resmlp_36_dist.pth) 
 gMLP-S | 79.6 | **20** | **4.5** | - | - | N/A
 gMLP-B | 81.6 | 73 | **15.8** | - | - | N/A
-ViP-S | 81.5 | **25** | - | **719** | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
-ViP-M | 82.7 | 55 | - | 418 | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
-ViP-L | 83.2 | 88 | - | 298 | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
+ViP-S | 81.5 | **25** | **6.9** | **719** | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
+ViP-M | 82.7 | 55 | **16.3** | 418 | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
+ViP-L | 83.2 | 88 | 24.4 | 298 | - | [download](https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing)
 CycleMLP-B1 | 78.9 | 15 | **2.1** | - | - | [download](https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B1.pth)
 CycleMLP-B2 | 81.6 | 27 | **3.9** | - | - | [download](https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B2.pth)
 CycleMLP-B3 | 82.4 | 38 | **6.9** | - | - | [download](https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B3.pth)
