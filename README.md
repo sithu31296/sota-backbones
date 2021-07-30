@@ -10,13 +10,6 @@
     * [Knowledge Distillation](#knowledge-distillation)
 * [Evaluation](#evaluation)
 * [Inference](#inference)
-    * [PyTorch Inference](#pytorch-inference)
-    * [ONNX Inference](#onnx-inference)
-    * [TFLite Inference](#tflite-inference)
-* [Optimization](#optimization)
-    * [Quantization](#quantization)
-    * [Pruning](#pruning)
-* [Other Pipelines](#other-pipelines)
 
 ## Introduction
 
@@ -61,31 +54,6 @@ Models
 
 Knowledge Distillation
 * [Vanilla KD](https://arxiv.org/abs/1503.02531)
-* [TAKD](https://arxiv.org/abs/1902.03393) (Coming Soon)
-* [CRD](http://arxiv.org/abs/1910.10699) (Coming Soon)
-
-Training
-* [AMP](https://pytorch.org/docs/stable/notes/amp_examples.html)
-* [DDP](https://pytorch.org/docs/stable/notes/ddp.html) 
-
-Model Conversion
-* [ONNX](https://github.com/onnx/onnx)
-* [TFLite](https://www.tensorflow.org/lite)
-* [TensorRT](https://github.com/NVIDIA/TensorRT) (Coming Soon)
-
-Model Inspection
-* [Benchmark](https://pytorch.org/tutorials/recipes/recipes/benchmark.html) [[Implementation](./tools/inspect/benchmark.py)]
-* [Profiler](https://pytorch.org/docs/stable/profiler.html) [[Implementation](./tools/inspect/model_profile.py)]
-
-Optimization
-* [Quantization](https://pytorch.org/docs/stable/quantization.html) 
-* [Mobile Optimizer](https://pytorch.org/docs/stable/mobile_optimizer.html) 
-* [Pruning](https://pytorch.org/tutorials/intermediate/pruning_tutorial.html)
-
-Deployment
-* [Flask+Vue App]() (Coming Soon)
-* [FastAPI App]() (Coming Soon)
-
 
 ## Model Zoo
 
@@ -185,69 +153,10 @@ $ python tools/val.py --cfg configs/CONFIG_FILE_NAME.yaml
 
 Make sure to set `MODEL_PATH` of the configuration file to model's weights.
 
-### PyTorch Inference
-
 ```bash
-$ python tools/inference/pt_infer.py --cfg configs/CONFIG_FILE_NAME.yaml
+$ python tools/infer.py --cfg configs/CONFIG_FILE_NAME.yaml
 ```
 
-### ONNX Inference
+## Others
 
-Install necessary tools:
-* ONNX-Simplifier via `pip install onnx-simplifier`.
-* ONNXRuntime via `pip install onnxruntime`.
-
-Convert the PyTorch model to onnx model:
-
-```bash
-$ python tools/convert/pt_to_onnx.py --cfg configs/CONFIG_FILE_NAME.yaml
-```
-
-Run an inference with:
-
-```bash
-$ python tools/inference/onnx_infer.py --model-path ONNX_MODEL_PATH.onnx --file TEST_IMG_DIR
-```
-
-### TFLite Inference
-
-Install necessary tools:
-* ONNX-Simplifier via `pip install onnx-simplifier`.
-* Tensorflow2 via `pip install tensorflow`.
-* ONNX-Tensorflow via `pip install onnx-tf`.
-
-Convert the PyTorch model to tflite model:
-
-```bash
-$ python tools/convert/pt_to_tflite.py --cfg configs/CONFIG_FILE_NAME.yaml
-```
-
-Run an inference with:
-
-```bash
-$ python tools/inference/tflite_infer.py --model-path TFLITE_MODEL_PATH.tflite --file TEST_IMG_DIR
-```
-
-## Optimization
-
-### Quantization
-
-Change `QUANTIZE` parameters in the configuration file and run the following. The quantized model will be saved in `SAVE_DIR`.
-
-```bash
-$ python tools/optimize/quantize.py --cfg configs/CONFIG_FILE_NAME.yaml
-```
-
-### Pruning
-
-Change `PRUNE` parameters in the configuration file and run the following. The pruned model will be saved in `SAVE_DIR`.
-
-```bash
-$ python tools/optimize/pruning.py --cfg configs/CONFIG_FILE_NAME.yaml
-```
-
-
-## Other Pipelines
-
-* [Semantic-Segmentation-Pipeline](https://github.com/sithu31296/Semantic-Segmentation-Pipeline)
-* [Re-Identification-Pipeline](https://github.com/sithu31296/Re-Identification-Pipeline)
+* For optimizing pytorch models for deployment, see [torch_optimize](https://github.com/sithu31296/torch_optimize).
