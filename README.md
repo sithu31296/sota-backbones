@@ -7,8 +7,8 @@
 
 Model | Top-1 Accuracy <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Throughput <br><sup>(image/s) | Weights
 --- | --- | --- | --- | --- | --- 
-[MobileNetV2](https://arxiv.org/abs/1905.02244v5) | 72.0 | **3.4** | - | - | N/A
-[MobileNetV3](https://arxiv.org/abs/1801.04381v4) | 75.2 | **5.4** | - | - | N/A
+[MobileNetV2](https://arxiv.org/abs/1905.02244v5) | 72.0 | **3.4** | - | - | [download](https://download.pytorch.org/models/mobilenet_v2-b0353104.pth)
+[MobileNetV3](https://arxiv.org/abs/1801.04381v4) | 75.2 | **5.4** | - | - | [download](https://download.pytorch.org/models/mobilenet_v3_large-8738ca79.pth)
 [EffNetV2-S](https://arxiv.org/abs/2104.00298v3) | 83.9 | 24 | - | - | N/A
 EffNetV2-M | **85.1** | 55 | - | - | N/A
 EffNetV2-L | **85.7** | 121 | - | - | N/A
@@ -28,11 +28,10 @@ XCiT-L24 | **85.4** | 189 | - | - | [download](https://drive.google.com/drive/fo
 [CSWin-T](https://arxiv.org/abs/2107.00652v2) | 82.7 | 23 | **4.3** | - | [download](https://drive.google.com/drive/folders/1kVTZwgJ0uCTynUa2vOJ5SUgL2R7PyNLa?usp=sharing)
 CSWin-S | 83.6 | 35 | **6.9** | - | [download](https://drive.google.com/drive/folders/1kVTZwgJ0uCTynUa2vOJ5SUgL2R7PyNLa?usp=sharing)
 CSWin-B | 84.2 | 78 | 15.0 | - | [download](https://drive.google.com/drive/folders/1kVTZwgJ0uCTynUa2vOJ5SUgL2R7PyNLa?usp=sharing)
-[VOLO-D1](https://arxiv.org/abs/2106.13112v1) | 84.2 | 27 | **6.8** | - | N/A
-VOLO-D2 | **85.2** | 59 | 14.1 | - | N/A
-VOLO-D3 | **85.4** | 86 | 20.6 | - | N/A
-VOLO-D4 | **85.7** | 193 | 43.8 | - | N/A
-VOLO-D5 | **86.1** | 296 | - | - | N/A
+[VOLO-D1](https://arxiv.org/abs/2106.13112v1) | 84.2 | 27 | **6.8** | - | [download](https://github.com/sail-sg/volo/releases/download/volo_1/d1_224_84.2.pth.tar)
+VOLO-D2 | **85.2** | 59 | 14.1 | - | [download](https://github.com/sail-sg/volo/releases/download/volo_1/d2_224_85.2.pth.tar)
+VOLO-D3 | **85.4** | 86 | 20.6 | - | [download](https://github.com/sail-sg/volo/releases/download/volo_1/d3_224_85.4.pth.tar)
+VOLO-D4 | **85.7** | 193 | 43.8 | - | [download](https://github.com/sail-sg/volo/releases/download/volo_1/d4_224_85.7.pth.tar)
  | | | | |
 [Mixer-B](https://arxiv.org/abs/2105.01601) | 76.4 | 59 | 12.7 | - | N/A
 [ResMLP-S12](https://arxiv.org/abs/2105.03404) | 76.6 | **15** | **3.0** | **1415.1** | [download](https://dl.fbaipublicfiles.com/deit/resmlp_12_dist.pth)
@@ -60,6 +59,12 @@ CycleMLP-B5 | **83.2** | 76 | 12.3 | - | [download](https://github.com/ShoufaChe
 * Huge parameters models (>200M) are not included. 
 * If the distilled version of the model exists, its result is reported. 
 * Image size is 224x224, unless otherwise specified.
+</details>
+
+<details>
+  <summary>Model Summary <small>(click to expand)</small></summary>
+
+
 </details>
 
 ## <div align="center">Usage</div>
@@ -126,5 +131,12 @@ $ python tools/infer.py --cfg configs/CONFIG_FILE_NAME.yaml
   <summary>Optimization <small>(click to expand)</small></summary>
 
 For optimizing these models for deployment, see [torch_optimize](https://github.com/sithu31296/torch_optimize).
+
+</details>
+
+<details>
+  <summary>References <small>(click to expand)</small></summary>
+
+
 
 </details>

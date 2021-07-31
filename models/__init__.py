@@ -6,6 +6,7 @@ from .vit import ViT
 from .deit import DeiT
 from .gmlp import gMLP
 from .mobilenetv2 import MobileNetV2
+from .mobilenetv3 import MobileNetV3
 from .resmlp import ResMLP
 from .lvvit import LVViT
 from .cait import CaiT
@@ -19,6 +20,7 @@ __all__ = {
     "hrnet": HRNet,
     "resnet": ResNet,
     "mobilenetv2": MobileNetV2,
+    "mobilenetv3": MobileNetV3,
     
     "vit": ViT,
     "deit": DeiT,
@@ -26,6 +28,7 @@ __all__ = {
     "cait": CaiT,
     "xcit": XciT,
     "cswin": CSWin,
+    "volo": VOLO,
 
     "mixer": MLPMixer,
     "resmlp": ResMLP,
