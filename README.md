@@ -3,7 +3,9 @@
 
 ## <div align="center">Model Zoo</div>
 
-Model | Top-1 Acc <br><sup>ImageNet1k(%) | Params <br><sup>(M)  | GFLOPs | Throughput <br><sup>(image/s) | Weights
+#### ImageNet-1k Comparison
+
+Model | Top-1 Accuracy <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Throughput <br><sup>(image/s) | Weights
 --- | --- | --- | --- | --- | --- 
 [MobileNetV2](https://arxiv.org/abs/1905.02244v5) | 72.0 | **3.4** | - | - | N/A
 [MobileNetV3](https://arxiv.org/abs/1801.04381v4) | 75.2 | **5.4** | - | - | N/A
