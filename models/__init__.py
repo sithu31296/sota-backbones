@@ -13,6 +13,7 @@ from .xcit import XciT
 from .vip import ViP
 from .cyclemlp import CycleMLP
 from .cswin import CSWin
+from .volo import VOLO
 
 __all__ = {
     "hrnet": HRNet,
