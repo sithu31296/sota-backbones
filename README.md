@@ -47,23 +47,23 @@
 
 Model | Top-1 Accuracy <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <sup> Variants & Weights
 --- | --- | --- | --- | --- 
-[MobileNetV2][mobilenetv2] | 72.0 | 3.4 | - | [v2][mobilenetv2w]
-[MobileNetV3][mobilenetv3] | 75.2 | 5.4 | - | [v3][mobilenetv3w]
-[EfficientNetV2][efficientv2] | 83.9`\|`85.1`\|`85.7 | 24`\|`55`\|`121 | - | S\|M\|L
+[Mobilenetv2][mobilenetv2] | 72.0 | 3.4 | - | [v2][mobilenetv2w]
+[Mobilenetv3][mobilenetv3] | 75.2 | 5.4 | - | [v3][mobilenetv3w]
+[Effnetv2][efficientv2] | 83.9`\|`85.1`\|`85.7 | 24`\|`55`\|`121 | - | S \| M \| L
  | | | | |
-[ViT][vit] (384) | 77.9 | 86 | 55.4 | B
-[DeiT][deit] | 74.5`\|`81.2`\|`83.4 | 6`\|`22`\|`87 | -`\|`4.6`\|`17.5 | [T/S/B][deitw]
-[LV-ViT][lvvit] | 83.3`\|`84.0 | 26`\|`56 | 22.2`\|`42.2 | [S][lvvits]/[M][lvvitm]
-[CaiT][cait] (384) | 85.1`\|`85.4 | 47`\|`68 | 32.2`\|`48 | [S24/S36][caitw]
-[XCiT][xcit] | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`26`\|`84`\|`189 | - | [T/S/M/L][xcitw]
-[CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4.3`\|`6.9`\|`15.0 | [T/S/B][cswinw]
-[VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 6.8`\|`14.1`\|`20.6`\|`43.8 | [D1][volod1]/[D2][volod2]/[D3][volod3]/[D4][volod4]
+[ViT][vit] (384) | 77.9 | 86 | 55 | B
+[DeiT][deit] | 74.5`\|`81.2`\|`83.4 | 6`\|`22`\|`87 | -`\|`5`\|`18 | [T\|S\|B][deitw]
+[LV-ViT][lvvit] | 83.3`\|`84.0 | 26`\|`56 | 22`\|`42 | [S][lvvits] \| [M][lvvitm]
+[CaiT][cait] (384) | 85.1`\|`85.4 | 47`\|`68 | 32`\|`48 | [S24\|S36][caitw]
+[XCiT][xcit] | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`26`\|`84`\|`189 | - | [T\|S\|M\|L][xcitw]
+[CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
+[VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1] \| [D2][volod2] \| [D3][volod3] \| [D4][volod4]
  | | | | |
-[Mixer][mixer] | 76.4 | 59 | 12.7 | B
-[ResMLP][resmlp] | 76.6`\|`79.4`\|`81.0 | 15`\|`30`\|`116 | 3`\|`6`\|`23 | [S12][resmlps12]/[S24][resmlps24]/[S36][resmlps36]
-[gMLP][gmlp] | 79.6`\|`81.6 | 20`\|`73 | 4.5`\|`15.8 | S\|B
-[ViP][vip] | 81.5`\|`82.7`\|`83.2 | 25`\|`55`\|`88 | 6.9`\|`16.3`\|`24.4 | [S/M/L][vipw]
-[CycleMLP][cyclemlp] | 78.9`\|`81.6`\|`82.4`\|`83.0`\|`83.2 | 15`\|`27`\|`38`\|`52`\|`76 | 2.1`\|`3.9`\|`6.9`\|`10.1`\|`12.3 | [B1][cycleb1]/[B2][cycleb2]/[B3][cycleb3]/[B4][cycleb4]/[B5][cycleb5]
+[Mixer][mixer] | 76.4 | 59 | 13 | B
+[ResMLP][resmlp] | 76.6`\|`79.4`\|`81.0 | 15`\|`30`\|`116 | 3`\|`6`\|`23 | [S12][resmlps12] \| [S24][resmlps24] \| [S36][resmlps36]
+[gMLP][gmlp] | 79.6`\|`81.6 | 20`\|`73 | 5`\|`16 | S \| B
+[ViP][vip] | 81.5`\|`82.7`\|`83.2 | 25`\|`55`\|`88 | 7`\|`16`\|`24 | [S\|M\|L][vipw]
+[CycleMLP][cyclemlp] | 78.9`\|`81.6`\|`82.4`\|`83.0`\|`83.2 | 15`\|`27`\|`38`\|`52`\|`76 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][cycleb1] \| [B2][cycleb2] \| [B3][cycleb3] \| [B4][cycleb4] \| [B5][cycleb5]
 
 <details>
   <summary>Table Notes <small>(click to expand)</small></summary>
