@@ -12,6 +12,7 @@ from .cait import CaiT
 from .xcit import XciT
 from .vip import ViP
 from .cyclemlp import CycleMLP
+from .cswin import CSWin
 
 __all__ = {
     "hrnet": HRNet,
@@ -23,6 +24,7 @@ __all__ = {
     "lvvit": LVViT,
     "cait": CaiT,
     "xcit": XciT,
+    "cswin": CSWin,
 
     "mixer": MLPMixer,
     "resmlp": ResMLP,

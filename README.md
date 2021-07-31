@@ -33,7 +33,7 @@ Models
     * [EfficientNetV2](https://arxiv.org/abs/2104.00298v3)
 
 * Transformer
-    * [CSWin](https://arxiv.org/abs/2107.00652v2) (Coming Soon)
+    * [CSWin](https://arxiv.org/abs/2107.00652v2)
     * [VOLO](https://arxiv.org/abs/2106.13112v1) (Coming Soon)
     * [Refiner](https://arxiv.org/abs/2106.03714v1) (Coming Soon)
     * [XCiT](https://arxiv.org/abs/2106.09681)
@@ -76,9 +76,9 @@ XCiT-T24 | 82.6 | **12** | - | - | [download](https://drive.google.com/drive/fol
 XCiT-S24 | 84.9 | 26 | - | - | [download](https://drive.google.com/drive/folders/10lvfB8sXdRuZve5xn6pebJN6TT2GaYhP?usp=sharing)
 XCiT-M24 | **85.1** | 84 | - | - | [download](https://drive.google.com/drive/folders/10lvfB8sXdRuZve5xn6pebJN6TT2GaYhP?usp=sharing)
 XCiT-L24 | **85.4** | 189 | - | - | [download](https://drive.google.com/drive/folders/10lvfB8sXdRuZve5xn6pebJN6TT2GaYhP?usp=sharing)
-CSWin-T | 82.7 | 23 | **4.3** | - | N/A
-CSWin-S | 83.6 | 35 | **6.9** | - | N/A
-CSWin-B | 84.2 | 78 | 15.0 | - | N/A
+CSWin-T | 82.7 | 23 | **4.3** | - | [download](https://drive.google.com/drive/folders/1kVTZwgJ0uCTynUa2vOJ5SUgL2R7PyNLa?usp=sharing)
+CSWin-S | 83.6 | 35 | **6.9** | - | [download](https://drive.google.com/drive/folders/1kVTZwgJ0uCTynUa2vOJ5SUgL2R7PyNLa?usp=sharing)
+CSWin-B | 84.2 | 78 | 15.0 | - | [download](https://drive.google.com/drive/folders/1kVTZwgJ0uCTynUa2vOJ5SUgL2R7PyNLa?usp=sharing)
 VOLO-D1 | 84.2 | 27 | **6.8** | - | N/A
 VOLO-D2 | **85.2** | 59 | 14.1 | - | N/A
 VOLO-D3 | **85.4** | 86 | 20.6 | - | N/A
