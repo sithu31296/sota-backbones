@@ -3,8 +3,6 @@
 
 ## <div align="center">Model Zoo</div>
 
-#### ImageNet-1k Comparison
-
 [mobilenetv2]: https://arxiv.org/abs/1905.02244v5
 [mobilenetv3]: https://arxiv.org/abs/1801.04381v4
 [efficientv2]: https://arxiv.org/abs/2104.00298v3
@@ -45,7 +43,7 @@
 [cycleb4]: https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B4.pth
 [cycleb5]: https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B5.pth
 
-Model | Top-1 Accuracy <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <sup> Variants & Weights
+Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <sup> Variants & Weights
 --- | --- | --- | --- | --- 
 [Mobilenetv2][mobilenetv2] | 72.0 | 3.4 | - | [v2][mobilenetv2w]
 [Mobilenetv3][mobilenetv3] | 75.2 | 5.4 | - | [v3][mobilenetv3w]
@@ -54,8 +52,8 @@ Model | Top-1 Accuracy <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <sup> Vari
 [ViT][vit] (384) | 77.9 | 86 | 55 | B
 [DeiT][deit] | 74.5`\|`81.2`\|`83.4 | 6`\|`22`\|`87 | -`\|`5`\|`18 | [T\|S\|B][deitw]
 [LV-ViT][lvvit] | 83.3`\|`84.0 | 26`\|`56 | 22`\|`42 | [S][lvvits] \| [M][lvvitm]
-[CaiT][cait] (384) | 85.1`\|`85.4 | 47`\|`68 | 32`\|`48 | [S24\|S36][caitw]
-[XCiT][xcit] | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`26`\|`84`\|`189 | - | [T\|S\|M\|L][xcitw]
+[CaiT][cait]* (384) | 85.1`\|`85.4 | 47`\|`68 | 32`\|`48 | [S24\|S36][caitw]
+[XCiT][xcit]* | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`26`\|`84`\|`189 | - | [T\|S\|M\|L][xcitw]
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
 [VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1] \| [D2][volod2] \| [D3][volod3] \| [D4][volod4]
  | | | | |
@@ -68,14 +66,10 @@ Model | Top-1 Accuracy <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <sup> Vari
 <details>
   <summary>Table Notes <small>(click to expand)</small></summary>
 
-* Table contains 3 sections; CNN, Transformer and MLP based models.
-* Models' results are from their papers or official repos. 
-* Throughput is measured with V100GPU. 
-* Weights are converted from official repos. 
-* Only models trained on ImageNet1k are compared. 
-* Huge parameters models (>200M) are not included. 
-* If the distilled version of the model exists, its result is reported. 
 * Image size is 224x224, unless otherwise specified.
+* Only models trained on ImageNet1k are compared. 
+* (Parameters > 200M) Models are not included. 
+* `*` models' results are distilled versions.
 
 </details>
 
@@ -83,8 +77,9 @@ Model | Top-1 Accuracy <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <sup> Vari
   <summary>Model Summary <small>(click to expand)</small></summary>
 
 * CNN models' accuracy = 83~86
-* Transformer models' accuracy = 83~85
+* Transformer models' accuracy = 83~86
 * MLP models' accuracy = 81~83
+* XCiT model has a linear complexity to number of patches. So, this model can scale to high resolution inputs due to cheaper compute requirement and better adaptability to higher resolution at test time.
 * Some models use additional token labelling during training. (LV-ViT, VOLO)
 * Some models use knowledge distillation to improve their accuracy. (CaiT, XCiT)
 
