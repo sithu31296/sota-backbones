@@ -35,6 +35,9 @@
 [volod2]: https://github.com/sail-sg/volo/releases/download/volo_1/d2_224_85.2.pth.tar
 [volod3]: https://github.com/sail-sg/volo/releases/download/volo_1/d3_224_85.4.pth.tar
 [volod4]: https://github.com/sail-sg/volo/releases/download/volo_1/d4_224_85.7.pth.tar
+[gfnett]: https://drive.google.com/file/d/1Nrq5sfHD9RklCMl6WkcVrAWI5vSVzwSm/view?usp=sharing
+[gfnets]: https://drive.google.com/file/d/1w4d7o1LTBjmSkb5NKzgXBBiwdBOlwiie/view?usp=sharing
+[gfnetb]: https://drive.google.com/file/d/1F900_-yPH7GFYfTt60xn4tu5a926DYL0/view?usp=sharing
 [resmlps12]: https://dl.fbaipublicfiles.com/deit/resmlp_12_dist.pth
 [resmlps24]: https://dl.fbaipublicfiles.com/deit/resmlp_24_dist.pth
 [resmlps36]: https://dl.fbaipublicfiles.com/deit/resmlp_36_dist.pth
@@ -58,7 +61,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 [LV-ViT][lvvit] | 83.3`\|`84.0 | 26`\|`56 | 22`\|`42 | [S][lvvits] \| [M][lvvitm]
 [VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1] \| [D2][volod2] \| [D3][volod3] \| [D4][volod4]
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
-[GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | H-Ti\|H-S\|H-B
+[GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [H-T][gfnett]\|[H-S][gfnets]\|[H-B][gfnetb]
 [PVTv2][pvtv2] | 70.5`\|`78.7`\|`82.0`\|`83.1`\|`83.6`\|`83.8 | 4`\|`14`\|`25`\|`45`\|`63`\|`82 | 1`\|`2`\|`4`\|`7`\|`10`\|`12 | B0\|B1\|B2\|B3\|B4\|B5
  | | | | |
 [Mixer][mixer] | 76.4 | 59 | 13 | B
