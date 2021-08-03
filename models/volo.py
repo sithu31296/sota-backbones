@@ -3,7 +3,7 @@ import math
 import numpy as np
 from torch import nn, Tensor
 from torch.nn import functional as F
-from layers import MLP
+from .layers import MLP
 
 
 def rand_bbox(size, lam, scale=1):
