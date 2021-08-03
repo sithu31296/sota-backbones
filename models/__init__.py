@@ -15,6 +15,7 @@ from .vip import ViP
 from .cyclemlp import CycleMLP
 from .cswin import CSWin
 from .volo import VOLO
+from .gfnet import GFNet
 
 __all__ = {
     "hrnet": HRNet,
@@ -29,6 +30,7 @@ __all__ = {
     "xcit": XciT,
     "cswin": CSWin,
     "volo": VOLO,
+    "gfnet": GFNet,
 
     "mixer": MLPMixer,
     "resmlp": ResMLP,

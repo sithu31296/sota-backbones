@@ -14,6 +14,8 @@
 [xcit]: https://arxiv.org/abs/2106.09681
 [cswin]: https://arxiv.org/abs/2107.00652v2
 [volo]: https://arxiv.org/abs/2106.13112v1
+[gfnet]: https://arxiv.org/abs/2107.00645
+[pvtv2]: https://arxiv.org/abs/2106.13797
 
 [mixer]: https://arxiv.org/abs/2105.01601
 [resmlp]: https://arxiv.org/abs/2105.03404
@@ -50,12 +52,14 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 [Effnetv2][efficientv2] | 83.9`\|`85.1`\|`85.7 | 24`\|`55`\|`121 | - | S \| M \| L
  | | | | |
 [ViT][vit] (384) | 77.9 | 86 | 55 | B
-[DeiT][deit] | 74.5`\|`81.2`\|`83.4 | 6`\|`22`\|`87 | -`\|`5`\|`18 | [T\|S\|B][deitw]
-[LV-ViT][lvvit] | 83.3`\|`84.0 | 26`\|`56 | 22`\|`42 | [S][lvvits] \| [M][lvvitm]
+[DeiT][deit]* | 74.5`\|`81.2`\|`83.4 | 6`\|`22`\|`87 | -`\|`5`\|`18 | [T\|S\|B][deitw]
 [CaiT][cait]* (384) | 85.1`\|`85.4 | 47`\|`68 | 32`\|`48 | [S24\|S36][caitw]
 [XCiT][xcit]* | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`26`\|`84`\|`189 | - | [T\|S\|M\|L][xcitw]
-[CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
+[LV-ViT][lvvit] | 83.3`\|`84.0 | 26`\|`56 | 22`\|`42 | [S][lvvits] \| [M][lvvitm]
 [VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1] \| [D2][volod2] \| [D3][volod3] \| [D4][volod4]
+[CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
+[GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | H-Ti\|H-S\|H-B
+[PVTv2][pvtv2] | 70.5`\|`78.7`\|`82.0`\|`83.1`\|`83.6`\|`83.8 | 4`\|`14`\|`25`\|`45`\|`63`\|`82 | 1`\|`2`\|`4`\|`7`\|`10`\|`12 | B0\|B1\|B2\|B3\|B4\|B5
  | | | | |
 [Mixer][mixer] | 76.4 | 59 | 13 | B
 [ResMLP][resmlp] | 76.6`\|`79.4`\|`81.0 | 15`\|`30`\|`116 | 3`\|`6`\|`23 | [S12][resmlps12] \| [S24][resmlps24] \| [S36][resmlps36]
@@ -79,9 +83,9 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 * CNN models' accuracy = 83~86
 * Transformer models' accuracy = 83~86
 * MLP models' accuracy = 81~83
+* CaiT and XCiT models use knowledge distillation to improve the accuracy.
+* LV-ViT and VOLO models use additional token labelling method during training to improve the accuracy.
 * XCiT model has a linear complexity to number of patches. So, this model can scale to high resolution inputs due to cheaper compute requirement and better adaptability to higher resolution at test time.
-* Some models use additional token labelling during training. (LV-ViT, VOLO)
-* Some models use knowledge distillation to improve their accuracy. (CaiT, XCiT)
 
 </details>
 
