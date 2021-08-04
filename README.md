@@ -16,6 +16,8 @@
 [volo]: https://arxiv.org/abs/2106.13112v1
 [gfnet]: https://arxiv.org/abs/2107.00645
 [pvtv2]: https://arxiv.org/abs/2106.13797
+[crossformer]: https://arxiv.org/abs/2108.00154
+[lstransformer]: https://arxiv.org/abs/2107.02192
 
 [mixer]: https://arxiv.org/abs/2105.01601
 [resmlp]: https://arxiv.org/abs/2105.03404
@@ -64,10 +66,12 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 [CaiT][cait]* (384) | 85.1`\|`85.4 | 47`\|`68 | 32`\|`48 | [S24\|S36][caitw]
 [XCiT][xcit]* | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`26`\|`84`\|`189 | - | [T\|S\|M\|L][xcitw]
 [LV-ViT][lvvit] | 83.3`\|`84.0 | 26`\|`56 | 22`\|`42 | [S][lvvits] \| [M][lvvitm]
-[VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1] \| [D2][volod2] \| [D3][volod3] \| [D4][volod4]
+[VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]\|[D4][volod4]
 [PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.1`\|`83.6`\|`83.8 | 14`\|`25`\|`45`\|`63`\|`82 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][pvt1]\|[B2][pvt2]\|[B3][pvt3]\|[B4][pvt4]\|[B5][pvt5]
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [H-T][gfnett]\|[H-S][gfnets]\|[H-B][gfnetb]
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
+[CrossFormer][crossformer] | 81.5`\|`82.5`\|`83.4`\|`84.0 | 28`\|`31`\|`52`\|`92 | 3`\|`5`\|`9`\|`16 | T\|S\|B\|L
+[ViL-LS][lstransformer] | 83.8`\|`84.1 | 40`\|`56 | 9`\|`13 | M\|B
  | | | | |
 [Mixer][mixer] | 76.4 | 59 | 13 | B
 [gMLP][gmlp] | 79.6`\|`81.6 | 20`\|`73 | 5`\|`16 | S \| B
