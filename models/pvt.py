@@ -77,12 +77,10 @@ class Block(nn.Module):
 
 
 class OverlapPatchEmbed(nn.Module):
-    def __init__(self, img_size=224, patch_size=7, stride=4, in_ch=3, dim=768):
+    def __init__(self, c1=3, c2=64, patch_size=7, stride=4):
         super().__init__()
-        img_size = (img_size, img_size) if isinstance(img_size, int) else img_size
-        self.num_patches = (img_size[0]//patch_size) * (img_size[1]//patch_size)
-        self.proj = nn.Conv2d(in_ch, dim, patch_size, stride, patch_size//2)
-        self.norm = nn.LayerNorm(dim)
+        self.proj = nn.Conv2d(c1, c2, patch_size, stride, patch_size//2)
+        self.norm = nn.LayerNorm(c2)
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.proj(x)
@@ -102,17 +100,17 @@ pvtv2_settings = {
 
 
 class PVTv2(nn.Module):
-    def __init__(self, model_name: str = 'B1', pretrained: str = None, num_classes: int = 1000, image_size: int = 224) -> None:
+    def __init__(self, model_name: str = 'B1', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
         assert model_name in pvtv2_settings.keys(), f"PVTv2 model name should be in {list(pvtv2_settings.keys())}"
         depths = pvtv2_settings[model_name]
         embed_dims = [64, 128, 320, 512]
 
         # patch_embed
-        self.patch_embed1 = OverlapPatchEmbed(image_size, 7, 4, 3, embed_dims[0])
-        self.patch_embed2 = OverlapPatchEmbed(image_size//4, 3, 2, embed_dims[0], embed_dims[1])
-        self.patch_embed3 = OverlapPatchEmbed(image_size//8, 3, 2, embed_dims[1], embed_dims[2])
-        self.patch_embed4 = OverlapPatchEmbed(image_size//16, 3, 2, embed_dims[2], embed_dims[3])
+        self.patch_embed1 = OverlapPatchEmbed(3, embed_dims[0], 7, 4)
+        self.patch_embed2 = OverlapPatchEmbed(embed_dims[0], embed_dims[1], 3, 2)
+        self.patch_embed3 = OverlapPatchEmbed(embed_dims[1], embed_dims[2], 3, 2)
+        self.patch_embed4 = OverlapPatchEmbed(embed_dims[2], embed_dims[3], 3, 2)
         
         # transformer encoder
         self.block1 = nn.ModuleList([
@@ -195,7 +193,7 @@ class PVTv2(nn.Module):
 
 
 if __name__ == '__main__':
-    model = PVTv2('B2', 'checkpoints/pvtv2/pvt_v2_b2.pth', image_size=224)
+    model = PVTv2('B2', 'checkpoints/pvtv2/pvt_v2_b2.pth')
     x = torch.zeros(1, 3, 224, 224)
     y = model(x)
     print(y.shape)

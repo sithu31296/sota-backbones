@@ -45,6 +45,9 @@
 [pvt3]: https://drive.google.com/file/d/1PzTobv3pu5R3nb3V3lF6_DVnRDBtSmmS/view?usp=sharing
 [pvt4]: https://drive.google.com/file/d/1LW-0CFHulqeIxV2cai45t-FyLNKGc5l0/view?usp=sharing
 [pvt5]: https://drive.google.com/file/d/1TKQIdpOFoFs9H6aApUNJKDUK95l_gWy0/view?usp=sharing
+[crosst]: https://drive.google.com/file/d/1YSkU9enn-ITyrbxLH13zNcBYvWSEidfq/view?usp=sharing
+[crosss]: https://drive.google.com/file/d/1RAkigsgr33va0RZ85S2Shs2BhXYcS6U8/view?usp=sharing
+[crossb]: https://drive.google.com/file/d/1bK8biVCi17nz_nkt7rBfio_kywUpllSU/view?usp=sharing
 [resmlps12]: https://dl.fbaipublicfiles.com/deit/resmlp_12_dist.pth
 [resmlps24]: https://dl.fbaipublicfiles.com/deit/resmlp_24_dist.pth
 [resmlps36]: https://dl.fbaipublicfiles.com/deit/resmlp_36_dist.pth
@@ -70,7 +73,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 [PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.1`\|`83.6`\|`83.8 | 14`\|`25`\|`45`\|`63`\|`82 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][pvt1]\|[B2][pvt2]\|[B3][pvt3]\|[B4][pvt4]\|[B5][pvt5]
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [H-T][gfnett]\|[H-S][gfnets]\|[H-B][gfnetb]
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
-[CrossFormer][crossformer] | 81.5`\|`82.5`\|`83.4`\|`84.0 | 28`\|`31`\|`52`\|`92 | 3`\|`5`\|`9`\|`16 | T\|S\|B\|L
+[CrossFormer][crossformer] | 81.5`\|`82.5`\|`83.4`\|`84.0 | 28`\|`31`\|`52`\|`92 | 3`\|`5`\|`9`\|`16 | [T][crosst]\|[S][crosss]\|[B][crossb]\|L
 [ViL-LS][lstransformer] | 83.8`\|`84.1 | 40`\|`56 | 9`\|`13 | M\|B
  | | | | |
 [Mixer][mixer] | 76.4 | 59 | 13 | B
@@ -98,6 +101,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 * CaiT and XCiT models use knowledge distillation to improve the accuracy.
 * LV-ViT and VOLO models use additional token labelling method during training to improve the accuracy.
 * XCiT model has a linear complexity to number of patches. So, this model can scale to high resolution inputs due to cheaper compute requirement and better adaptability to higher resolution at test time.
+* Image Size is not required in XCiT, PVTv2, ViP and CycleMLP.
 
 </details>
 

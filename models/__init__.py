@@ -17,6 +17,7 @@ from .cswin import CSWin
 from .volo import VOLO
 from .gfnet import GFNet
 from .pvt import PVTv2
+from .crossformer import CrossFormer
 
 __all__ = {
     "hrnet": HRNet,
@@ -33,6 +34,7 @@ __all__ = {
     "volo": VOLO,
     "gfnet": GFNet,
     "pvtv2": PVTv2,
+    "crossformer": CrossFormer,
 
     "mixer": MLPMixer,
     "resmlp": ResMLP,

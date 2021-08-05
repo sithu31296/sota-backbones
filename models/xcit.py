@@ -50,10 +50,8 @@ class Conv3x3(nn.Sequential):
 class ConvPatchEmbed(nn.Module):
     """Image to Patch Embedding using multiple convolutional layers
     """
-    def __init__(self, img_size=224, patch_size=8, embed_dim=768):
+    def __init__(self, embed_dim=768):
         super().__init__()
-        img_size = (img_size, img_size) if isinstance(img_size, int) else img_size
-        self.num_patches = (img_size[0] // patch_size) * (img_size[1] // patch_size)
         self.proj = nn.Sequential(
             Conv3x3(3, embed_dim // 4, 2),
             nn.GELU(),
@@ -64,10 +62,10 @@ class ConvPatchEmbed(nn.Module):
 
     def forward(self, x: Tensor):
         x = self.proj(x)
-        Hp, Wp = x.shape[2], x.shape[3]
+        _, _, H, W = x.shape
         x = x.flatten(2).transpose(1, 2)
 
-        return x, (Hp, Wp)
+        return x, (H, W)
 
 
 class LPI(nn.Module):
@@ -197,27 +195,27 @@ class XCABlock(nn.Module):
 
 
 xcit_settings = {
-    'T24': [8, 24, 192, 4],     #[patch_size, layers, embed dim, heads]
-    'S24': [8, 24, 384, 8],
-    'M24': [8, 24, 512, 8],
-    'L24': [8, 24, 768, 16]
+    'T24': [192, 4],     #[embed dim, heads]
+    'S24': [384, 8],
+    'M24': [512, 8],
+    'L24': [768, 16]
 }
 
 
 class XciT(nn.Module):
-    def __init__(self, model_name: str = 'S24', pretrained: str = None, num_classes: int = 1000, image_size: int = 224) -> None:
+    def __init__(self, model_name: str = 'S24', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
         assert model_name in xcit_settings.keys(), f"XciT model name should be in {list(xcit_settings.keys())}"
-        patch_size, layers, embed_dim, heads = xcit_settings[model_name]
+        embed_dim, heads = xcit_settings[model_name]
         
-        self.patch_embed = ConvPatchEmbed(image_size, patch_size, embed_dim)
+        self.patch_embed = ConvPatchEmbed(embed_dim)
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))
 
         self.pos_embeder = PositionalEncodingFourier(dim=embed_dim)
 
         self.blocks = nn.ModuleList([
             XCABlock(embed_dim, heads)
-        for _ in range(layers)])
+        for _ in range(24)])
 
         self.cls_attn_blocks = nn.ModuleList([
             ClassAttentionBlock(embed_dim, heads)
@@ -252,7 +250,7 @@ class XciT(nn.Module):
 
 
     def forward(self, x):
-        B, C, H, W = x.shape
+        B = x.shape[0]
         x, (Hp, Wp) = self.patch_embed(x)   
         pos_encoding = self.pos_embeder(B, Hp, Wp).reshape(B, -1, x.shape[1]).permute(0, 2, 1)  
         x = x + pos_encoding
