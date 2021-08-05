@@ -7,7 +7,7 @@ from tabulate import tabulate
 from torch.nn import functional as F
 from torch.nn.parallel import DistributedDataParallel as DDP
 from pathlib import Path
-from torch.optim import SGD
+from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from torch.cuda.amp import GradScaler, autocast
 from torch.utils.tensorboard import SummaryWriter
@@ -17,13 +17,14 @@ sys.path.insert(0, '.')
 from datasets import get_dataset, get_sampler
 from datasets.transforms import get_transforms
 from models import get_model
-from utils.utils import fix_seeds, time_synchronized, setup_cudnn, setup_ddp
-from utils import get_loss, get_scheduler
+from utils.utils import fix_seeds, time_sync, setup_cudnn, setup_ddp
+from utils.schedulers import get_scheduler
+from utils.losses import get_loss
 from val import evaluate
 
 
 def main(cfg):
-    start = time_synchronized()
+    start = time_sync()
     save_dir = Path(cfg['SAVE_DIR'])
     if not save_dir.exists(): save_dir.mkdir()
 
@@ -64,7 +65,7 @@ def main(cfg):
 
     # loss function, optimizer, scheduler, AMP scaler, tensorboard writer
     loss_fn = get_loss(cfg)
-    optimizer = SGD(model.parameters(), lr=cfg['TRAIN']['LR'])
+    optimizer = AdamW(model.parameters(), cfg['TRAIN']['LR'], betas=(0.9, 0.999), eps=1e-8, weight_decay=cfg['TRAIN']['WEIGHT_DECAY'])
     scheduler = get_scheduler(cfg, optimizer)
     scaler = GradScaler(enabled=cfg['TRAIN']['AMP'])
     writer = SummaryWriter(save_dir / 'logs')
@@ -143,7 +144,7 @@ def main(cfg):
         _, teacher_top1_acc, teacher_top5_acc = evaluate(val_dataloader, teacher_model, device)
         table.append([f"{cfg['KD']['TEACHER']['NAME']}-{cfg['KD']['TEACHER']['SUB_NAME']}", teacher_top1_acc, teacher_top5_acc])
         
-    end = time.gmtime(time_synchronized() - start)
+    end = time.gmtime(time_sync() - start)
     total_time = time.strftime("%H:%M:%S", end)
 
     print(tabulate(table, headers=['Top-1 Accuracy', 'Top-5 Accuracy'], numalign='right'))

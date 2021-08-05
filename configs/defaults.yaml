@@ -17,7 +17,7 @@ TRAIN:
   BATCH_SIZE: 8                         # batch size used to train
   WORKERS: 8                            # number of workers used in training dataloader
   LR: 0.01                              # initial learning rate used in optimizer
-  DECAY: 0.0005                         # decay rate use in optimizer
+  WEIGHT_DECAY: 0.05                    # decay rate use in optimizer
   LOSS: label_smooth                    # loss function name (vanilla, label_smooth, soft_target)
   SCHEDULER:
     NAME: steplr
@@ -35,7 +35,7 @@ EVAL:
   
 TEST:
   MODE: image                           # inference mode (image)
-  FILE: 'test_imgs'                     # filename or foldername (image mode)
+  FILE: 'assests/dog.jpg'               # filename or foldername (image mode)
   IMAGE_SIZE: [224, 224]                # inference image size
 
 KD:

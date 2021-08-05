@@ -47,3 +47,25 @@ class VanillaKD(nn.Module):
         loss = self.kd_loss(self.log_softmax(pred_student / self.temp), self.softmax(pred_teacher / self.temp)) * (self.alpha * self.temp * self.temp)
         loss += self.entropy_loss(pred_student, target) * (1. - self.alpha)
         return loss
+
+
+losses = {
+    'vanilla': CrossEntropyLoss,
+    'label_smooth': LabelSmoothCrossEntropy,
+    'soft_target': SoftTargetCrossEntropy
+}
+
+kds = {
+    'vanilla': VanillaKD,
+}
+
+
+def get_loss(cfg):
+    if cfg['KD']['ENABLE']:
+        method = cfg['KD']['METHOD']
+        assert method in kds.keys(), f"Unavailable knowledge distillation method >> {method}.\nList of available methods: {list(kds.keys())}"
+        return kds[method](cfg['KD']['ALPHA'], cfg['KD']['TEMP'])
+    else:
+        loss_fn_name = cfg['TRAIN']['LOSS']
+        assert loss_fn_name in losses.keys(), f"Unavailable loss function name >> {loss_fn_name}.\nList of available loss functions: {list(losses.keys())}"
+        return losses[loss_fn_name]

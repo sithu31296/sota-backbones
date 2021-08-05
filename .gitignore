@@ -121,7 +121,6 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
-assests/
 tools/flask_deploy.py
 # Flask stuff:
 instance/

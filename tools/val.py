@@ -30,8 +30,8 @@ def evaluate(dataloader, model, device, loss_fn = None):
             test_loss += loss_fn(pred, lbl).item()
 
         acc1, acc5 = accuracy(pred, lbl, topk=(1, 5))
-        top1_acc += acc1
-        top5_acc += acc5
+        top1_acc += acc1 * img.shape[0]
+        top5_acc += acc5 * img.shape[0]
         
     test_loss /= len(dataloader.dataset)
     top1_acc /= len(dataloader.dataset)

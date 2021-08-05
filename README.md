@@ -1,5 +1,7 @@
 # <div align="center">Image Classification</div>
-<p align="center"> A collection of SOTA Image Classification Models implemented in PyTorch.  </p>
+<p align="center"> SOTA Image Classification Models in PyTorch</p>
+
+![visiontransformer](assests/vit_banner.png)
 
 ## <div align="center">Model Zoo</div>
 
@@ -110,7 +112,36 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 
 </details>
 
+
 ## <div align="center">Usage</div>
+
+<details>
+  <summary>Dataset Preparation <small>(click to expand)</small></summary>
+
+For standard ImageNet dataset, the dataset structure should look like this:
+
+```
+imagenet
+|__ train
+    |__ class1
+        |__ img1.jpg
+        |__ ...
+    |__ class2
+        |__ img10.jpg
+        |__ ...
+|__ val
+    |__ class1
+        |__ img4.jpg
+        |__ ...
+    |__ class2
+        |__ img12.jpg
+        |__ ...
+```
+
+You can also use this structure for custom datasets.
+
+
+</details>
 
 <details>
   <summary>Configuration <small>(click to expand)</small></summary>
