@@ -18,6 +18,7 @@ from .volo import VOLO
 from .gfnet import GFNet
 from .pvt import PVTv2
 from .crossformer import CrossFormer
+from .swin import Swin
 
 __all__ = {
     "hrnet": HRNet,
@@ -35,6 +36,7 @@ __all__ = {
     "gfnet": GFNet,
     "pvtv2": PVTv2,
     "crossformer": CrossFormer,
+    "swin": Swin,
 
     "mixer": MLPMixer,
     "resmlp": ResMLP,
