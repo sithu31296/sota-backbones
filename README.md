@@ -1,5 +1,4 @@
-# <div align="center">Image Classification</div>
-<p align="center"> SOTA Image Classification Models in PyTorch</p>
+# <div align="center">SOTA Image Classification Models in PyTorch</div>
 
 ![visiontransformer](assests/vit_banner.png)
 
