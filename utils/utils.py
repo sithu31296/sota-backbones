@@ -44,19 +44,22 @@ def test_model_latency(model: nn.Module, inputs: torch.Tensor, use_cuda: bool = 
         _ = model(inputs)
     return prof.self_cpu_time_total / 1000  # ms
 
+def count_parameters(model: nn.Module) -> float:
+    return sum(p.numel() for p in model.parameters() if p.requires_grad) / 1e6      # in M
+
 def setup_ddp() -> None:
     if 'RANK' in os.environ and 'WORLD_SIZE' in os.environ:
         rank = int(os.environ['RANK'])
         world_size = int(os.environ['WORLD_SIZE'])
         gpu = int(os.environ(['LOCAL_RANK']))
     else:
-        rank, world_size, gpu = -1, -1, 0
+        rank, world_size, gpu = 0, 1, 0
 
     torch.cuda.set_device(gpu)
     dist.init_process_group('nccl', init_method="env://",world_size=world_size, rank=rank)
     dist.barrier()
 
-    return rank, world_size, gpu
+    return gpu
 
 def cleanup_ddp():
     dist.destroy_process_group()

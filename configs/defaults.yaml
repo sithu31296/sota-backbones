@@ -16,9 +16,11 @@ TRAIN:
   EPOCHS: 100                           # number of epochs to train
   BATCH_SIZE: 8                         # batch size used to train
   WORKERS: 8                            # number of workers used in training dataloader
-  LR: 0.01                              # initial learning rate used in optimizer
-  WEIGHT_DECAY: 0.05                    # decay rate use in optimizer
   LOSS: label_smooth                    # loss function name (vanilla, label_smooth, soft_target)
+  OPTIMIZER:
+    NAME: adamw
+    LR: 0.01                              # initial learning rate used in optimizer
+    WEIGHT_DECAY: 0.05                    # decay rate use in optimizer
   SCHEDULER:
     NAME: steplr
     PARAMS: (30, 0.1)

@@ -10,7 +10,7 @@ sys.path.insert(0, '.')
 from models import get_model
 from datasets import get_dataset
 from datasets.transforms import get_transforms
-from utils.utils import fix_seeds, setup_cudnn
+from utils.utils import setup_cudnn
 from utils.metrics import accuracy
 
 
@@ -68,6 +68,5 @@ if __name__ == '__main__':
     with open(args.cfg) as f:
         cfg = yaml.load(f, Loader=yaml.FullLoader)
 
-    fix_seeds(cfg['TRAIN']['SEED'])
     setup_cudnn()
     main(cfg)

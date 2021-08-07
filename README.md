@@ -20,6 +20,7 @@
 [pvtv2]: https://arxiv.org/abs/2106.13797
 [crossformer]: https://arxiv.org/abs/2108.00154
 [lstransformer]: https://arxiv.org/abs/2107.02192
+[shuffle]: https://arxiv.org/abs/2106.03650
 
 [mixer]: https://arxiv.org/abs/2105.01601
 [resmlp]: https://arxiv.org/abs/2105.03404
@@ -53,6 +54,9 @@
 [crosst]: https://drive.google.com/file/d/1YSkU9enn-ITyrbxLH13zNcBYvWSEidfq/view?usp=sharing
 [crosss]: https://drive.google.com/file/d/1RAkigsgr33va0RZ85S2Shs2BhXYcS6U8/view?usp=sharing
 [crossb]: https://drive.google.com/file/d/1bK8biVCi17nz_nkt7rBfio_kywUpllSU/view?usp=sharing
+[shufflet]: https://drive.google.com/drive/folders/1goDJtcnxgBAcHhZnNwrgOlG_WBftpmOS?usp=sharing
+[shuffles]: https://drive.google.com/drive/folders/1GUBBQyDldY145vDiK-BHqivmpj3K6HK2?usp=sharing
+[shuffleb]: https://drive.google.com/drive/folders/1x0biaJRdN4nxLmp_3lQcA_6hO_sDBoUM?usp=sharing
 [resmlps12]: https://dl.fbaipublicfiles.com/deit/resmlp_12_dist.pth
 [resmlps24]: https://dl.fbaipublicfiles.com/deit/resmlp_24_dist.pth
 [resmlps36]: https://dl.fbaipublicfiles.com/deit/resmlp_36_dist.pth
@@ -80,6 +84,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [H-T][gfnett]\|[H-S][gfnets]\|[H-B][gfnetb]
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
 [CrossFormer][crossformer] | 81.5`\|`82.5`\|`83.4`\|`84.0 | 28`\|`31`\|`52`\|`92 | 3`\|`5`\|`9`\|`16 | [T][crosst]\|[S][crosss]\|[B][crossb]\|L
+[Shuffle][shuffle] | 82.4`\|`83.6`\|`84.0 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][shufflet]\|[S][shuffles]\|[B][shuffleb]
 [LongShort][lstransformer] | 83.8`\|`84.1 | 40`\|`56 | 9`\|`13 | M\|B
  | | | | |
 [Mixer][mixer] | 76.4 | 59 | 13 | B

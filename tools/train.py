@@ -20,22 +20,21 @@ from models import get_model
 from utils.utils import fix_seeds, time_sync, setup_cudnn, setup_ddp
 from utils.schedulers import get_scheduler
 from utils.losses import get_loss
+from utils.optimizers import get_optimizer
 from val import evaluate
 
 
 def main(cfg):
     start = time_sync()
     save_dir = Path(cfg['SAVE_DIR'])
-    if not save_dir.exists(): save_dir.mkdir()
+    save_dir.mkdir(exist_ok=True)
 
     device = torch.device(cfg['DEVICE'])
     kd_enable = cfg['KD']['ENABLE']
     ddp_enable = cfg['TRAIN']['DDP']['ENABLE']
     epochs = cfg['TRAIN']['EPOCHS']
     best_top1_acc, best_top5_acc = 0.0, 0.0
-
-    if ddp_enable:
-        rank, world_size, gpu = setup_ddp()
+    gpu = setup_ddp()
 
     # augmentations
     train_transform, val_transform = get_transforms(cfg)
@@ -65,21 +64,17 @@ def main(cfg):
 
     # loss function, optimizer, scheduler, AMP scaler, tensorboard writer
     loss_fn = get_loss(cfg)
-    optimizer = AdamW(model.parameters(), cfg['TRAIN']['LR'], betas=(0.9, 0.999), eps=1e-8, weight_decay=cfg['TRAIN']['WEIGHT_DECAY'])
+    optimizer = get_optimizer(model, cfg['TRAIN']['OPTIMIZER']['NAME'], cfg['TRAIN']['OPTIMIZER']['LR'], cfg['TRAIN']['OPTIMIZER']['WEIGHT_DECAY'])
     scheduler = get_scheduler(cfg, optimizer)
     scaler = GradScaler(enabled=cfg['TRAIN']['AMP'])
     writer = SummaryWriter(save_dir / 'logs')
-
     iters_per_epoch = int(len(train_dataset)) / cfg['TRAIN']['BATCH_SIZE']
 
     for epoch in range(1, epochs+1):
         model.train()
         
-        if ddp_enable:
-            train_sampler.set_epoch(epoch)
-
+        if ddp_enable: train_sampler.set_epoch(epoch)
         train_loss = 0.0
-
         pbar = tqdm(enumerate(train_dataloader), total=iters_per_epoch, desc=f"Epoch: [{epoch}/{epochs}] Iter: [{0}/{iters_per_epoch}] LR: {cfg['TRAIN']['LR']:.8f} Loss: {0:.8f}")
         
         for iter, (img, lbl) in pbar:
@@ -127,11 +122,8 @@ def main(cfg):
             if top1_acc > best_top1_acc:
                 best_top1_acc = top1_acc
                 best_top5_acc = top5_acc
-                if ddp_enable:
-                    torch.save(model.module.state_dict(), save_dir / f"{cfg['MODEL']['NAME']}{cfg['MODEL']['SUB_NAME']}.pth")
-                else:
-                    torch.save(model.state_dict(), save_dir / f"{cfg['MODEL']['NAME']}{cfg['MODEL']['SUB_NAME']}.pth")
-                print(f"Best Top-1 Accuracy: {best_top1_acc:>0.1f} Best Top-5 Accuracy: {best_top5_acc:>0.5f}")
+                torch.save(model.module.state_dict() if ddp_enable else model.state_dict(), save_dir / f"{cfg['MODEL']['NAME']}{cfg['MODEL']['SUB_NAME']}.pth")
+            print(f"Best Top-1 Accuracy: {best_top1_acc:>0.1f} Best Top-5 Accuracy: {best_top5_acc:>0.5f}")
         
     writer.close()
     pbar.close()
