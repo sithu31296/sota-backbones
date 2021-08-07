@@ -68,4 +68,4 @@ def get_loss(cfg):
     else:
         loss_fn_name = cfg['TRAIN']['LOSS']
         assert loss_fn_name in losses.keys(), f"Unavailable loss function name >> {loss_fn_name}.\nList of available loss functions: {list(losses.keys())}"
-        return losses[loss_fn_name]
+        return losses[loss_fn_name]()
