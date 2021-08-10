@@ -9,7 +9,6 @@ MODEL:
 DATASET:
   NAME: imagenet                        # dataset name
   ROOT: '../datasets/imagenet'          # dataset root path
-  NUM_CLASSES: 1000
 
 TRAIN:
   IMAGE_SIZE: [224, 224]                # image size used in training the model

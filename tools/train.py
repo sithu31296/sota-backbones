@@ -50,7 +50,7 @@ def main(cfg):
     val_dataloader = DataLoader(val_dataset, batch_size=cfg['EVAL']['BATCH_SIZE'], num_workers=cfg['EVAL']['WORKERS'], pin_memory=True, sampler=val_sampler)
     
     # training model
-    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], None, cfg['DATASET']['NUM_CLASSES'], cfg['TRAIN']['IMAGE_SIZE'][0])
+    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], None, len(train_dataset.CLASSES), cfg['TRAIN']['IMAGE_SIZE'][0])
     model = model.to(device)
 
     if ddp_enable:

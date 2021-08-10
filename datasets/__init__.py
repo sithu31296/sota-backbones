@@ -2,16 +2,16 @@ from .imagenet import ImageNet
 from .samplers import *
 from torch import distributed as dist
 
-ds = {
+__all__ = {
     "imagenet": ImageNet
 }
 
 
 def get_dataset(cfg, train_transform=None, val_transform=None):
     dataset_name = cfg['DATASET']['NAME']
-    assert dataset_name in ds.keys(), f"Unavailable dataset name >> {dataset_name}.\nList of available datasets: {list(ds.keys())}"
-    trainset = ds[dataset_name](cfg['DATASET']['ROOT'], split='train', transform=train_transform)
-    valset = ds[dataset_name](cfg['DATASET']['ROOT'], split='val', transform=val_transform)
+    assert dataset_name in __all__.keys(), f"Unavailable dataset name >> {dataset_name}.\nList of available datasets: {list(__all__.keys())}"
+    trainset = __all__[dataset_name](cfg['DATASET']['ROOT'], split='train', transform=train_transform)
+    valset = __all__[dataset_name](cfg['DATASET']['ROOT'], split='val', transform=val_transform)
     return trainset, valset
 
 

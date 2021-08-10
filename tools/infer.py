@@ -9,14 +9,15 @@ from torchvision import transforms as T
 import sys
 sys.path.insert(0, '.')
 from models import get_model
-from datasets.imagenet import CLASSES
-from utils.utils import time_synchronized
+from datasets import __all__
+from utils.utils import time_sync
 
 
 class PTInfer:
     def __init__(self, cfg) -> None:
         self.device = torch.device(cfg['DEVICE'])
-        self.model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], cfg['MODEL_PATH'], cfg['DATASET']['NUM_CLASSES'], cfg['TEST']['IMAGE_SIZE'][0])
+        self.labels = __all__[cfg['DATASET']['NAME']]
+        self.model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], cfg['MODEL_PATH'], len(self.labels), cfg['TEST']['IMAGE_SIZE'][0])
         self.model = self.model.to(self.device)
         self.model.eval()
 
@@ -39,14 +40,14 @@ class PTInfer:
 
     def postprocess(self, prob: Tensor) -> str:
         cls_id = torch.argmax(prob)
-        return CLASSES[cls_id]
+        return self.labels[cls_id]
 
     @torch.no_grad()
     def predict(self, image: Tensor) -> str:
         image = self.preprocess(image)
-        start = time_synchronized()
+        start = time_sync()
         pred = self.model(image)
-        end = time_synchronized()
+        end = time_sync()
         print(f"PyTorch Model Inference Time: {(end-start)*1000:.2f}ms")
 
         cls_name = self.postprocess(pred)

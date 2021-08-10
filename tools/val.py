@@ -43,12 +43,12 @@ def evaluate(dataloader, model, device, loss_fn = None):
 def main(cfg):
     device = torch.device(cfg['DEVICE'])
 
-    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], cfg['MODEL_PATH'], cfg['DATASET']['NUM_CLASSES'], cfg['EVAL']['IMAGE_SIZE'][0])
-    model = model.to(device)
-
     _, val_transform = get_transforms(cfg)
     _, val_dataset = get_dataset(cfg, val_transform=val_transform)
     val_dataloader = DataLoader(val_dataset, batch_size=cfg['EVAL']['BATCH_SIZE'], num_workers=cfg['EVAL']['WORKERS'], pin_memory=True)
+
+    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], cfg['MODEL_PATH'], len(val_dataset.CLASSES), cfg['EVAL']['IMAGE_SIZE'][0])
+    model = model.to(device)
 
     _, top1_acc, top5_acc = evaluate(val_dataloader, model, device)
 
