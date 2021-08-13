@@ -85,15 +85,6 @@ Effnetv2 | 83.9`\|`85.1`\|`85.7 | 24`\|`55`\|`121 | - | S\|M\|L
 
 </details>
 
-<details>
-  <summary>Model Summary <small>(click to expand)</small></summary>
-
-* CNN models' accuracy = 83~86
-* Transformer models' accuracy = 83~86
-* MLP models' accuracy = 81~83
-
-</details>
-
 
 ## <div align="center">Usage</div>
 
