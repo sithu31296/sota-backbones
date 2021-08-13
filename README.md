@@ -15,6 +15,7 @@
 [lstransformer]: https://arxiv.org/abs/2107.02192
 [shuffle]: https://arxiv.org/abs/2106.03650
 [conformer]: https://arxiv.org/abs/2105.03889v1
+[rest]: https://arxiv.org/abs/2105.13677v3
 
 [vip]: https://arxiv.org/abs/2106.12368v1
 [cyclemlp]: https://arxiv.org/abs/2107.10224
@@ -29,6 +30,7 @@
 [volod2]: https://github.com/sail-sg/volo/releases/download/volo_1/d2_224_85.2.pth.tar
 [volod3]: https://github.com/sail-sg/volo/releases/download/volo_1/d3_224_85.4.pth.tar
 [volod4]: https://github.com/sail-sg/volo/releases/download/volo_1/d4_224_85.7.pth.tar
+[restm]: https://drive.google.com/drive/folders/1H6QUZsKYbU6LECtxzGHKqEeGbx1E8uQ9
 [gfnett]: https://drive.google.com/file/d/1Nrq5sfHD9RklCMl6WkcVrAWI5vSVzwSm/view?usp=sharing
 [gfnets]: https://drive.google.com/file/d/1w4d7o1LTBjmSkb5NKzgXBBiwdBOlwiie/view?usp=sharing
 [gfnetb]: https://drive.google.com/file/d/1F900_-yPH7GFYfTt60xn4tu5a926DYL0/view?usp=sharing
@@ -55,23 +57,26 @@
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <sup> Variants & Weights
 --- | --- | --- | --- | --- 
-Mobilenet | 72.0`\|`75.2 | 3.4`\|`5.4 | - | v2\|v3L
-Effnetv2 | 83.9`\|`85.1`\|`85.7 | 24`\|`55`\|`121 | - | S \| M \| L
- | | | | |
+Mobilenet | 72.0`\|`75.2 | 3`\|`5 | - | v2\|v3L
+Effnetv2 | 83.9`\|`85.1`\|`85.7 | 24`\|`55`\|`121 | - | S\|M\|L
+||
 [DeiT][deit]* | 74.5`\|`81.2`\|`83.4 | 6`\|`22`\|`87 | -`\|`5`\|`18 | [T\|S\|B][deitw]
 [CaiT][cait]* (384) | 85.1`\|`85.4 | 47`\|`68 | 32`\|`48 | [S24\|S36][caitw]
 [XCiT][xcit]* | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`26`\|`84`\|`189 | - | [T\|S\|M\|L][xcitw]
 [VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]\|[D4][volod4]
+||
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [H-T][gfnett]\|[H-S][gfnets]\|[H-B][gfnetb]
+[ResT][rest] | 79.6`\|`81.6`\|`83.6 | 14`\|`30`\|`52 | 2`\|`4`\|`8 | [S][restm]\|[B][restm]\|[L][restm]
 [PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.1`\|`83.6`\|`83.8 | 14`\|`25`\|`45`\|`63`\|`82 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][pvt1]\|[B2][pvt2]\|[B3][pvt3]\|[B4][pvt4]\|[B5][pvt5]
+||
 [CrossFormer][crossformer] | 81.5`\|`82.5`\|`83.4`\|`84.0 | 28`\|`31`\|`52`\|`92 | 3`\|`5`\|`9`\|`16 | [T][crosst]\|[S][crosss]\|[B][crossb]\|L
 [Shuffle][shuffle] | 82.4`\|`83.6`\|`84.0 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][shufflet]\|[S][shuffles]\|[B][shuffleb]
 [Conformer][conformer] | 81.3`\|`83.4`\|`84.1 | 24`\|`38`\|`83 | 5`\|`11`\|`23 | [T][conformert]\|[S][conformers]\|[B][conformerb]
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
 [LongShort][lstransformer] | 83.8`\|`84.1 | 40`\|`56 | 9`\|`13 | M\|B
- | | | | |
+||
 [ViP][vip] | 81.5`\|`82.7`\|`83.2 | 25`\|`55`\|`88 | 7`\|`16`\|`24 | [S\|M\|L][vipw]
-[CycleMLP][cyclemlp] | 78.9`\|`81.6`\|`82.4`\|`83.0`\|`83.2 | 15`\|`27`\|`38`\|`52`\|`76 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][cycleb1] \| [B2][cycleb2] \| [B3][cycleb3] \| [B4][cycleb4] \| [B5][cycleb5]
+[CycleMLP][cyclemlp] | 78.9`\|`81.6`\|`82.4`\|`83.0`\|`83.2 | 15`\|`27`\|`38`\|`52`\|`76 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][cycleb1]\|[B2][cycleb2]\|[B3][cycleb3]\|[B4][cycleb4]\|[B5][cycleb5]
 
 <details>
   <summary>Table Notes <small>(click to expand)</small></summary>
