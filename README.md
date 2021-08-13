@@ -4,14 +4,7 @@
 
 ## <div align="center">Model Zoo</div>
 
-[mobilenetv2]: https://arxiv.org/abs/1905.02244v5
-[mobilenetv3]: https://arxiv.org/abs/1801.04381v4
-[efficientv2]: https://arxiv.org/abs/2104.00298v3
-
-[vit]: https://arxiv.org/abs/2010.11929v2
 [deit]: https://arxiv.org/abs/2012.12877
-[swin]: https://arxiv.org/abs/2103.14030
-[lvvit]: https://arxiv.org/abs/2104.10858v2
 [cait]: https://arxiv.org/abs/2103.17239
 [xcit]: https://arxiv.org/abs/2106.09681
 [cswin]: https://arxiv.org/abs/2107.00652v2
@@ -21,18 +14,14 @@
 [crossformer]: https://arxiv.org/abs/2108.00154
 [lstransformer]: https://arxiv.org/abs/2107.02192
 [shuffle]: https://arxiv.org/abs/2106.03650
+[conformer]: https://arxiv.org/abs/2105.03889v1
 
-[mixer]: https://arxiv.org/abs/2105.01601
-[resmlp]: https://arxiv.org/abs/2105.03404
-[gmlp]: https://arxiv.org/abs/2105.08050v2
 [vip]: https://arxiv.org/abs/2106.12368v1
 [cyclemlp]: https://arxiv.org/abs/2107.10224
 
 [mobilenetv2w]: https://download.pytorch.org/models/mobilenet_v2-b0353104.pth
 [mobilenetv3w]: https://download.pytorch.org/models/mobilenet_v3_large-8738ca79.pth
 [deitw]: https://drive.google.com/drive/folders/1nhj-RSAHcpN3e5G0eryKBcnUwlyE_YYv?usp=sharing
-[lvvits]: https://github.com/zihangJiang/TokenLabeling/releases/download/1.0/lvvit_s-26M-224-83.3.pth.tar
-[lvvitm]: https://github.com/zihangJiang/TokenLabeling/releases/download/1.0/lvvit_m-56M-224-84.0.pth.tar
 [caitw]: https://drive.google.com/drive/folders/1YrbN3zdz1jykz5D-CY6ND7A7schH8E19?usp=sharing
 [xcitw]: https://drive.google.com/drive/folders/10lvfB8sXdRuZve5xn6pebJN6TT2GaYhP?usp=sharing
 [cswinw]: https://drive.google.com/drive/folders/1kVTZwgJ0uCTynUa2vOJ5SUgL2R7PyNLa?usp=sharing
@@ -40,9 +29,6 @@
 [volod2]: https://github.com/sail-sg/volo/releases/download/volo_1/d2_224_85.2.pth.tar
 [volod3]: https://github.com/sail-sg/volo/releases/download/volo_1/d3_224_85.4.pth.tar
 [volod4]: https://github.com/sail-sg/volo/releases/download/volo_1/d4_224_85.7.pth.tar
-[swint]: https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth
-[swins]: https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_small_patch4_window7_224.pth
-[swinb]: https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224.pth
 [gfnett]: https://drive.google.com/file/d/1Nrq5sfHD9RklCMl6WkcVrAWI5vSVzwSm/view?usp=sharing
 [gfnets]: https://drive.google.com/file/d/1w4d7o1LTBjmSkb5NKzgXBBiwdBOlwiie/view?usp=sharing
 [gfnetb]: https://drive.google.com/file/d/1F900_-yPH7GFYfTt60xn4tu5a926DYL0/view?usp=sharing
@@ -57,39 +43,33 @@
 [shufflet]: https://drive.google.com/drive/folders/1goDJtcnxgBAcHhZnNwrgOlG_WBftpmOS?usp=sharing
 [shuffles]: https://drive.google.com/drive/folders/1GUBBQyDldY145vDiK-BHqivmpj3K6HK2?usp=sharing
 [shuffleb]: https://drive.google.com/drive/folders/1x0biaJRdN4nxLmp_3lQcA_6hO_sDBoUM?usp=sharing
-[resmlps12]: https://dl.fbaipublicfiles.com/deit/resmlp_12_dist.pth
-[resmlps24]: https://dl.fbaipublicfiles.com/deit/resmlp_24_dist.pth
-[resmlps36]: https://dl.fbaipublicfiles.com/deit/resmlp_36_dist.pth
 [vipw]: https://drive.google.com/drive/folders/1l2XWrzqeP5n3tIm4O1jkd727j_mVoOf1?usp=sharing
 [cycleb1]: https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B1.pth
 [cycleb2]: https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B2.pth
 [cycleb3]: https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B3.pth
 [cycleb4]: https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B4.pth
 [cycleb5]: https://github.com/ShoufaChen/CycleMLP/releases/download/v0.1/CycleMLP_B5.pth
+[conformert]: https://drive.google.com/file/d/19SxGhKcWOR5oQSxNUWUM2MGYiaWMrF1z/view?usp=sharing
+[conformers]: https://drive.google.com/file/d/1mpOlbLaVxOfEwV4-ha78j_1Ebqzj2B83/view?usp=sharing
+[conformerb]: https://drive.google.com/file/d/1oeQ9LSOGKEUaYGu7WTlUGl3KDsQIi0MA/view?usp=sharing
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <sup> Variants & Weights
 --- | --- | --- | --- | --- 
-[Mobilenetv2][mobilenetv2] | 72.0 | 3.4 | - | [v2][mobilenetv2w]
-[Mobilenetv3][mobilenetv3] | 75.2 | 5.4 | - | [v3][mobilenetv3w]
-[Effnetv2][efficientv2] | 83.9`\|`85.1`\|`85.7 | 24`\|`55`\|`121 | - | S \| M \| L
+Mobilenet | 72.0`\|`75.2 | 3.4`\|`5.4 | - | v2\|v3L
+Effnetv2 | 83.9`\|`85.1`\|`85.7 | 24`\|`55`\|`121 | - | S \| M \| L
  | | | | |
-[ViT][vit] (384) | 77.9 | 86 | 55 | B
 [DeiT][deit]* | 74.5`\|`81.2`\|`83.4 | 6`\|`22`\|`87 | -`\|`5`\|`18 | [T\|S\|B][deitw]
 [CaiT][cait]* (384) | 85.1`\|`85.4 | 47`\|`68 | 32`\|`48 | [S24\|S36][caitw]
 [XCiT][xcit]* | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`26`\|`84`\|`189 | - | [T\|S\|M\|L][xcitw]
-[LV-ViT][lvvit] | 83.3`\|`84.0 | 26`\|`56 | 22`\|`42 | [S][lvvits] \| [M][lvvitm]
 [VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]\|[D4][volod4]
-[Swin][swin] | 81.2`\|`83.2`\|`83.5 | 28`\|`50`\|`88 | 5`\|`9`\|`15 | [T][swint]\|[S][swins]\|[B][swinb]
-[PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.1`\|`83.6`\|`83.8 | 14`\|`25`\|`45`\|`63`\|`82 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][pvt1]\|[B2][pvt2]\|[B3][pvt3]\|[B4][pvt4]\|[B5][pvt5]
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [H-T][gfnett]\|[H-S][gfnets]\|[H-B][gfnetb]
-[CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
+[PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.1`\|`83.6`\|`83.8 | 14`\|`25`\|`45`\|`63`\|`82 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][pvt1]\|[B2][pvt2]\|[B3][pvt3]\|[B4][pvt4]\|[B5][pvt5]
 [CrossFormer][crossformer] | 81.5`\|`82.5`\|`83.4`\|`84.0 | 28`\|`31`\|`52`\|`92 | 3`\|`5`\|`9`\|`16 | [T][crosst]\|[S][crosss]\|[B][crossb]\|L
 [Shuffle][shuffle] | 82.4`\|`83.6`\|`84.0 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][shufflet]\|[S][shuffles]\|[B][shuffleb]
+[Conformer][conformer] | 81.3`\|`83.4`\|`84.1 | 24`\|`38`\|`83 | 5`\|`11`\|`23 | [T][conformert]\|[S][conformers]\|[B][conformerb]
+[CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
 [LongShort][lstransformer] | 83.8`\|`84.1 | 40`\|`56 | 9`\|`13 | M\|B
  | | | | |
-[Mixer][mixer] | 76.4 | 59 | 13 | B
-[gMLP][gmlp] | 79.6`\|`81.6 | 20`\|`73 | 5`\|`16 | S \| B
-[ResMLP][resmlp] | 76.6`\|`79.4`\|`81.0 | 15`\|`30`\|`116 | 3`\|`6`\|`23 | [S12][resmlps12] \| [S24][resmlps24] \| [S36][resmlps36]
 [ViP][vip] | 81.5`\|`82.7`\|`83.2 | 25`\|`55`\|`88 | 7`\|`16`\|`24 | [S\|M\|L][vipw]
 [CycleMLP][cyclemlp] | 78.9`\|`81.6`\|`82.4`\|`83.0`\|`83.2 | 15`\|`27`\|`38`\|`52`\|`76 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][cycleb1] \| [B2][cycleb2] \| [B3][cycleb3] \| [B4][cycleb4] \| [B5][cycleb5]
 
@@ -109,10 +89,6 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 * CNN models' accuracy = 83~86
 * Transformer models' accuracy = 83~86
 * MLP models' accuracy = 81~83
-* CaiT and XCiT models use knowledge distillation to improve the accuracy.
-* LV-ViT and VOLO models use additional token labelling method during training to improve the accuracy.
-* XCiT model has a linear complexity to number of patches. So, this model can scale to high resolution inputs due to cheaper compute requirement and better adaptability to higher resolution at test time.
-* Image Size is not required in XCiT, PVTv2, ViP and CycleMLP.
 
 </details>
 
