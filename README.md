@@ -4,6 +4,7 @@
 
 ## <div align="center">Model Zoo</div>
 
+[efficientv2]: https://arxiv.org/abs/2104.00298
 [cait]: https://arxiv.org/abs/2103.17239
 [xcit]: https://arxiv.org/abs/2106.09681
 [cswin]: https://arxiv.org/abs/2107.00652v2
@@ -54,12 +55,11 @@
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <sup> Variants & Weights
 --- | --- | --- | --- | --- 
-Mobilenet | 72.0`\|`75.2 | 3`\|`5 | - | v2\|v3L
-Effnetv2 | 83.9`\|`85.1`\|`85.7 | 24`\|`55`\|`121 | - | S\|M\|L
+[EfficientNetv2][efficientv2] | 83.9`\|`85.1`\|`85.7 | 22`\|`54`\|`120 | 9`\|`24`\|`53 | S\|M\|L
 ||
-[CaiT][cait]* (384) | 85.1`\|`85.4 | 47`\|`68 | 32`\|`48 | [S24\|S36][caitw]
-[XCiT][xcit]* | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`26`\|`84`\|`189 | - | [T\|S\|M\|L][xcitw]
-[VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]\|[D4][volod4]
+[CaiT][cait]* (384) | 85.1`\|`85.4 | 47`\|`68 | 32`\|`48 | [S24][caitw]\|[S36][caitw]
+[XCiT][xcit]* | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`48`\|`84`\|`189 | 9`\|`36`\|`64`\|`142 | [T24][xcitw]\|[S24][xcitw]\|[M24][xcitw]\|[L24][xcitw]
+[VOLO][volo]^ | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]\|[D4][volod4]
 ||
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [H-T][gfnett]\|[H-S][gfnets]\|[H-B][gfnetb]
 [ResT][rest] | 79.6`\|`81.6`\|`83.6 | 14`\|`30`\|`52 | 2`\|`4`\|`8 | [S][restm]\|[B][restm]\|[L][restm]
@@ -69,19 +69,19 @@ Effnetv2 | 83.9`\|`85.1`\|`85.7 | 24`\|`55`\|`121 | - | S\|M\|L
 [CrossFormer][crossformer] | 81.5`\|`82.5`\|`83.4`\|`84.0 | 28`\|`31`\|`52`\|`92 | 3`\|`5`\|`9`\|`16 | [T][crosst]\|[S][crosss]\|[B][crossb]\|L
 [Shuffle][shuffle] | 82.4`\|`83.6`\|`84.0 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][shufflet]\|[S][shuffles]\|[B][shuffleb]
 [Conformer][conformer] | 81.3`\|`83.4`\|`84.1 | 24`\|`38`\|`83 | 5`\|`11`\|`23 | [T][conformert]\|[S][conformers]\|[B][conformerb]
-[CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T\|S\|B][cswinw]
+[CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T][cswinw]\|[S][cswinw]\|[B][cswinw]
 [LongShort][lstransformer] | 83.8`\|`84.1 | 40`\|`56 | 9`\|`13 | M\|B
 ||
-[ViP][vip] | 81.5`\|`82.7`\|`83.2 | 25`\|`55`\|`88 | 7`\|`16`\|`24 | [S\|M\|L][vipw]
+[ViP][vip] | 81.5`\|`82.7`\|`83.2 | 25`\|`55`\|`88 | 7`\|`16`\|`24 | [S][vipw]\|[M][vipw]\|[L][vipw]
 [CycleMLP][cyclemlp] | 78.9`\|`81.6`\|`82.4`\|`83.0`\|`83.2 | 15`\|`27`\|`38`\|`52`\|`76 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][cycleb1]\|[B2][cycleb2]\|[B3][cycleb3]\|[B4][cycleb4]\|[B5][cycleb5]
 
 <details>
   <summary>Table Notes <small>(click to expand)</small></summary>
 
-* Image size is 224x224, unless otherwise specified.
+* Image size is 224x224, unless otherwise specified. EfficientNetv2 uses progressive learning (image size from 128 to 380).
 * Only models trained on ImageNet1k are compared. 
 * (Parameters > 200M) Models are not included. 
-* `*` models' results are distilled versions.
+* `*` model uses knowledge distillation whereas `^` model uses token labeling.
 
 </details>
 
