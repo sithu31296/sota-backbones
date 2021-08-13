@@ -1,6 +1,6 @@
 import torch
 from torch import nn, Tensor
-from layers import DropPath
+from .layers import DropPath
 from einops import rearrange
 
 
