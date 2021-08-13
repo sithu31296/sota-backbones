@@ -21,8 +21,10 @@
 [vip]: https://arxiv.org/abs/2106.12368v1
 [cyclemlp]: https://arxiv.org/abs/2107.10224
 
-[caitw]: https://drive.google.com/drive/folders/1YrbN3zdz1jykz5D-CY6ND7A7schH8E19?usp=sharing
-[xcitw]: https://drive.google.com/drive/folders/10lvfB8sXdRuZve5xn6pebJN6TT2GaYhP?usp=sharing
+[xcitt]: https://dl.fbaipublicfiles.com/xcit/xcit_tiny_24_p16_224_dist.pth
+[xcits]: https://dl.fbaipublicfiles.com/xcit/xcit_small_24_p16_224_dist.pth
+[xcitm]: https://dl.fbaipublicfiles.com/xcit/xcit_medium_24_p16_224_dist.pth
+[xcitl]: https://dl.fbaipublicfiles.com/xcit/xcit_large_24_p16_224_dist.pth
 [cswinw]: https://drive.google.com/drive/folders/1kVTZwgJ0uCTynUa2vOJ5SUgL2R7PyNLa?usp=sharing
 [volod1]: https://github.com/sail-sg/volo/releases/download/volo_1/d1_224_84.2.pth.tar
 [volod2]: https://github.com/sail-sg/volo/releases/download/volo_1/d2_224_85.2.pth.tar
@@ -57,8 +59,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 --- | --- | --- | --- | --- 
 [EfficientNetv2][efficientv2] | 83.9`\|`85.1`\|`85.7 | 22`\|`54`\|`120 | 9`\|`24`\|`53 | S\|M\|L
 ||
-[CaiT][cait]* (384) | 85.1`\|`85.4 | 47`\|`68 | 32`\|`48 | [S24][caitw]\|[S36][caitw]
-[XCiT][xcit]* | 82.6`\|`84.9`\|`85.1`\|`85.4 | 12`\|`48`\|`84`\|`189 | 9`\|`36`\|`64`\|`142 | [T24][xcitw]\|[S24][xcitw]\|[M24][xcitw]\|[L24][xcitw]
+[XCiT][xcit]* | 80.4`\|`83.9`\|`84.3`\|`84.9 | 12`\|`48`\|`84`\|`189 | 2`\|`9`\|`16`\|`36 | [T][xcitt]\|[S][xcits]\|[M][xcitm]\|[L][xcitl]
 [VOLO][volo]^ | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]\|[D4][volod4]
 ||
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [H-T][gfnett]\|[H-S][gfnets]\|[H-B][gfnetb]
@@ -78,7 +79,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 <details>
   <summary>Table Notes <small>(click to expand)</small></summary>
 
-* Image size is 224x224, unless otherwise specified. EfficientNetv2 uses progressive learning (image size from 128 to 380).
+* Image size is 224x224. EfficientNetv2 uses progressive learning (image size from 128 to 380).
 * Only models trained on ImageNet1k are compared. 
 * (Parameters > 200M) Models are not included. 
 * `*` model uses knowledge distillation whereas `^` model uses token labeling.
