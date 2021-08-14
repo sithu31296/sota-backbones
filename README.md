@@ -5,7 +5,6 @@
 ## <div align="center">Model Zoo</div>
 
 [efficientv2]: https://arxiv.org/abs/2104.00298
-[cait]: https://arxiv.org/abs/2103.17239
 [xcit]: https://arxiv.org/abs/2106.09681
 [cswin]: https://arxiv.org/abs/2107.00652v2
 [volo]: https://arxiv.org/abs/2106.13112v1
@@ -16,7 +15,6 @@
 [shuffle]: https://arxiv.org/abs/2106.03650
 [conformer]: https://arxiv.org/abs/2105.03889v1
 [rest]: https://arxiv.org/abs/2105.13677v3
-[nest]: https://arxiv.org/abs/2105.12723v2
 
 [vip]: https://arxiv.org/abs/2106.12368v1
 [cyclemlp]: https://arxiv.org/abs/2107.10224
@@ -30,7 +28,9 @@
 [volod2]: https://github.com/sail-sg/volo/releases/download/volo_1/d2_224_85.2.pth.tar
 [volod3]: https://github.com/sail-sg/volo/releases/download/volo_1/d3_224_85.4.pth.tar
 [volod4]: https://github.com/sail-sg/volo/releases/download/volo_1/d4_224_85.7.pth.tar
-[restm]: https://drive.google.com/drive/folders/1H6QUZsKYbU6LECtxzGHKqEeGbx1E8uQ9
+[rests]: https://drive.google.com/file/d/18YGFK_ZqE_AXZ3cMLyM1Q-OnvWj0WlKZ/view?usp=sharing
+[restb]: https://drive.google.com/file/d/1CdjkmikUM8tP6xKPGXXOlWdGJ9heIZqf/view?usp=sharing
+[restl]: https://drive.google.com/file/d/1J60OCXwvlwbNiTwoRj-iLnGaAN9q0-g9/view?usp=sharing
 [gfnett]: https://drive.google.com/file/d/1Nrq5sfHD9RklCMl6WkcVrAWI5vSVzwSm/view?usp=sharing
 [gfnets]: https://drive.google.com/file/d/1w4d7o1LTBjmSkb5NKzgXBBiwdBOlwiie/view?usp=sharing
 [gfnetb]: https://drive.google.com/file/d/1F900_-yPH7GFYfTt60xn4tu5a926DYL0/view?usp=sharing
@@ -63,8 +63,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 [VOLO][volo]^ | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]\|[D4][volod4]
 ||
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [H-T][gfnett]\|[H-S][gfnets]\|[H-B][gfnetb]
-[ResT][rest] | 79.6`\|`81.6`\|`83.6 | 14`\|`30`\|`52 | 2`\|`4`\|`8 | [S][restm]\|[B][restm]\|[L][restm]
-[NesT][nest] | 81.5`\|`83.3`\|`83.8 | 17`\|`38`\|`68 | 6`\|`10`\|`18 | T\|S\|B
+[ResT][rest] | 79.6`\|`81.6`\|`83.6 | 14`\|`30`\|`52 | 2`\|`4`\|`8 | [S][rests]\|[B][restb]\|[L][restl]
 [PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.1`\|`83.6`\|`83.8 | 14`\|`25`\|`45`\|`63`\|`82 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][pvt1]\|[B2][pvt2]\|[B3][pvt3]\|[B4][pvt4]\|[B5][pvt5]
 ||
 [CrossFormer][crossformer] | 81.5`\|`82.5`\|`83.4`\|`84.0 | 28`\|`31`\|`52`\|`92 | 3`\|`5`\|`9`\|`16 | [T][crosst]\|[S][crosss]\|[B][crossb]\|L
@@ -77,12 +76,13 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 [CycleMLP][cyclemlp] | 78.9`\|`81.6`\|`82.4`\|`83.0`\|`83.2 | 15`\|`27`\|`38`\|`52`\|`76 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][cycleb1]\|[B2][cycleb2]\|[B3][cycleb3]\|[B4][cycleb4]\|[B5][cycleb5]
 
 <details>
-  <summary>Table Notes <small>(click to expand)</small></summary>
+  <summary><strong>Table Notes</strong> (click to expand)</summary>
 
 * Image size is 224x224. EfficientNetv2 uses progressive learning (image size from 128 to 380).
 * Only models trained on ImageNet1k are compared. 
 * (Parameters > 200M) Models are not included. 
 * `*` model uses knowledge distillation whereas `^` model uses token labeling.
+* *PVTv2*, *ResT*, *XCiT* and *CycleMLP* models work with any image size (even non-square image size).
 
 </details>
 
@@ -90,7 +90,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 ## <div align="center">Usage</div>
 
 <details>
-  <summary>Dataset Preparation <small>(click to expand)</small></summary>
+  <summary><strong>Dataset Preparation</strong> (click to expand)</summary>
 
 For standard ImageNet dataset, the dataset structure should look like this:
 
@@ -114,46 +114,35 @@ imagenet
 
 You can also use this structure for custom datasets.
 
-
 </details>
 
+<br>
 <details>
-  <summary>Configuration <small>(click to expand)</small></summary>
+  <summary><strong>Configuration</strong> (click to expand)</summary>
 
 Create a configuration file in `configs`. Sample configuration for ImageNet dataset can be found [here](configs/defaults.yaml). Then edit the fields you think if it is needed. This configuration file is needed for all of training, evaluation and prediction scripts.
 
 </details>
 
+<br>
 <details>
-  <summary>Training <small>(click to expand)</small></summary>
-
-Train with 1 GPU:
+  <summary><strong>Training</strong> (click to expand)</summary>
 
 ```bash
+# train with 1 gpu
 $ python tools/train.py --cfg configs/CONFIG_FILE_NAME.yaml
-```
 
-Train with 2 GPUs:
-
-```bash
+# train with 2 gpus
 $ python -m torch.distributed.launch --nproc_per_node=2 --use_env tools/train.py --cfg configs/CONFIG_FILE_NAME.yaml
 ```
 
-</details>
-
-
-<details>
-  <summary>Training with KD <small>(click to expand)</small></summary>
-
-Change `ENABLE` field in `KD` of the configuration file to `True` and also change the additional parameters. The weights file for the teacher model must be supplied via `PRETRAINED` field.
-
-The training command is the same as in above.
+> Note: To train with KD, change `ENABLE` field in `KD` to `true`. The weights file for the teacher model must be supplied via `PRETRAINED` field. Training command is the same.
 
 </details>
 
-
+<br>
 <details>
-  <summary>Evaluation <small>(click to expand)</small></summary>
+  <summary><strong>Evaluate</strong> (click to expand)</summary>
 
 Make sure to set `MODEL_PATH` of the configuration file to your trained model directory.
 
@@ -163,9 +152,9 @@ $ python tools/val.py --cfg configs/CONFIG_FILE_NAME.yaml
 
 </details>
 
-
+<br>
 <details>
-  <summary>Inference <small>(click to expand)</small></summary>
+  <summary><strong>Inference</strong> (click to expand)</summary>
 
 Make sure to set `MODEL_PATH` of the configuration file to model's weights.
 
@@ -175,16 +164,27 @@ $ python tools/infer.py --cfg configs/CONFIG_FILE_NAME.yaml
 
 </details>
 
+<!---
 <details>
   <summary>Optimization <small>(click to expand)</small></summary>
 
 For optimizing these models for deployment, see [torch_optimize](https://github.com/sithu31296/torch_optimize).
 
 </details>
+--->
 
+<br>
 <details>
-  <summary>References <small>(click to expand)</small></summary>
+  <summary><strong>Citations</strong> (click to expand)</summary>
 
+```
+@article{zhql2021ResT,
+  title={ResT: An Efficient Transformer for Visual Recognition},
+  author={Zhang, Qinglong and Yang, Yubin},
+  journal={arXiv preprint arXiv:2105.13677v3},
+  year={2021}
+}
 
+```
 
 </details>

@@ -200,7 +200,7 @@ xcit_settings = {
 }
 
 
-class XciT(nn.Module):
+class XciT(nn.Module):      # this model works with any image size, even non-square image size
     def __init__(self, model_name: str = 'S', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
         assert model_name in xcit_settings.keys(), f"XciT model name should be in {list(xcit_settings.keys())}"
@@ -265,6 +265,9 @@ class XciT(nn.Module):
 
 
 if __name__ == '__main__':
+    import pathlib
+    temp = pathlib.PosixPath
+    pathlib.PosixPath = pathlib.WindowsPath
     model = XciT('T', 'checkpoints/xcit/xcit_tiny_24_p16_224_dist.pth')
     x = torch.zeros(1, 3, 224, 224)
     y = model(x)

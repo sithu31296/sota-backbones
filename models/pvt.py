@@ -99,7 +99,7 @@ pvtv2_settings = {
 }
 
 
-class PVTv2(nn.Module):
+class PVTv2(nn.Module):     # this model works with any image size, even non-square image size
     def __init__(self, model_name: str = 'B1', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
         assert model_name in pvtv2_settings.keys(), f"PVTv2 model name should be in {list(pvtv2_settings.keys())}"

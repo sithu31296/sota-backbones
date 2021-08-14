@@ -20,6 +20,7 @@ from .pvt import PVTv2
 from .crossformer import CrossFormer
 from .swin import Swin
 from .shuffle import Shuffle
+from .rest import ResT
 
 __all__ = {
     "hrnet": HRNet,
@@ -39,6 +40,7 @@ __all__ = {
     "crossformer": CrossFormer,
     "swin": Swin,
     "shuffle": Shuffle,
+    "rest": ResT,
 
     "mixer": MLPMixer,
     "resmlp": ResMLP,
