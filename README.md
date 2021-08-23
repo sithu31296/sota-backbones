@@ -12,7 +12,6 @@
 [volo]: https://arxiv.org/abs/2106.13112v1
 [gfnet]: https://arxiv.org/abs/2107.00645
 [pvtv2]: https://arxiv.org/abs/2106.13797
-[longshort]: https://arxiv.org/abs/2107.02192
 [shuffle]: https://arxiv.org/abs/2106.03650
 [conformer]: https://arxiv.org/abs/2105.03889v1
 [rest]: https://arxiv.org/abs/2105.13677v3
@@ -75,7 +74,6 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 [Conformer][conformer] | 81.3`\|`83.4`\|`84.1 | 24`\|`38`\|`83 | 5`\|`11`\|`23 | [T][conformert]\|[S][conformers]\|[B][conformerb]
 [Shuffle][shuffle] | 82.4`\|`83.6`\|`84.0 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][shufflet]\|[S][shuffles]\|[B][shuffleb]
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T][cswint]\|[S][cswins]\|[B][cswinb]
-[ViL-LS][longshort] | 83.8`\|`84.1 | 40`\|`56 | 9`\|`13 | M\|B
 ||
 [ViP][vip] | 81.5`\|`82.7`\|`83.2 | 25`\|`55`\|`88 | 7`\|`16`\|`24 | [S][vipw]\|[M][vipw]\|[L][vipw]
 [CycleMLP][cyclemlp] | 78.9`\|`81.6`\|`82.4`\|`83.0`\|`83.2 | 15`\|`27`\|`38`\|`52`\|`76 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][cycleb1]\|[B2][cycleb2]\|[B3][cycleb3]\|[B4][cycleb4]\|[B5][cycleb5]
@@ -244,15 +242,6 @@ File: assests\dog.jpg >>>>> Golden retriever
   author={Huang, Zilong and Ben, Youcheng and Luo, Guozhong and Cheng, Pei and Yu, Gang and Fu, Bin},
   journal={arXiv preprint arXiv:2106.03650},
   year={2021}
-}
-
-@misc{zhu2021longshort,
-  title={Long-Short Transformer: Efficient Transformers for Language and Vision}, 
-  author={Chen Zhu and Wei Ping and Chaowei Xiao and Mohammad Shoeybi and Tom Goldstein and Anima Anandkumar and Bryan Catanzaro},
-  year={2021},
-  eprint={2107.02192},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV}
 }
 
 @misc{hou2021vision,
