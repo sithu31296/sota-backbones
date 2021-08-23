@@ -60,8 +60,8 @@ class Block(nn.Module):
         self.mlp = MLP(dim, int(dim*4))
 
     def forward(self, x: Tensor, H, W) -> Tensor:
-        x += self.drop_path(self.attn(self.norm1(x), H, W))
-        x += self.drop_path(self.mlp(self.norm2(x)))
+        x = x + self.drop_path(self.attn(self.norm1(x), H, W))
+        x = x +  self.drop_path(self.mlp(self.norm2(x)))
         return x
 
 
@@ -110,9 +110,9 @@ class Stem(nn.Module):
 
 
 rest_settings = {
-    'S': [[64, 128, 256, 512], [2, 2, 6, 2]],    # [embed_dims, depths]
-    'B': [[96, 192, 384, 768], [2, 2, 6, 2]],
-    'L': [[96, 192, 384, 768], [2, 2, 18, 2]]
+    'S': [[64, 128, 256, 512], [2, 2, 6, 2], 0.1],    # [embed_dims, depths, dpr]
+    'B': [[96, 192, 384, 768], [2, 2, 6, 2], 0.2],
+    'L': [[96, 192, 384, 768], [2, 2, 18, 2], 0.3]
 }
 
 
@@ -120,8 +120,7 @@ class ResT(nn.Module):  # this model works with any image size, even non-square 
     def __init__(self, model_name: str = 'S', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
         assert model_name in rest_settings.keys(), f"ResT model name should be in {list(rest_settings.keys())}"
-        embed_dims, depths = rest_settings[model_name]
-        drop_path_rate = 0.
+        embed_dims, depths, drop_path_rate = rest_settings[model_name]
 
         self.stem = Stem(3, embed_dims[0])
 

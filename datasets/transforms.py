@@ -1,3 +1,46 @@
+import random
+import torch
+from torchvision import transforms as T
+
+
+def get_augmentations(cfg):
+    return T.Compose(
+        T.RandomSizedCrop(cfg['TRAIN']['IMAGE_SIZE']),
+        T.RandomHorizontalFlip(),
+        T.ColorJitter(0.1, 0.1, 0.1),
+        T.AutoAugment(),
+        T.ToTensor(),
+        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+        T.RandomErasing(0.2),
+    )
+
+def one_hot(x, num_classes, on_value=1., off_value=0., device='cuda'):
+    x = x.long().view(-1, 1)
+    return torch.full((x.shape[0], num_classes), off_value, device=device).scatter_(1, x, on_value)
+
+
+class MixUp:
+    def __init__(self, alpha=0.8, p=1.0, n_classes=1000, label_smooth=0.1) -> None:
+        self.alpha = alpha
+        self.p = p
+        self.n_classes = n_classes
+        self.label_smooth = label_smooth
+
+    def __call__(self, image, target):
+        assert image.shape[0] == 0, "Batch Size should be even why using mixup augmentation"
+        if random.random() < self.p:
+            image_flipped = image.flip(0).mul_(1. - self.alpha)
+            image.mul_(self.alpha).add_(image_flipped)
+            off_value = self.label_smooth / self.n_classes
+            on_value = 1. - self.label_smooth + off_value
+            y1 = one_hot(target, self.n_classes, on_value, off_value, device=image.device)
+            y2 = one_hot(target.flip(0), self.n_classes, on_value, off_value, device=image.device)
+            target = y1 * self.alpha + y2 * (1. - self.alpha)
+        return image, target
+            
+
+
+
 """torchvision builtin transforms
 # shape transform
 CenterCrop(size)
@@ -29,25 +72,3 @@ RandomErasing(p=0.5, scale=(0.02, 0.33), ratio=(0.3, 3.3), value=0)
 RandomApply(transforms, p=0.5)      # apply randomly a list of transformations with a given probability
 """
 
-from torchvision import transforms as T
-
-
-def get_transforms(cfg):
-    train_transform = T.Compose(
-        T.RandomSizedCrop(cfg['TRAIN']['IMAGE_SIZE']),
-        T.RandomHorizontalFlip(),
-        T.ColorJitter(0.1, 0.1, 0.1),
-        T.AutoAugment(),
-        T.ToTensor(),
-        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-        T.RandomErasing(0.2),
-    )
-
-    val_transform = T.Compose(
-        T.Resize(tuple(map(lambda x: int(x / 0.9), cfg['EVAL']['IMAGE_SIZE']))),
-        T.CenterCrop(cfg['EVAL']['IMAGE_SIZE']),
-        T.ToTensor(),
-        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    )
-
-    return train_transform, val_transform

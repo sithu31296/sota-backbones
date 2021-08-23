@@ -9,13 +9,12 @@ import sys
 sys.path.insert(0, '.')
 from models import get_model
 from datasets import get_dataset
-from datasets.transforms import get_transforms
 from utils.utils import setup_cudnn
 from utils.metrics import accuracy
 
 
 @torch.no_grad()
-def evaluate(dataloader, model, device, loss_fn = None):
+def evaluate(dataloader, model, device, loss_fn=None):
     print('Evaluating...')
     model.eval()
     test_loss, top1_acc, top5_acc = 0.0, 0.0, 0.0
@@ -42,15 +41,13 @@ def evaluate(dataloader, model, device, loss_fn = None):
 
 def main(cfg):
     device = torch.device(cfg['DEVICE'])
+    dataset = get_dataset(cfg, 'val')
+    dataloader = DataLoader(dataset, batch_size=cfg['EVAL']['BATCH_SIZE'], num_workers=cfg['EVAL']['WORKERS'], pin_memory=True)
 
-    _, val_transform = get_transforms(cfg)
-    _, val_dataset = get_dataset(cfg, val_transform=val_transform)
-    val_dataloader = DataLoader(val_dataset, batch_size=cfg['EVAL']['BATCH_SIZE'], num_workers=cfg['EVAL']['WORKERS'], pin_memory=True)
-
-    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], cfg['MODEL_PATH'], len(val_dataset.CLASSES), cfg['EVAL']['IMAGE_SIZE'][0])
+    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], cfg['MODEL_PATH'], len(dataset.CLASSES), cfg['EVAL']['IMAGE_SIZE'][0])
     model = model.to(device)
 
-    _, top1_acc, top5_acc = evaluate(val_dataloader, model, device)
+    _, top1_acc, top5_acc = evaluate(dataloader, model, device)
 
     table = [
         ['Top-1 Accuracy', top1_acc],

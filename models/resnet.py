@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 from typing import Type, Optional, Union
-from torchvision.models.resnet import resnet101
+
 
 class BasicBlock(nn.Module):
     expansion: int = 1

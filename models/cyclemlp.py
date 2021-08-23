@@ -3,7 +3,7 @@ import math
 from torch import nn, Tensor
 from torchvision.ops.deform_conv import deform_conv2d
 from torch.nn.modules.utils import _pair
-from .layers import MLP
+from .layers import MLP, DropPath
 
 
 class CycleFC(nn.Module):
@@ -79,18 +79,18 @@ class CycleAttn(nn.Module):
 
     
 class CycleBlock(nn.Module):
-    def __init__(self, dim, mlp_ratio=4, skip_lam=1.0):
+    def __init__(self, dim, mlp_ratio=4, skip_lam=1.0, dpr=0.):
         super().__init__()
         self.norm1 = nn.LayerNorm(dim)
         self.attn = CycleAttn(dim)
-        
+        self.drop_path = DropPath(dpr) if dpr > 0. else nn.Identity()
         self.norm2 = nn.LayerNorm(dim)
         self.mlp = MLP(dim, int(dim*mlp_ratio))
         self.skip_lam = skip_lam
 
     def forward(self, x: Tensor) -> Tensor:
-        x += self.attn(self.norm1(x)) / self.skip_lam
-        x += self.mlp(self.norm2(x)) / self.skip_lam
+        x = x + self.drop_path(self.attn(self.norm1(x))) / self.skip_lam
+        x = x + self.drop_path(self.mlp(self.norm2(x))) / self.skip_lam
         return x
 
 
@@ -119,7 +119,7 @@ class Downsample(nn.Module):
         return x
 
 
-cycle_settings = {
+cyclemlp_settings = {
     'B1': [[2, 2, 4, 2], [64, 128, 320, 512], [4, 4, 4, 4]],       # [layers, embed_dims, mlp_ratios]
     'B2': [[2, 3, 10, 3], [64, 128, 320, 512], [4, 4, 4, 4]],
     'B3': [[3, 4, 18, 3], [64, 128, 320, 512], [8, 8, 4, 4]],
@@ -131,8 +131,8 @@ cycle_settings = {
 class CycleMLP(nn.Module):      # this model works with any image size, even non-square image size
     def __init__(self, model_name: str = 'B1', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
-        assert model_name in cycle_settings.keys(), f"CycleMLP model name should be in {list(cycle_settings.keys())}"
-        layers, embed_dims, mlp_ratios = cycle_settings[model_name]
+        assert model_name in cyclemlp_settings.keys(), f"CycleMLP model name should be in {list(cyclemlp_settings.keys())}"
+        layers, embed_dims, mlp_ratios = cyclemlp_settings[model_name]
     
         self.patch_embed = PatchEmbedOverlap(7, 4, 2, embed_dims[0])
 

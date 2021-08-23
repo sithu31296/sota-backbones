@@ -12,7 +12,6 @@ from torch import distributed as dist
 
 
 def fix_seeds(seed: int = 123) -> None:
-    seed += dist.get_rank()
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
     np.random.seed(seed)
@@ -52,13 +51,10 @@ def setup_ddp() -> None:
         rank = int(os.environ['RANK'])
         world_size = int(os.environ['WORLD_SIZE'])
         gpu = int(os.environ(['LOCAL_RANK']))
-    else:
-        rank, world_size, gpu = 0, 1, 0
 
     torch.cuda.set_device(gpu)
     dist.init_process_group('nccl', init_method="env://",world_size=world_size, rank=rank)
     dist.barrier()
-
     return gpu
 
 def cleanup_ddp():
@@ -83,3 +79,13 @@ def throughput(dataloader, model: nn.Module, times: int = 30):
     end = time_sync()
 
     print(f"Batch Size {B} throughput {times * B / (end - start)} images/s")
+
+def get_params_flops(model: nn.Module, size: tuple):
+    flops, params = 0.0, 0.0
+    try:
+        from mmcv.cnn.utils import get__model_complexity_info
+        flops, params = get__model_complexity_info(model, input_shape=(3, *size))
+    except:
+        print('Install mmcv to get FLOPs `pip install mmcv`')
+    print(f"Params (M): {params}")
+    print(f"GFLOPs (B): {flops}")

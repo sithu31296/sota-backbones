@@ -1,30 +1,20 @@
+from torchvision import transforms as T
 from .imagenet import ImageNet
-from .samplers import *
-from torch import distributed as dist
+
 
 __all__ = {
     "imagenet": ImageNet
 }
 
 
-def get_dataset(cfg, train_transform=None, val_transform=None):
+def get_dataset(cfg, split, transform=None):
     dataset_name = cfg['DATASET']['NAME']
     assert dataset_name in __all__.keys(), f"Unavailable dataset name >> {dataset_name}.\nList of available datasets: {list(__all__.keys())}"
-    trainset = __all__[dataset_name](cfg['DATASET']['ROOT'], split='train', transform=train_transform)
-    valset = __all__[dataset_name](cfg['DATASET']['ROOT'], split='val', transform=val_transform)
-    return trainset, valset
-
-
-def get_sampler(cfg, train_dataset, val_dataset):
-    if not cfg['TRAIN']['DDP']['ENABLE']:
-        train_sampler = RandomSampler(train_dataset)
-    else:
-        num_tasks = dist.get_world_size()
-        global_rank = dist.get_rank()
-        if cfg['TRAIN']['DDP']['REPEATED_AUG']:
-            train_sampler = RASampler(train_dataset, num_tasks, global_rank, shuffle=True)
-        else:
-            train_sampler = DistributedSampler(train_dataset, num_tasks, global_rank, shuffle=True)
-    val_sampler = SequentialSampler(val_dataset)
-
-    return train_sampler, val_sampler
+    if split == 'val': 
+        transform = T.Compose(
+            T.Resize(tuple(map(lambda x: int(x / 0.9), cfg['EVAL']['IMAGE_SIZE']))),    # to main aspect ratio
+            T.CenterCrop(cfg['EVAL']['IMAGE_SIZE']),
+            T.ToTensor(),
+            T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        )
+    return __all__[dataset_name](cfg['DATASET']['ROOT'], split=split, transform=transform)

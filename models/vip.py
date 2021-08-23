@@ -1,7 +1,6 @@
 import torch
 from torch import nn, Tensor
-
-from .layers import MLP
+from .layers import MLP, DropPath
 
 
 class WeightedPermuteMLP(nn.Module):
@@ -37,16 +36,17 @@ class WeightedPermuteMLP(nn.Module):
 
 
 class PermutatorBlock(nn.Module):
-    def __init__(self, dim, segment_dim):
+    def __init__(self, dim, segment_dim, dpr=0.):
         super().__init__()
         self.norm1 = nn.LayerNorm(dim)
         self.attn = WeightedPermuteMLP(dim, segment_dim)
+        self.drop_path = DropPath(dpr) if dpr > 0. else nn.Identity()
         self.norm2 = nn.LayerNorm(dim)
         self.mlp = MLP(dim, int(dim * 3))
 
     def forward(self, x):
-        x += self.attn(self.norm1(x)) 
-        x += self.mlp(self.norm2(x)) 
+        x = x + self.drop_path(self.attn(self.norm1(x)))
+        x = x + self.drop_path(self.mlp(self.norm2(x)))
         return x
 
 

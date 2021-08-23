@@ -68,14 +68,14 @@ class Downsample(nn.Module):
 
 
 gfnet_settings = {
-    'H-T': [[64, 128, 256, 512], [3, 3, 10, 3], 1e-3],  # [embed_dims, depths, init_values]
-    'H-S': [[96, 192, 384, 768], [3, 3, 10, 3], 1e-5],
-    'H-B': [[96, 192, 384, 768], [3, 3, 27, 3], 1e-6]
+    'T': [[64, 128, 256, 512], [3, 3, 10, 3], 1e-3],  # [embed_dims, depths, init_values]
+    'S': [[96, 192, 384, 768], [3, 3, 10, 3], 1e-5],
+    'B': [[96, 192, 384, 768], [3, 3, 27, 3], 1e-6]
 }
 
 
 class GFNet(nn.Module):
-    def __init__(self, model_name: str = 'H-T', pretrained: str = None, num_classes: int = 1000, image_size: int = 224) -> None:
+    def __init__(self, model_name: str = 'T', pretrained: str = None, num_classes: int = 1000, image_size: int = 224) -> None:
         super().__init__()
         assert model_name in gfnet_settings.keys(), f"GFNet model name should be in {list(gfnet_settings.keys())}"
         embed_dims, depths, init_values = gfnet_settings[model_name]
@@ -135,7 +135,7 @@ class GFNet(nn.Module):
 
 
 if __name__ == '__main__':
-    model = GFNet('H-B', 'checkpoints/gfnet/gfnet-h-b.pth', image_size=224)
+    model = GFNet('B', 'checkpoints/gfnet/gfnet-h-b.pth', image_size=224)
     x = torch.zeros(1, 3, 224, 224)
     y = model(x)
     print(y.shape)

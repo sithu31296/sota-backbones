@@ -1,0 +1,5 @@
+einops
+tabulate
+numpy
+tqdm
+tensorboard

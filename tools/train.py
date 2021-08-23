@@ -14,8 +14,9 @@ from torch.utils.tensorboard import SummaryWriter
 
 import sys
 sys.path.insert(0, '.')
-from datasets import get_dataset, get_sampler
-from datasets.transforms import get_transforms
+from datasets import get_dataset
+from datasets.transforms import get_augmentations, MixUp
+from datasets.samplers import get_sampler
 from models import get_model
 from utils.utils import fix_seeds, time_sync, setup_cudnn, setup_ddp
 from utils.schedulers import get_scheduler
@@ -31,23 +32,28 @@ def main(cfg):
 
     device = torch.device(cfg['DEVICE'])
     kd_enable = cfg['KD']['ENABLE']
-    ddp_enable = cfg['TRAIN']['DDP']['ENABLE']
+    ddp_enable = cfg['TRAIN']['DDP']
     epochs = cfg['TRAIN']['EPOCHS']
     best_top1_acc, best_top5_acc = 0.0, 0.0
-    gpu = setup_ddp()
+    if ddp_enable: gpu = setup_ddp()
 
     # augmentations
-    train_transform, val_transform = get_transforms(cfg)
+    augmentations = get_augmentations(cfg)
 
     # dataset
-    train_dataset, val_dataset = get_dataset(cfg, train_transform, val_transform)
+    train_dataset = get_dataset(cfg, 'train', augmentations)
+    val_dataset = get_dataset(cfg, 'val')
 
     # dataset sampler
-    train_sampler, val_sampler = get_sampler(cfg, train_dataset, val_dataset)
+    train_sampler, val_sampler = get_sampler(ddp_enable, train_dataset, val_dataset)
     
     # dataloader
     train_dataloader = DataLoader(train_dataset, batch_size=cfg['TRAIN']['BATCH_SIZE'], num_workers=cfg['TRAIN']['WORKERS'], drop_last=True, pin_memory=True, sampler=train_sampler)
     val_dataloader = DataLoader(val_dataset, batch_size=cfg['EVAL']['BATCH_SIZE'], num_workers=cfg['EVAL']['WORKERS'], pin_memory=True, sampler=val_sampler)
+
+    # mixup
+    if cfg['TRAIN']['MIXUP']['ENABLE']:
+        mixup = MixUp(cfg['TRAIN']['MIXUP']['ALPHA'], cfg['TRAIN']['MIXUP']['P'], len(train_dataset.CLASSES))
     
     # training model
     model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], None, len(train_dataset.CLASSES), cfg['TRAIN']['IMAGE_SIZE'][0])
@@ -58,7 +64,7 @@ def main(cfg):
 
     # knowledge distillation teacher model
     if kd_enable:
-        teacher_model = get_model(cfg['KD']['TEACHER']['NAME'], cfg['KD']['TEACHER']['VARIANT'], cfg['KD']['TEACHER']['PRETRAINED'], cfg['DATASET']['NUM_CLASSES'], cfg['TRAIN']['IMAGE_SIZE'][0])
+        teacher_model = get_model(cfg['KD']['TEACHER']['NAME'], cfg['KD']['TEACHER']['VARIANT'], cfg['KD']['TEACHER']['PRETRAINED'], len(train_dataset.CLASSES), cfg['TRAIN']['IMAGE_SIZE'][0])
         teacher_model = teacher_model.to(device)
         teacher_model.eval()
 
@@ -68,14 +74,14 @@ def main(cfg):
     scheduler = get_scheduler(cfg, optimizer)
     scaler = GradScaler(enabled=cfg['TRAIN']['AMP'])
     writer = SummaryWriter(save_dir / 'logs')
-    iters_per_epoch = int(len(train_dataset)) / cfg['TRAIN']['BATCH_SIZE']
+    iters_per_epoch = len(train_dataset) // cfg['TRAIN']['BATCH_SIZE']
 
-    for epoch in range(1, epochs+1):
+    for epoch in range(epochs):
         model.train()
         
         if ddp_enable: train_sampler.set_epoch(epoch)
         train_loss = 0.0
-        pbar = tqdm(enumerate(train_dataloader), total=iters_per_epoch, desc=f"Epoch: [{epoch}/{epochs}] Iter: [{0}/{iters_per_epoch}] LR: {cfg['TRAIN']['LR']:.8f} Loss: {0:.8f}")
+        pbar = tqdm(enumerate(train_dataloader), total=iters_per_epoch, desc=f"Epoch: [{epoch}/{epochs}] Iter: [{0}/{iters_per_epoch}] LR: {cfg['TRAIN']['OPTIMIZER']['LR']:.8f} Loss: {0:.8f}")
         
         for iter, (img, lbl) in pbar:
             img = img.to(device)
@@ -87,6 +93,9 @@ def main(cfg):
                 with torch.no_grad():
                     pred_teacher = teacher_model(img)
 
+            if mixup is not None:
+                img, lbl = mixup(img, lbl)
+
             with autocast(enabled=cfg['TRAIN']['AMP']):
                 pred = model(img)
                 loss = loss_fn(pred, pred_teacher, lbl) if kd_enable else loss_fn(pred, lbl)
@@ -95,6 +104,10 @@ def main(cfg):
             scaler.scale(loss).backward()
             scaler.step(optimizer)
             scaler.update()
+
+            # torch.cuda.synchronize()
+            # if model_ema is not None:
+            #     model_ema.update(model)
 
             lr = scheduler.get_last_lr()[0]
             train_loss += loss.item() * img.shape[0]

@@ -1,14 +1,16 @@
 import torch
 import math
 from torch import nn, Tensor
-from .layers import MLP
+from einops.layers.torch import Rearrange
+from einops import rearrange
+from .layers import MLP, DropPath, trunc_normal_
 
 
 class LePEAttention(nn.Module):
-    def __init__(self, dim, resolution, idx, split_size=7, num_heads=8):
+    def __init__(self, dim, resolution, idx, split_size=7, head=8):
         super().__init__()
-        self.scale = (dim // num_heads) ** -0.5
-        self.num_heads = num_heads
+        self.scale = (dim // head) ** -0.5
+        self.head = head
         self.resolution = resolution
 
         if idx == -1:
@@ -21,48 +23,37 @@ class LePEAttention(nn.Module):
         self.get_v = nn.Conv2d(dim, dim, 3, 1, 1, groups=dim)
 
     def im2cswin(self, x: Tensor) -> Tensor:
-        B, N, C = x.shape
-        H = W = int(math.sqrt(N))
-        x = x.transpose(-2, -1).contiguous().view(B, C, H, W)
-        x = x.view(B, C, H//self.H_sp, self.H_sp, W//self.W_sp, self.W_sp)
-        x = x.permute(0, 2, 4, 3, 5, 1).contiguous().view(-1, self.H_sp*self.W_sp, C)
-        x = x.reshape(-1, self.H_sp*self.W_sp, self.num_heads, C//self.num_heads).permute(0, 2, 1, 3).contiguous()
+        x = rearrange(x, 'b (h w) c -> b c h w', h=int(math.sqrt(x.shape[1])))
+        x = rearrange(x, 'b c (h hsp) (w wsp) -> (b h w) (hsp wsp) c', hsp=self.H_sp, wsp=self.W_sp)
+        x = rearrange(x, 'b n (H c) -> b H n c', H=self.head)
         return x
 
     def get_lepe(self, x: Tensor):
-        B, N, C = x.shape
-        H = W = int(math.sqrt(N))
-        x = x.transpose(-2, -1).contiguous().view(B, C, H, W)
-        x = x.view(B, C, H//self.H_sp, self.H_sp, W//self.W_sp, self.W_sp)
-        x = x.permute(0, 2, 4, 1, 3, 5).contiguous().reshape(-1, C, self.H_sp, self.W_sp)
-
+        x = rearrange(x, 'b (h w) c -> b c h w', h=int(math.sqrt(x.shape[1])))
+        x = rearrange(x, 'b c (h hsp) (w wsp) -> (b h w) c hsp wsp', hsp=self.H_sp, wsp=self.W_sp)
         lepe = self.get_v(x)
-        lepe = lepe.reshape(-1, self.num_heads, C//self.num_heads, self.H_sp*self.W_sp).permute(0, 1, 3, 2).contiguous()
-        x = x.reshape(-1, self.num_heads, C//self.num_heads, self.H_sp*self.W_sp).permute(0, 1, 3, 2).contiguous()
+        lepe = rearrange(lepe, 'b (H c) h w -> b H (h w) c', H=self.head)
+        x = rearrange(x, 'b (H c) h w -> b H (h w) c', H=self.head)
         return x, lepe
 
     def forward(self, q: Tensor, k: Tensor, v: Tensor) -> Tensor: 
-        B, _, C = q.shape
-
+        B = q.shape[0]
         q = self.im2cswin(q) * self.scale
         k = self.im2cswin(k)
         v, lepe = self.get_lepe(v)
 
         attn = q @ k.transpose(-2, -1)
         attn = attn.softmax(dim=-1)
-        
+
         x = (attn @ v) + lepe
-        x = x.transpose(1, 2).reshape(-1, self.H_sp*self.W_sp, C)
-
+        x = rearrange(x, 'h b w c -> h w (b c)')
         x = x.view(B, self.resolution//self.H_sp, self.resolution//self.W_sp, self.H_sp, self.W_sp, -1)
-        x = x.permute(0, 1, 3, 2, 4, 5).contiguous().view(B, self.resolution, self.resolution, -1)
-        x = x.view(B, -1, C)
-
+        x = rearrange(x, 'b r1 h w r2 c -> b (r1 h w r2) c')
         return x
 
 
 class CSWinBlock(nn.Module):
-    def __init__(self, dim, resolution, num_heads, split_size=7, last_stage=False):
+    def __init__(self, dim, resolution, head, split_size=7, last_stage=False, dpr=0.):
         super().__init__()
         self.resolution = resolution
         self.norm1 = nn.LayerNorm(dim)
@@ -71,32 +62,34 @@ class CSWinBlock(nn.Module):
         if last_stage:
             branch_num = 1
             self.attns = nn.ModuleList([
-                LePEAttention(dim, resolution, -1, split_size, num_heads)
+                LePEAttention(dim, resolution, -1, split_size, head)
             for _ in range(branch_num)])
         else:
             branch_num = 2
             self.attns = nn.ModuleList([
-                LePEAttention(dim//2, resolution, i, split_size, num_heads//2)
+                LePEAttention(dim//2, resolution, i, split_size, head//2)
             for i in range(branch_num)])
+
+        self.drop_path = DropPath(dpr) if dpr > 0. else nn.Identity()
 
         self.proj = nn.Linear(dim, dim)
         self.norm2 = nn.LayerNorm(dim)
         self.mlp = MLP(dim, int(dim * 4))
 
     def forward(self, x: Tensor) -> Tensor:
-        B, _, C = x.shape
-        x = self.norm1(x)
-        qkv = self.qkv(x).reshape(B, -1, 3, C).permute(2, 0, 1, 3)
+        C = x.shape[-1]
+        qkv = self.qkv(self.norm1(x))
+        qkv = rearrange(qkv, 'b n (l c) -> l b n c', c=C)
         
         if len(self.attns) > 1:
             x1 = self.attns[0](*qkv[..., :C//2])
-            x2 = self.attns[0](*qkv[..., C//2:])
-            attend_x = torch.cat([x1, x2], dim=2)
+            x2 = self.attns[1](*qkv[..., C//2:])
+            x = torch.cat([x1, x2], dim=2)
         else:
-            attend_x = self.attns[0](*qkv)
+            x = self.attns[0](*qkv)
         
-        x += self.proj(attend_x)
-        x += self.mlp(self.norm2(x))
+        x = x + self.drop_path(self.proj(x))
+        x = x + self.drop_path(self.mlp(self.norm2(x)))
         return x
 
 
@@ -107,35 +100,19 @@ class MergeBlock(nn.Module):
         self.norm = nn.LayerNorm(c2)
 
     def forward(self, x: Tensor) -> Tensor:
-        B, N, C = x.shape
-        H = W = int(math.sqrt(N))
-        x = x.transpose(-2, -1).contiguous().view(B, C, H, W)
+        H = W = int(math.sqrt(x.shape[1]))
+        x = rearrange(x, 'b (h w) c -> b c h w', h=H, w=W)
         x = self.conv(x)
-        x = x.view(B, C*2, -1).transpose(-2, -1).contiguous()
-        x = self.norm(x)
-        return x
-
-
-class PatchEmbed(nn.Module):
-    """Image to Patch Embedding with overlapping
-    """
-    def __init__(self, embed_dim=768, patch_size=4):
-        super().__init__()
-        self.proj = nn.Conv2d(3, embed_dim, 7, patch_size, 2)
-        self.norm = nn.LayerNorm(embed_dim)
-
-    def forward(self, x: torch.Tensor) -> Tensor:
-        x = self.proj(x)                   # b x hidden_dim x 14 x 14
-        x = x.flatten(2).swapaxes(1, 2)     # b x (14*14) x hidden_dim
+        x = rearrange(x, 'b c h w -> b (h w) c')
         x = self.norm(x)
         return x
 
 
 cswin_settings = {
-    'T': [64, [1, 2, 21, 1], [2, 4, 8, 16]],     #[embed_dim, depths, heads]
-    'S': [64, [2, 4, 32, 2], [2, 4, 8, 16]],
-    'B': [96, [2, 4, 32, 2], [4, 8, 16, 32]],
-    'L': [144, [2, 4, 32, 2], [6, 12, 24, 24]]
+    'T': [64, [1, 2, 21, 1], [2, 4, 8, 16], 0.1],     #[embed_dim, depths, heads]
+    'S': [64, [2, 4, 32, 2], [2, 4, 8, 16], 0.2],
+    'B': [96, [2, 4, 32, 2], [4, 8, 16, 32], 0.3],
+    'L': [144, [2, 4, 32, 2], [6, 12, 24, 24], 0.5]
 }
 
 
@@ -143,66 +120,63 @@ class CSWin(nn.Module):
     def __init__(self, model_name: str = 'T', pretrained: str = None, num_classes: int = 1000, image_size: int = 224) -> None:
         super().__init__()
         assert model_name in cswin_settings.keys(), f"CSWin Transformer model name should be in {list(cswin_settings.keys())}"
-        embed_dim, depths, heads = cswin_settings[model_name]
+        embed_dim, depths, heads, drop_path_rate = cswin_settings[model_name]
 
-        self.patch_embed = PatchEmbed(embed_dim, 4)
+        self.stage1_conv_embed = nn.Sequential(
+            nn.Conv2d(3, embed_dim, 7, 4, 2),
+            Rearrange('b c h w -> b (h w) c'),
+            nn.LayerNorm(embed_dim)
+        )
+
+        dpr = [x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))]
 
         self.stage1 = nn.ModuleList([
-            CSWinBlock(embed_dim, image_size//4, heads[0], 1)
-        for _ in range(depths[0])])
+            CSWinBlock(embed_dim, image_size//4, heads[0], 1, dpr=dpr[i])
+        for i in range(depths[0])])
 
         self.merge1 = MergeBlock(embed_dim, embed_dim*2)
         embed_dim *= 2
 
         self.stage2 = nn.ModuleList([
-            CSWinBlock(embed_dim, image_size//8, heads[1], 2)
-        for _ in range(depths[1])])
+            CSWinBlock(embed_dim, image_size//8, heads[1], 2, dpr=dpr[sum(depths[:1])+i])
+        for i in range(depths[1])])
 
         self.merge2 = MergeBlock(embed_dim, embed_dim*2)
         embed_dim *= 2
 
         self.stage3 = nn.ModuleList([
-            CSWinBlock(embed_dim, image_size//16, heads[2], 7)
-        for _ in range(depths[2])])
+            CSWinBlock(embed_dim, image_size//16, heads[2], 7, dpr=dpr[sum(depths[:2])+i])
+        for i in range(depths[2])])
 
         self.merge3 = MergeBlock(embed_dim, embed_dim*2)
         embed_dim *= 2
 
         self.stage4 = nn.ModuleList([
-            CSWinBlock(embed_dim, image_size//32, heads[3], 7, last_stage=True)
-        for _ in range(depths[3])])
+            CSWinBlock(embed_dim, image_size//32, heads[3], 7, True, dpr[sum(depths[:-1])+i])
+        for i in range(depths[3])])
 
         self.norm = nn.LayerNorm(embed_dim)
         self.head = nn.Linear(embed_dim, num_classes)
 
+        trunc_normal_(self.head.weight, std=.02)
         self._init_weights(pretrained)
-
 
     def _init_weights(self, pretrained: str = None) -> None:
         if pretrained:
-            self.load_state_dict(torch.load(pretrained, map_location='cpu'))
+            self.load_state_dict(torch.load(pretrained, map_location='cpu')['state_dict_ema'])
         else:
-            for n, m in self.named_modules():
-                if isinstance(m, nn.Linear):
-                    if n.startswith('head'):
-                        nn.init.zeros_(m.weight)
-                        nn.init.zeros_(m.bias)
-                    else:
-                        nn.init.xavier_uniform_(m.weight)
-                        if m.bias is not None:
-                            nn.init.zeros_(m.bias)
-                elif isinstance(m, nn.LayerNorm):
-                    nn.init.ones_(m.weight)
-                    nn.init.zeros_(m.bias)
-                elif isinstance(m, nn.Conv2d):
-                    nn.init.xavier_uniform_(m.weight)
-                    if m.bias is not None:
-                        nn.init.zeros_(m.bias)
-
+            for m in self.modules():
+                if isinstance(m, (nn.Conv2d, nn.Linear)):
+                    trunc_normal_(m.weight, std=0.02)
+                    if m.bias is not None: 
+                        nn.init.constant_(m.bias, 0)
+                elif isinstance(m, (nn.LayerNorm, nn.BatchNorm2d)):
+                    nn.init.constant_(m.weight, 1.0)
+                    nn.init.constant_(m.bias, 0)
 
     def forward(self, x: Tensor) -> Tensor:
-        x = self.patch_embed(x)            
-        
+        x = self.stage1_conv_embed(x)  
+
         for blk in self.stage1:
             x = blk(x)
         
@@ -217,7 +191,7 @@ class CSWin(nn.Module):
 
 
 if __name__ == '__main__':
-    model = CSWin('B', 'checkpoints/cswin/cswin_b.pth')
-    x = torch.zeros(1, 3, 224, 224)
+    model = CSWin('T', 'checkpoints/cswin/cswin_tiny_224.pth', image_size=224)
+    x = torch.zeros(2, 3, 224, 224)
     y = model(x)
     print(y.shape)

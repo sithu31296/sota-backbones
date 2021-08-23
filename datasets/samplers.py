@@ -1,6 +1,6 @@
 import torch
-import torch.distributed as dist
 import math
+import torch.distributed as dist
 from torch.utils.data import Sampler, SequentialSampler, DistributedSampler, RandomSampler
 
 
@@ -73,3 +73,12 @@ class SubsetRandomSampler(Sampler):
 
     def set_epoch(self, epoch):
         self.epoch = epoch
+
+
+def get_sampler(ddp, train_dataset, val_dataset):
+    if not ddp:
+        train_sampler = RandomSampler(train_dataset)
+    else:
+        train_sampler = RASampler(train_dataset, dist.get_world_size(), dist.get_rank(), shuffle=True)
+        # train_sampler = DistributedSampler(train_dataset, num_tasks, global_rank, shuffle=True)
+    return train_sampler, SequentialSampler(val_dataset)

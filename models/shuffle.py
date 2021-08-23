@@ -1,7 +1,7 @@
 import torch
 from torch import nn, Tensor
-from .layers import DropPath
 from einops import rearrange
+from .layers import DropPath
 
 
 class MLP(nn.Module):
@@ -79,9 +79,9 @@ class Block(nn.Module):
         self.norm3 = nn.BatchNorm2d(dim)
 
     def forward(self, x: Tensor) -> Tensor:
-        x += self.drop_path(self.attn(self.norm1(x)))
-        x += self.local(self.norm2(x))
-        x += self.drop_path(self.mlp(self.norm3(x)))
+        x = x + self.drop_path(self.attn(self.norm1(x)))
+        x = x + self.local(self.norm2(x))
+        x = x + self.drop_path(self.mlp(self.norm3(x)))
         return x
 
 
