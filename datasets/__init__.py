@@ -1,20 +1,11 @@
-from torchvision import transforms as T
+import torch.distributed as dist
+from torch.utils.data import SequentialSampler, DistributedSampler, RandomSampler
 from .imagenet import ImageNet
 
 
-__all__ = {
-    "imagenet": ImageNet
-}
-
-
-def get_dataset(cfg, split, transform=None):
-    dataset_name = cfg['DATASET']['NAME']
-    assert dataset_name in __all__.keys(), f"Unavailable dataset name >> {dataset_name}.\nList of available datasets: {list(__all__.keys())}"
-    if split == 'val': 
-        transform = T.Compose(
-            T.Resize(tuple(map(lambda x: int(x / 0.9), cfg['EVAL']['IMAGE_SIZE']))),    # to main aspect ratio
-            T.CenterCrop(cfg['EVAL']['IMAGE_SIZE']),
-            T.ToTensor(),
-            T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-        )
-    return __all__[dataset_name](cfg['DATASET']['ROOT'], split=split, transform=transform)
+def get_sampler(ddp, train_dataset, val_dataset):
+    if not ddp:
+        train_sampler = RandomSampler(train_dataset)
+    else:
+        train_sampler = DistributedSampler(train_dataset, dist.get_world_size(), dist.get_rank(), shuffle=True)
+    return train_sampler, SequentialSampler(val_dataset)

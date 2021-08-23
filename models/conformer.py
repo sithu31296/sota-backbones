@@ -191,8 +191,8 @@ class Conformer(nn.Module):  # this model works with any image size, even non-sq
 
         self.trans_norm = nn.LayerNorm(embed_dim)
         # self.pooling = nn.AdaptiveAvgPool2d(1)
-        self.trans_cls_head = nn.Linear(embed_dim, num_classes)
         self.conv_cls_head = nn.Linear(int(256*channel_ratio), num_classes)
+        self.trans_cls_head = nn.Linear(embed_dim, num_classes)
 
         trunc_normal_(self.cls_token, std=.02)
         self._init_weights(pretrained)

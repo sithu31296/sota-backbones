@@ -51,14 +51,16 @@ def setup_ddp() -> None:
         rank = int(os.environ['RANK'])
         world_size = int(os.environ['WORLD_SIZE'])
         gpu = int(os.environ(['LOCAL_RANK']))
-
-    torch.cuda.set_device(gpu)
-    dist.init_process_group('nccl', init_method="env://",world_size=world_size, rank=rank)
-    dist.barrier()
+        torch.cuda.set_device(gpu)
+        dist.init_process_group('nccl', init_method="env://",world_size=world_size, rank=rank)
+        dist.barrier()
+    else:
+        gpu = 0
     return gpu
 
 def cleanup_ddp():
-    dist.destroy_process_group()
+    if dist.is_initialized():
+        dist.destroy_process_group()
 
 def reduce_tensor(tensor: Tensor) -> Tensor:
     rt = tensor.clone()
@@ -86,6 +88,6 @@ def get_params_flops(model: nn.Module, size: tuple):
         from mmcv.cnn.utils import get__model_complexity_info
         flops, params = get__model_complexity_info(model, input_shape=(3, *size))
     except:
-        print('Install mmcv to get FLOPs `pip install mmcv`')
+        print('Install mmcv to get FLOPs. \n`pip install mmcv`')
     print(f"Params (M): {params}")
     print(f"GFLOPs (B): {flops}")

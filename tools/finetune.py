@@ -9,17 +9,18 @@ from tabulate import tabulate
 from torch.nn.parallel import DistributedDataParallel as DDP
 from pathlib import Path
 from torch.utils.data import DataLoader
+from torchvision.datasets import CIFAR10
 from torch.cuda.amp import GradScaler, autocast
 from torch.utils.tensorboard import SummaryWriter
 
 import sys
 sys.path.insert(0, '.')
-from datasets import ImageNet, get_sampler
+from datasets import get_sampler
 from datasets.transforms import get_train_transforms, get_val_transforms
 from models import get_model
 from utils.utils import fix_seeds, setup_cudnn, setup_ddp, cleanup_ddp
 from utils.schedulers import get_scheduler
-from utils.losses import LabelSmoothCrossEntropy, DistillationLoss, CrossEntropyLoss
+from utils.losses import LabelSmoothCrossEntropy, CrossEntropyLoss
 from utils.optimizers import get_optimizer
 from val import evaluate
 
@@ -31,7 +32,6 @@ def main(cfg, gpu, save_dir):
     device = torch.device(cfg['DEVICE'])
     train_cfg = cfg['TRAIN']
     eval_cfg = cfg['EVAL']
-    kd_cfg = cfg['KD']
     optim_cfg = cfg['OPTIMIZER']
     epochs = train_cfg['EPOCHS']
     lr = optim_cfg['LR']
@@ -41,8 +41,8 @@ def main(cfg, gpu, save_dir):
     val_transforms = get_val_transforms(eval_cfg['IMAGE_SIZE'])
 
     # dataset
-    train_dataset = ImageNet(cfg['DATASET']['ROOT'], 'train', train_transforms)
-    val_dataset = ImageNet(cfg['DATASET']['ROOT'], 'val', val_transforms)
+    train_dataset = CIFAR10(cfg['DATASET']['ROOT'], True, train_transforms)
+    val_dataset = CIFAR10(cfg['DATASET']['ROOT'], False, val_transforms)
 
     # dataset sampler
     train_sampler, val_sampler = get_sampler(train_cfg['DDP'], train_dataset, val_dataset)
@@ -52,19 +52,24 @@ def main(cfg, gpu, save_dir):
     val_dataloader = DataLoader(val_dataset, batch_size=eval_cfg['BATCH_SIZE'], num_workers=num_workers, pin_memory=True, sampler=val_sampler)
 
     # training model
-    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], None, len(train_dataset.CLASSES), train_cfg['IMAGE_SIZE'][0])
+    model = get_model(cfg['MODEL']['NAME'], cfg['MODEL']['VARIANT'], None, len(train_dataset.classes), train_cfg['IMAGE_SIZE'][0])
+    ## some models pretrained weights have extra keys, so check them in pretrained loading in model construction
+    pretrained_dict = torch.load(cfg['MODEL']['PRETRAINED'], map_location='cpu')
+    pretrained_dict.popitem()
+    pretrained_dict.popitem()
+    model.load_state_dict(pretrained_dict, strict=False)
+
+    if cfg['MODEL']['FREEZE']:
+        for n, p in model.named_parameters():
+            if 'head' not in n:
+                p.requires_grad_ = False
+                
     model = model.to(device)
 
     if train_cfg['DDP']: model = DDP(model, device_ids=[gpu])
 
-    # knowledge distillation teacher model
-    if kd_cfg['ENABLE']:
-        teacher_model = get_model(kd_cfg['TEACHER']['NAME'], kd_cfg['TEACHER']['VARIANT'], kd_cfg['TEACHER']['PRETRAINED'], len(train_dataset.CLASSES), train_cfg['IMAGE_SIZE'][0])
-        teacher_model = teacher_model.to(device)
-        teacher_model.eval()
-
     # loss function, optimizer, scheduler, AMP scaler, tensorboard writer
-    loss_fn = DistillationLoss(kd_cfg['ALPHA'], kd_cfg['TEMP']) if kd_cfg['ENABLE'] else LabelSmoothCrossEntropy()
+    loss_fn = LabelSmoothCrossEntropy()
     optimizer = get_optimizer(model, optim_cfg['NAME'], optim_cfg['LR'], optim_cfg['DECAY'])
     scheduler = get_scheduler(cfg['SCHEDULER'], optimizer)
     scaler = GradScaler(enabled=train_cfg['AMP'])
@@ -84,13 +89,9 @@ def main(cfg, gpu, save_dir):
 
             optimizer.zero_grad()
 
-            if kd_cfg['ENABLE']:
-                with torch.no_grad():
-                    pred_teacher = teacher_model(img)
-
             with autocast(enabled=train_cfg['AMP']):
                 pred = model(img)
-                loss = loss_fn(pred, pred_teacher, lbl) if kd_cfg['ENABLE'] else loss_fn(pred, lbl)
+                loss = loss_fn(pred, lbl)
 
             # Backpropagation
             scaler.scale(loss).backward()
@@ -123,20 +124,17 @@ def main(cfg, gpu, save_dir):
         
     writer.close()
     pbar.close()
-
-    # results table
-    table = [[f"{cfg['MODEL']['NAME']}-{cfg['MODEL']['VARIANT']}", best_top1_acc, best_top5_acc]]
-
-    # evaluating teacher model
-    if kd_cfg['ENABLE']:
-        teacher_top1_acc, teacher_top5_acc = evaluate(val_dataloader, teacher_model, device)
-        table.append([f"{kd_cfg['TEACHER']['NAME']}-{kd_cfg['TEACHER']['VARIANT']}", teacher_top1_acc, teacher_top5_acc])
         
     end = time.gmtime(time.time() - start)
     total_time = time.strftime("%H:%M:%S", end)
 
-    print(tabulate(table, headers=['Top-1 Accuracy', 'Top-5 Accuracy'], numalign='right'))
-    print(f"Total Training Time: {total_time}")
+    table = [
+        ['Best Top-1 Accuracy', best_top1_acc],
+        ['Best Top-5 Accuracy', best_top5_acc],
+        ['Total Training Time', total_time]
+    ]
+
+    print(tabulate(table, numalign='right'))
 
 
 if __name__ == '__main__':

@@ -116,7 +116,7 @@ Other requirements can be installed with `pip install -r requirements.txt`.
 $ python tools/show.py
 ```
 
-A nice table with model names and variants will be shown:
+A table with model names and variants will be shown:
 
 ```
 Model Names    Model Variants
@@ -151,6 +151,47 @@ You will see an output similar to this:
 ```
 File: assests\dog.jpg >>>>> Golden retriever
 ```
+</details>
+
+<br>
+<details>
+  <summary><strong>Training</strong> (click to expand)</summary>
+
+```bash
+$ python tools/train.py --cfg configs/train.yaml
+```
+
+</details>
+
+<br>
+<details>
+  <summary><strong>Evaluate</strong> (click to expand)</summary>
+
+```bash
+$ python tools/val.py --cfg configs/train.yaml
+```
+
+</details>
+
+<br>
+<details>
+  <summary><strong>Fine-tune</strong> (click to expand)</summary>
+
+Fine-tune on CIFAR-10:
+
+```bash
+$ python tools/finetune.py --cfg configs/finetune.yaml
+```
+
+</details>
+
+<br>
+<details>
+  <summary><strong>References</strong> (click to expand)</summary>
+
+* https://github.com/rwightman/pytorch-image-models
+* https://github.com/facebookresearch/deit
+
 </details>
 
 <br>

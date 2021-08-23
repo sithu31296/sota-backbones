@@ -1,0 +1,34 @@
+DEVICE: cuda
+SAVE_DIR: 'output'
+
+DATASET:
+  ROOT: ''
+
+MODEL:
+  NAME: rest
+  VARIANT: S
+  PRETRAINED: 'checkpoints/rest/rest_small.pth'
+  FREEZE: false
+
+TRAIN:
+  IMAGE_SIZE: [224, 224]
+  EPOCHS: 300
+  BATCH_SIZE: 8
+  EVAL_INTERVAL: 20
+  AMP: true
+  DDP: false
+
+EVAL:
+  IMAGE_SIZE: [224, 224]
+  BATCH_SIZE: 8
+  MODEL_PATH: 'output/rest_S.pth'
+
+OPTIMIZER:
+  NAME: adamw
+  LR: 0.0005
+  DECAY: 0.05
+
+SCHEDULER:
+  NAME: steplr
+  STEP_SIZE: 30
+  GAMMA: 0.1

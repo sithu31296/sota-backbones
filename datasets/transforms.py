@@ -3,7 +3,7 @@ import torch
 from torchvision import transforms as T
 
 
-def get_augmentations(cfg):
+def get_train_transforms(cfg):
     return T.Compose(
         T.RandomSizedCrop(cfg['TRAIN']['IMAGE_SIZE']),
         T.RandomHorizontalFlip(),
@@ -13,6 +13,16 @@ def get_augmentations(cfg):
         T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
         T.RandomErasing(0.2),
     )
+
+def get_val_transforms(cfg):
+    return T.Compose(
+        T.Resize(tuple(map(lambda x: int(x / 0.9), cfg['EVAL']['IMAGE_SIZE']))),    # to main aspect ratio
+        T.CenterCrop(cfg['EVAL']['IMAGE_SIZE']),
+        T.ToTensor(),
+        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    )
+
+
 
 def one_hot(x, num_classes, on_value=1., off_value=0., device='cuda'):
     x = x.long().view(-1, 1)
