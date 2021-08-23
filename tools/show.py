@@ -5,7 +5,7 @@ sys.path.insert(0, '.')
 import models
 
 
-def main():
+def show_models():
     model_names = list(models.__all__.keys())
     model_variants = []
     for name in model_names:
@@ -14,4 +14,4 @@ def main():
     print(tabulate({'Model Names': model_names, 'Model Variants': model_variants}, headers='keys'))
 
 if __name__ == '__main__':
-    main()
+    show_models()
