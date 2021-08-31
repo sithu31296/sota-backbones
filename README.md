@@ -26,6 +26,8 @@
 
 [vip]: https://arxiv.org/abs/2106.12368v1
 [cyclemlp]: https://arxiv.org/abs/2107.10224
+[asmlp]: https://arxiv.org/abs/2107.08391
+[hiremlp]: https://arxiv.org/abs/2108.13341
 
 [xcitt]: https://dl.fbaipublicfiles.com/xcit/xcit_tiny_24_p16_224_dist.pth
 [xcits]: https://dl.fbaipublicfiles.com/xcit/xcit_small_24_p16_224_dist.pth
@@ -69,8 +71,8 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 [XCiT][xcit] | 80.4`\|`83.9`\|`84.3`\|`84.9 | 12`\|`48`\|`84`\|`189 | 2`\|`9`\|`16`\|`36 | [T][xcitt]\|[S][xcits]\|[M][xcitm]\|[L][xcitl]
 [VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]\|[D4][volod4]
 ||
-[MicroNet][micronet] | 51.4`\|`59.4`\|`62.5 | 1`\|`2`\|`3 | 0.006`\|`0.01`\|`0.02 | M1\|M2\|M3
-[MobileFormer][mobileformer] | 64.0`\|`68.7`\|`72.8`\|`76.7`\|`77.9`\|`79.3 | 3`\|`4`\|`5`\|`9`\|`11`\|`14 | 0.03`\|`0.05`\|`0.1`\|`0.2`\|`0.3`\|`0.5 | 26\|52\|96\|214\|294\|508
+[MicroNet][micronet] | 46.6`\|`51.4`\|`59.4`\|`62.5 | 1`\|`1.8`\|`2.4`\|`2.6 | 4M`\|`6M`\|`12M`\|`21M | M0\|M1\|M2\|M3
+[MobileFormer][mobileformer] | 72.8`\|`76.7`\|`77.9`\|`79.3 | 5`\|`9`\|`11`\|`14 | 0.1`\|`0.2`\|`0.3`\|`0.5 | 96\|214\|294\|508
 ||
 [PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.1`\|`83.6`\|`83.8 | 14`\|`25`\|`45`\|`63`\|`82 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][pvt1]\|[B2][pvt2]\|[B3][pvt3]\|[B4][pvt4]\|[B5][pvt5]
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [T][gfnett]\|[S][gfnets]\|[B][gfnetb]
@@ -82,6 +84,8 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <su
 ||
 [ViP][vip] | 81.5`\|`82.7`\|`83.2 | 25`\|`55`\|`88 | 7`\|`16`\|`24 | [S][vipw]\|[M][vipw]\|[L][vipw]
 [CycleMLP][cyclemlp] | 78.9`\|`81.6`\|`82.4`\|`83.0`\|`83.2 | 15`\|`27`\|`38`\|`52`\|`76 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][cycleb1]\|[B2][cycleb2]\|[B3][cycleb3]\|[B4][cycleb4]\|[B5][cycleb5]
+[ASMLP][asmlp] | 81.3`\|`83.1`\|`83.3 | 28`\|`50`\|`88 | 4`\|`9`\|`15 | T\|S\|B
+[HireMLP][hiremlp] | 78.9`\|`81.8`\|`83.1`\|`83.4 | 17`\|`33`\|`58`\|`96 | 2`\|`4`\|`8`\|`14 | T\|S\|B\|L
 
 <details open>
   <summary><strong>Table Notes</strong></summary>
