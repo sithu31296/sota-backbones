@@ -11,7 +11,6 @@
 
 ## <div align="center">Model Zoo</div>
 
-[efficientv2]: https://arxiv.org/abs/2104.00298
 [xcit]: https://arxiv.org/abs/2106.09681
 [cswin]: https://arxiv.org/abs/2107.00652v2
 [volo]: https://arxiv.org/abs/2106.13112v1
@@ -20,11 +19,11 @@
 [shuffle]: https://arxiv.org/abs/2106.03650
 [conformer]: https://arxiv.org/abs/2105.03889v1
 [rest]: https://arxiv.org/abs/2105.13677v3
+[vitae]: https://arxiv.org/abs/2106.03348
 
 [micronet]: https://arxiv.org/abs/2108.05894v1
 [mobileformer]: https://arxiv.org/abs/2108.05895v1
 
-[vip]: https://arxiv.org/abs/2106.12368v1
 [cyclemlp]: https://arxiv.org/abs/2107.10224
 [asmlp]: https://arxiv.org/abs/2107.08391
 [hiremlp]: https://arxiv.org/abs/2108.13341
@@ -66,26 +65,24 @@
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | <sup> Variants & Weights
 --- | --- | --- | --- | --- 
-[EfficientNetv2][efficientv2] | 83.9`\|`85.1`\|`85.7 | 22`\|`54`\|`120 | 9`\|`24`\|`53 | S\|M\|L
+[MicroNet][micronet] | 51.4`\|`59.4`\|`62.5 | 2`\|`2`\|`3 | 6M`\|`12M`\|`21M | M1\|M2\|M3
+[MobileFormer][mobileformer] | 76.7`\|`77.9`\|`79.3 | 9`\|`11`\|`14 | 0.2`\|`0.3`\|`0.5 | 214\|294\|508
 ||
-[XCiT][xcit] | 80.4`\|`83.9`\|`84.3`\|`84.9 | 12`\|`48`\|`84`\|`189 | 2`\|`9`\|`16`\|`36 | [T][xcitt]\|[S][xcits]\|[M][xcitm]\|[L][xcitl]
-[VOLO][volo] | 84.2`\|`85.2`\|`85.4`\|`85.7 | 27`\|`59`\|`86`\|`193 | 7`\|`14`\|`21`\|`44 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]\|[D4][volod4]
-||
-[MicroNet][micronet] | 46.6`\|`51.4`\|`59.4`\|`62.5 | 1`\|`1.8`\|`2.4`\|`2.6 | 4M`\|`6M`\|`12M`\|`21M | M0\|M1\|M2\|M3
-[MobileFormer][mobileformer] | 72.8`\|`76.7`\|`77.9`\|`79.3 | 5`\|`9`\|`11`\|`14 | 0.1`\|`0.2`\|`0.3`\|`0.5 | 96\|214\|294\|508
-||
-[PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.1`\|`83.6`\|`83.8 | 14`\|`25`\|`45`\|`63`\|`82 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][pvt1]\|[B2][pvt2]\|[B3][pvt3]\|[B4][pvt4]\|[B5][pvt5]
+[ViTAE][vitae] | 77.9`\|`81.0`\|`82.0 | 6`\|`13`\|`24 | 2`\|`3`\|`6 | 6M\|13M\|S
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [T][gfnett]\|[S][gfnets]\|[B][gfnetb]
+[PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.6 | 14`\|`25`\|`63 | 2`\|`4`\|`10 | [B1][pvt1]\|[B2][pvt2]\|[B4][pvt4]
 [ResT][rest] | 79.6`\|`81.6`\|`83.6 | 14`\|`30`\|`52 | 2`\|`4`\|`8 | [S][rests]\|[B][restb]\|[L][restl]
 ||
 [Conformer][conformer] | 81.3`\|`83.4`\|`84.1 | 24`\|`38`\|`83 | 5`\|`11`\|`23 | [T][conformert]\|[S][conformers]\|[B][conformerb]
 [Shuffle][shuffle] | 82.4`\|`83.6`\|`84.0 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][shufflet]\|[S][shuffles]\|[B][shuffleb]
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T][cswint]\|[S][cswins]\|[B][cswinb]
 ||
-[ViP][vip] | 81.5`\|`82.7`\|`83.2 | 25`\|`55`\|`88 | 7`\|`16`\|`24 | [S][vipw]\|[M][vipw]\|[L][vipw]
-[CycleMLP][cyclemlp] | 78.9`\|`81.6`\|`82.4`\|`83.0`\|`83.2 | 15`\|`27`\|`38`\|`52`\|`76 | 2`\|`4`\|`7`\|`10`\|`12 | [B1][cycleb1]\|[B2][cycleb2]\|[B3][cycleb3]\|[B4][cycleb4]\|[B5][cycleb5]
+[CycleMLP][cyclemlp] | 81.6`\|`83.0`\|`83.2 | 27`\|`52`\|`76 | 4`\|`10`\|`12 | [B2][cycleb2]\|[B4][cycleb4]\|[B5][cycleb5]
 [ASMLP][asmlp] | 81.3`\|`83.1`\|`83.3 | 28`\|`50`\|`88 | 4`\|`9`\|`15 | T\|S\|B
-[HireMLP][hiremlp] | 78.9`\|`81.8`\|`83.1`\|`83.4 | 17`\|`33`\|`58`\|`96 | 2`\|`4`\|`8`\|`14 | T\|S\|B\|L
+[HireMLP][hiremlp] | 81.8`\|`83.1`\|`83.4 | 33`\|`58`\|`96 | 4`\|`8`\|`14 | S\|B\|L
+||
+[XCiT][xcit] | 80.4`\|`83.9`\|`84.3 | 12`\|`48`\|`84 | 2`\|`9`\|`16 | [T][xcitt]\|[S][xcits]\|[M][xcitm]
+[VOLO][volo] | 84.2`\|`85.2`\|`85.4 | 27`\|`59`\|`86 | 7`\|`14`\|`21 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]
 
 <details open>
   <summary><strong>Table Notes</strong></summary>
