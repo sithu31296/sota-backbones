@@ -5,7 +5,7 @@ DATASET:
   ROOT: ''
 
 MODEL:
-  NAME: rest
+  NAME: ResT
   VARIANT: S
 
 KD:
@@ -13,7 +13,7 @@ KD:
   ALPHA: 0.9
   TEMP: 10
   TEACHER:
-    NAME: rest
+    NAME: ResT
     VARIANT: L
     PRETRAINED: 'checkpoints/rest/rest_large.pth'
 

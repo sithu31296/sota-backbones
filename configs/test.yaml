@@ -1,7 +1,7 @@
 DEVICE: cpu                             # device used for training
 
 MODEL:
-  NAME: rest                                          # name of the model you are using
+  NAME: ResT                                          # name of the model you are using
   VARIANT: B                                          # sub name of the model you are using 
   PRETRAINED: 'checkpoints/rest/rest_base.pth'       # pretrained model path
 

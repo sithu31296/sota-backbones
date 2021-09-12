@@ -5,7 +5,7 @@ DATASET:
   ROOT: ''
 
 MODEL:
-  NAME: rest
+  NAME: ResT
   VARIANT: S
   PRETRAINED: 'checkpoints/rest/rest_small.pth'
   FREEZE: false

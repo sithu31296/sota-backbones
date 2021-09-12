@@ -22,18 +22,16 @@
 [shuffle]: https://arxiv.org/abs/2106.03650
 [conformer]: https://arxiv.org/abs/2105.03889v1
 [rest]: https://arxiv.org/abs/2105.13677v3
-[vitae]: https://arxiv.org/abs/2106.03348
 
 [cyclemlp]: https://arxiv.org/abs/2107.10224
-[asmlp]: https://arxiv.org/abs/2107.08391
 [hiremlp]: https://arxiv.org/abs/2108.13341
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Variants & Weights
 --- | --- | --- | --- | --- 
-[MicroNet][micronet] | 51.4`\|`59.4`\|`62.5 | 2`\|`2`\|`3 | 6M`\|`12M`\|`21M | M1\|M2\|M3
+[MicroNet][micronet] | 51.4`\|`59.4`\|`62.5 | 2`\|`2`\|`3 | 6M`\|`12M`\|`21M | [M1][micronetw]\|[M2][micronetw]\|[M3][micronetw]
+||
 [MobileFormer][mobileformer] | 76.7`\|`77.9`\|`79.3 | 9`\|`11`\|`14 | 214M`\|`294M`\|`508M | 214\|294\|508
 ||
-[ViTAE][vitae] | 77.9`\|`81.0`\|`82.0 | 6`\|`13`\|`24 | 2`\|`3`\|`6 | 6M\|13M\|S
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [T][gfnett]\|[S][gfnets]\|[B][gfnetb]
 [PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.6 | 14`\|`25`\|`63 | 2`\|`4`\|`10 | [B1][pvt1]\|[B2][pvt2]\|[B4][pvt4]
 [ResT][rest] | 79.6`\|`81.6`\|`83.6 | 14`\|`30`\|`52 | 2`\|`4`\|`8 | [S][rests]\|[B][restb]\|[L][restl]
@@ -43,7 +41,6 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T][cswint]\|[S][cswins]\|[B][cswinb]
 ||
 [CycleMLP][cyclemlp] | 81.6`\|`83.0`\|`83.2 | 27`\|`52`\|`76 | 4`\|`10`\|`12 | [B2][cycleb2]\|[B4][cycleb4]\|[B5][cycleb5]
-[ASMLP][asmlp] | 81.3`\|`83.1`\|`83.3 | 28`\|`50`\|`88 | 4`\|`9`\|`15 | T\|S\|B
 [HireMLP][hiremlp] | 81.8`\|`83.1`\|`83.4 | 33`\|`58`\|`96 | 4`\|`8`\|`14 | S\|B\|L
 ||
 [XCiT][xcit] | 80.4`\|`83.9`\|`84.3 | 12`\|`48`\|`84 | 2`\|`9`\|`16 | [T][xcitt]\|[S][xcits]\|[M][xcitm]
@@ -87,17 +84,17 @@ A table with model names and variants will be shown:
 ```
 Model Names    Model Variants
 -------------  --------------------------------
-resnet         ['18', '34', '50', '101', '152']
-xcit           ['T', 'S', 'M', 'L']
-cswin          ['T', 'S', 'B', 'L']
-volo           ['D1', 'D2', 'D3', 'D4']
-gfnet          ['T', 'S', 'B']
-pvtv2          ['B1', 'B2', 'B3', 'B4', 'B5']
-shuffle        ['T', 'S', 'B']
-rest           ['S', 'B', 'L']
-conformer      ['T', 'S', 'B']
-vip            ['S', 'M', 'L']
-cyclemlp       ['B1', 'B2', 'B3', 'B4', 'B5']
+ResNet         ['18', '34', '50', '101', '152']
+MicroNet       ['M1', 'M2', 'M3']
+GFNet          ['T', 'S', 'B']
+PVTv2          ['B1', 'B2', 'B3', 'B4', 'B5']
+ResT           ['S', 'B', 'L']
+Conformer      ['T', 'S', 'B']
+Shuffle        ['T', 'S', 'B']
+CSWin          ['T', 'S', 'B', 'L']
+CycleMLP       ['B1', 'B2', 'B3', 'B4', 'B5']
+XciT           ['T', 'S', 'M', 'L']
+VOLO           ['D1', 'D2', 'D3', 'D4']
 ```
 
 </details>
@@ -264,8 +261,6 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
   archivePrefix={arXiv},
   primaryClass={cs.CV}
 }
-
-
 ```
 
 </details>
@@ -298,3 +293,4 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
 [conformert]: https://drive.google.com/file/d/19SxGhKcWOR5oQSxNUWUM2MGYiaWMrF1z/view?usp=sharing
 [conformers]: https://drive.google.com/file/d/1mpOlbLaVxOfEwV4-ha78j_1Ebqzj2B83/view?usp=sharing
 [conformerb]: https://drive.google.com/file/d/1oeQ9LSOGKEUaYGu7WTlUGl3KDsQIi0MA/view?usp=sharing
+[micronetw]: https://drive.google.com/drive/folders/1j4JSTcAh94U2k-7jCl_3nwbNi0eduM2P?usp=sharing
