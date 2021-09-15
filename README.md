@@ -25,6 +25,7 @@
 
 [cyclemlp]: https://arxiv.org/abs/2107.10224
 [hiremlp]: https://arxiv.org/abs/2108.13341
+[smlp]: https://arxiv.org/abs/2109.05422
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Variants & Weights
 --- | --- | --- | --- | --- 
@@ -42,6 +43,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 ||
 [CycleMLP][cyclemlp] | 81.6`\|`83.0`\|`83.2 | 27`\|`52`\|`76 | 4`\|`10`\|`12 | [B2][cycleb2]\|[B4][cycleb4]\|[B5][cycleb5]
 [HireMLP][hiremlp] | 81.8`\|`83.1`\|`83.4 | 33`\|`58`\|`96 | 4`\|`8`\|`14 | S\|B\|L
+[sMLP][smlp] | 81.9`\|`83.1`\|`83.4 | 24`\|`49`\|`66 | 5`\|`10`\|`14 | T\|S\|B
 ||
 [XCiT][xcit] | 80.4`\|`83.9`\|`84.3 | 12`\|`48`\|`84 | 2`\|`9`\|`16 | [T][xcitt]\|[S][xcits]\|[M][xcitm]
 [VOLO][volo] | 84.2`\|`85.2`\|`85.4 | 27`\|`59`\|`86 | 7`\|`14`\|`21 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]
@@ -253,14 +255,6 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
   year={2021}
 }
 
-@misc{hou2021vision,
-  title={Vision Permutator: A Permutable MLP-Like Architecture for Visual Recognition},
-  author={Qibin Hou and Zihang Jiang and Li Yuan and Ming-Ming Cheng and Shuicheng Yan and Jiashi Feng},
-  year={2021},
-  eprint={2106.12368},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV}
-}
 ```
 
 </details>
