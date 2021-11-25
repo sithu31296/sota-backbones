@@ -26,6 +26,7 @@
 [cyclemlp]: https://arxiv.org/abs/2107.10224
 [hiremlp]: https://arxiv.org/abs/2108.13341
 [smlp]: https://arxiv.org/abs/2109.05422
+[poolformer]: https://arxiv.org/abs/2111.11418
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Variants & Weights
 --- | --- | --- | --- | --- 
@@ -45,6 +46,8 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 [HireMLP][hiremlp] | 81.8`\|`83.1`\|`83.4 | 33`\|`58`\|`96 | 4`\|`8`\|`14 | S\|B\|L
 [sMLP][smlp] | 81.9`\|`83.1`\|`83.4 | 24`\|`49`\|`66 | 5`\|`10`\|`14 | T\|S\|B
 ||
+[PoolFormer][poolformer] | 80.3`\|`81.4`\|`82.1 | 21`\|`31`\|`56 | 4`\|`5`\|`9 | [S24][pfs24]\|[S36][pfs36]\|[M36][pfm36]
+||
 [XCiT][xcit] | 80.4`\|`83.9`\|`84.3 | 12`\|`48`\|`84 | 2`\|`9`\|`16 | [T][xcitt]\|[S][xcits]\|[M][xcitm]
 [VOLO][volo] | 84.2`\|`85.2`\|`85.4 | 27`\|`59`\|`86 | 7`\|`14`\|`21 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]
 
@@ -55,7 +58,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 * All models' weights are from official repositories.
 * Only models trained on ImageNet1k are compared. 
 * (Parameters > 200M) Models are not included. 
-* *PVTv2*, *ResT*, *Conformer*, *XCiT* and *CycleMLP* models work with any image size.
+* *PVTv2*, *ResT*, *Conformer*, *XCiT*, *CycleMLP* and *PoolFormer* models work with any image size.
 
 </details>
 
@@ -232,15 +235,6 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
   primaryClass={cs.CL}
 }
 
-@misc{chen2021mobileformer,
-  title={Mobile-Former: Bridging MobileNet and Transformer}, 
-  author={Yinpeng Chen and Xiyang Dai and Dongdong Chen and Mengchen Liu and Xiaoyi Dong and Lu Yuan and Zicheng Liu},
-  year={2021},
-  eprint={2108.05895},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV}
-}
-
 @article{rao2021global,
   title={Global Filter Networks for Image Classification},
   author={Rao, Yongming and Zhao, Wenliang and Zhu, Zheng and Lu, Jiwen and Zhou, Jie},
@@ -288,3 +282,6 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
 [conformers]: https://drive.google.com/file/d/1mpOlbLaVxOfEwV4-ha78j_1Ebqzj2B83/view?usp=sharing
 [conformerb]: https://drive.google.com/file/d/1oeQ9LSOGKEUaYGu7WTlUGl3KDsQIi0MA/view?usp=sharing
 [micronetw]: https://drive.google.com/drive/folders/1j4JSTcAh94U2k-7jCl_3nwbNi0eduM2P?usp=sharing
+[pfs24]: https://github.com/sail-sg/poolformer/releases/download/v1.0/poolformer_s24.pth.tar
+[pfs36]: https://github.com/sail-sg/poolformer/releases/download/v1.0/poolformer_s36.pth.tar
+[pfm36]: https://github.com/sail-sg/poolformer/releases/download/v1.0/poolformer_m36.pth.tar
