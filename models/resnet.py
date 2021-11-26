@@ -41,10 +41,10 @@ class Bottleneck(nn.Module):
         self.conv1 = nn.Conv2d(in_ch, out_ch, 1, 1, 0, bias=False)
         self.bn1 = nn.BatchNorm2d(out_ch)
 
-        self.conv2 = nn.Conv2d(out_ch, out_ch, 3, s, 1)
+        self.conv2 = nn.Conv2d(out_ch, out_ch, 3, s, 1, bias=False)
         self.bn2 = nn.BatchNorm2d(out_ch)
 
-        self.conv3 = nn.Conv2d(out_ch, out_ch * self.expansion, 1, 1, 0)
+        self.conv3 = nn.Conv2d(out_ch, out_ch * self.expansion, 1, 1, 0, bias=False)
         self.bn3 = nn.BatchNorm2d(out_ch * self.expansion)
 
         self.relu = nn.ReLU(True)
@@ -118,7 +118,7 @@ class ResNet(nn.Module):
         downsample = None
         if s != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.Conv2d(self.inplanes, planes * block.expansion, 1, s),
+                nn.Conv2d(self.inplanes, planes * block.expansion, 1, s, bias=False),
                 nn.BatchNorm2d(planes * block.expansion)
             )
 
@@ -148,7 +148,7 @@ class ResNet(nn.Module):
 
 
 if __name__ == '__main__':
-    model = ResNet('50')
+    model = ResNet('101', 'checkpoints/resnet/resnet101_a1.pth')
     x = torch.zeros(1, 3, 224, 224)
     y = model(x)
     print(y.shape)

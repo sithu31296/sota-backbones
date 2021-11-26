@@ -27,12 +27,15 @@
 [hiremlp]: https://arxiv.org/abs/2108.13341
 [smlp]: https://arxiv.org/abs/2109.05422
 [poolformer]: https://arxiv.org/abs/2111.11418
+[rsb]: https://arxiv.org/abs/2110.00476
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Variants & Weights
 --- | --- | --- | --- | --- 
 [MicroNet][micronet] | 51.4`\|`59.4`\|`62.5 | 2`\|`2`\|`3 | 6M`\|`12M`\|`21M | [M1][micronetw]\|[M2][micronetw]\|[M3][micronetw]
 ||
 [MobileFormer][mobileformer] | 76.7`\|`77.9`\|`79.3 | 9`\|`11`\|`14 | 214M`\|`294M`\|`508M | 214\|294\|508
+||
+[ResNet*][rsb] | 71.5`\|`80.4`\|`81.5 | 12`\|`26`\|`45 | 2`\|`4`\|`8 | [18][rsb18]\|[50][rsb50]\|[101][rsb101]
 ||
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [T][gfnett]\|[S][gfnets]\|[B][gfnetb]
 [PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.6 | 14`\|`25`\|`63 | 2`\|`4`\|`10 | [B1][pvt1]\|[B2][pvt2]\|[B4][pvt4]
@@ -50,6 +53,8 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 ||
 [XCiT][xcit] | 80.4`\|`83.9`\|`84.3 | 12`\|`48`\|`84 | 2`\|`9`\|`16 | [T][xcitt]\|[S][xcits]\|[M][xcitm]
 [VOLO][volo] | 84.2`\|`85.2`\|`85.4 | 27`\|`59`\|`86 | 7`\|`14`\|`21 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]
+
+> Notes: ResNet* is from "ResNet strikes back" paper.
 
 <details open>
   <summary><strong>Table Notes</strong></summary>
@@ -285,3 +290,6 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
 [pfs24]: https://github.com/sail-sg/poolformer/releases/download/v1.0/poolformer_s24.pth.tar
 [pfs36]: https://github.com/sail-sg/poolformer/releases/download/v1.0/poolformer_s36.pth.tar
 [pfm36]: https://github.com/sail-sg/poolformer/releases/download/v1.0/poolformer_m36.pth.tar
+[rsb18]: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-rsb-weights/resnet18_a1_0-d63eafa0.pth
+[rsb50]: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-rsb-weights/resnet50_a1_0-14fe96d1.pth
+[rsb101]: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-rsb-weights/resnet101_a1_0-cdcb52a9.pth
