@@ -14,9 +14,7 @@
 [micronet]: https://arxiv.org/abs/2108.05894v1
 [mobileformer]: https://arxiv.org/abs/2108.05895v1
 
-[xcit]: https://arxiv.org/abs/2106.09681
 [cswin]: https://arxiv.org/abs/2107.00652v2
-[volo]: https://arxiv.org/abs/2106.13112v1
 [gfnet]: https://arxiv.org/abs/2107.00645
 [pvtv2]: https://arxiv.org/abs/2106.13797
 [shuffle]: https://arxiv.org/abs/2106.03650
@@ -33,7 +31,6 @@
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Variants & Weights
 --- | --- | --- | --- | --- 
 [MicroNet][micronet] | 51.4`\|`59.4`\|`62.5 | 2`\|`2`\|`3 | 6M`\|`12M`\|`21M | [M1][micronetw]\|[M2][micronetw]\|[M3][micronetw]
-||
 [MobileFormer][mobileformer] | 76.7`\|`77.9`\|`79.3 | 9`\|`11`\|`14 | 214M`\|`294M`\|`508M | 214\|294\|508
 ||
 [ResNet*][rsb] | 71.5`\|`80.4`\|`81.5 | 12`\|`26`\|`45 | 2`\|`4`\|`8 | [18][rsb18]\|[50][rsb50]\|[101][rsb101]
@@ -42,6 +39,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 [PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.6 | 14`\|`25`\|`63 | 2`\|`4`\|`10 | [B1][pvt1]\|[B2][pvt2]\|[B4][pvt4]
 [ResT][rest] | 79.6`\|`81.6`\|`83.6 | 14`\|`30`\|`52 | 2`\|`4`\|`8 | [S][rests]\|[B][restb]\|[L][restl]
 ||
+[PoolFormer][poolformer] | 80.3`\|`81.4`\|`82.1 | 21`\|`31`\|`56 | 4`\|`5`\|`9 | [S24][pfs24]\|[S36][pfs36]\|[M36][pfm36]
 [PatchConvnet][patchconvnet] | 82.1`\|`83.2`\|`83.5 | 25`\|`48`\|`99 | 4`\|`8`\|`16 | [S60][pcs60]\|[S120][pcs120]\|[B60][pcb60]
 [Conformer][conformer] | 81.3`\|`83.4`\|`84.1 | 24`\|`38`\|`83 | 5`\|`11`\|`23 | [T][conformert]\|[S][conformers]\|[B][conformerb]
 [Shuffle][shuffle] | 82.4`\|`83.6`\|`84.0 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][shufflet]\|[S][shuffles]\|[B][shuffleb]
@@ -50,22 +48,15 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 [CycleMLP][cyclemlp] | 81.6`\|`83.0`\|`83.2 | 27`\|`52`\|`76 | 4`\|`10`\|`12 | [B2][cycleb2]\|[B4][cycleb4]\|[B5][cycleb5]
 [HireMLP][hiremlp] | 81.8`\|`83.1`\|`83.4 | 33`\|`58`\|`96 | 4`\|`8`\|`14 | S\|B\|L
 [sMLP][smlp] | 81.9`\|`83.1`\|`83.4 | 24`\|`49`\|`66 | 5`\|`10`\|`14 | T\|S\|B
-||
-[PoolFormer][poolformer] | 80.3`\|`81.4`\|`82.1 | 21`\|`31`\|`56 | 4`\|`5`\|`9 | [S24][pfs24]\|[S36][pfs36]\|[M36][pfm36]
-||
-[XCiT][xcit] | 80.4`\|`83.9`\|`84.3 | 12`\|`48`\|`84 | 2`\|`9`\|`16 | [T][xcitt]\|[S][xcits]\|[M][xcitm]
-[VOLO][volo] | 84.2`\|`85.2`\|`85.4 | 27`\|`59`\|`86 | 7`\|`14`\|`21 | [D1][volod1]\|[D2][volod2]\|[D3][volod3]
 
 > Notes: ResNet* is from "ResNet strikes back" paper.
 
 <details open>
   <summary><strong>Table Notes</strong></summary>
 
-* Image size is 224x224. EfficientNetv2 uses progressive learning (image size from 128 to 380).
-* All models' weights are from official repositories.
-* Only models trained on ImageNet1k are compared. 
-* (Parameters > 200M) Models are not included. 
-* *PVTv2*, *ResT*, *Conformer*, *XCiT*, *CycleMLP* and *PoolFormer* models work with any image size.
+* Only include models trained on ImageNet1k with image size of 224x224.
+* Models' weights are from respective official repositories.
+* Large mdoels (Parameters > 100M) are not included. 
 
 </details>
 
@@ -105,8 +96,6 @@ Conformer      ['T', 'S', 'B']
 Shuffle        ['T', 'S', 'B']
 CSWin          ['T', 'S', 'B', 'L']
 CycleMLP       ['B1', 'B2', 'B3', 'B4', 'B5']
-XciT           ['T', 'S', 'M', 'L']
-VOLO           ['D1', 'D2', 'D3', 'D4']
 ```
 
 </details>
@@ -174,34 +163,29 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
   <summary><strong>Citations</strong> (click to expand)</summary>
 
 ```
-@article{zhql2021ResT,
-  title={ResT: An Efficient Transformer for Visual Recognition},
-  author={Zhang, Qinglong and Yang, Yubin},
-  journal={arXiv preprint arXiv:2105.13677v3},
-  year={2021}
-}
-
-@article{peng2021conformer,
-  title={Conformer: Local Features Coupling Global Representations for Visual Recognition}, 
-  author={Zhiliang Peng and Wei Huang and Shanzhi Gu and Lingxi Xie and Yaowei Wang and Jianbin Jiao and Qixiang Ye},
-  journal={arXiv preprint arXiv:2105.03889},
+@misc{li2021micronet,
+  title={MicroNet: Improving Image Recognition with Extremely Low FLOPs}, 
+  author={Yunsheng Li and Yinpeng Chen and Xiyang Dai and Dongdong Chen and Mengchen Liu and Lu Yuan and Zicheng Liu and Lei Zhang and Nuno Vasconcelos},
   year={2021},
-}
-
-@misc{dong2021cswin,
-  title={CSWin Transformer: A General Vision Transformer Backbone with Cross-Shaped Windows}, 
-  author={Xiaoyi Dong and Jianmin Bao and Dongdong Chen and Weiming Zhang and Nenghai Yu and Lu Yuan and Dong Chen and Baining Guo},
-  year={2021},
-  eprint={2107.00652},
+  eprint={2108.05894},
   archivePrefix={arXiv},
   primaryClass={cs.CV}
 }
 
-@misc{chen2021cyclemlp,
-  title={CycleMLP: A MLP-like Architecture for Dense Prediction}, 
-  author={Shoufa Chen and Enze Xie and Chongjian Ge and Ding Liang and Ping Luo},
+@misc{wightman2021resnet,
+  title={ResNet strikes back: An improved training procedure in timm}, 
+  author={Ross Wightman and Hugo Touvron and Hervé Jégou},
   year={2021},
-  eprint={2107.10224},
+  eprint={2110.00476},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
+
+@misc{rao2021global,
+  title={Global Filter Networks for Image Classification}, 
+  author={Yongming Rao and Wenliang Zhao and Zheng Zhu and Jiwen Lu and Jie Zhou},
+  year={2021},
+  eprint={2107.00645},
   archivePrefix={arXiv},
   primaryClass={cs.CV}
 }
@@ -215,68 +199,85 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
   primaryClass={cs.CV}
 }
 
-@misc{elnouby2021xcit,
-  title={XCiT: Cross-Covariance Image Transformers}, 
-  author={Alaaeldin El-Nouby and Hugo Touvron and Mathilde Caron and Piotr Bojanowski and Matthijs Douze and Armand Joulin and Ivan Laptev and Natalia Neverova and Gabriel Synnaeve and Jakob Verbeek and Hervé Jegou},
+@misc{zhang2021rest,
+  title={ResT: An Efficient Transformer for Visual Recognition}, 
+  author={Qinglong Zhang and Yubin Yang},
   year={2021},
-  eprint={2106.09681},
+  eprint={2105.13677},
   archivePrefix={arXiv},
   primaryClass={cs.CV}
 }
 
-@misc{yuan2021volo,
-  title={VOLO: Vision Outlooker for Visual Recognition}, 
-  author={Li Yuan and Qibin Hou and Zihang Jiang and Jiashi Feng and Shuicheng Yan},
+@misc{touvron2021augmenting,
+  title={Augmenting Convolutional networks with attention-based aggregation}, 
+  author={Hugo Touvron and Matthieu Cord and Alaaeldin El-Nouby and Piotr Bojanowski and Armand Joulin and Gabriel Synnaeve and Hervé Jégou},
   year={2021},
-  eprint={2106.13112},
+  eprint={2112.13692},
   archivePrefix={arXiv},
   primaryClass={cs.CV}
 }
 
-@misc{yan2020micronet,
-  title={MicroNet for Efficient Language Modeling}, 
-  author={Zhongxia Yan and Hanrui Wang and Demi Guo and Song Han},
-  year={2020},
-  eprint={2005.07877},
-  archivePrefix={arXiv},
-  primaryClass={cs.CL}
-}
-
-@article{rao2021global,
-  title={Global Filter Networks for Image Classification},
-  author={Rao, Yongming and Zhao, Wenliang and Zhu, Zheng and Lu, Jiwen and Zhou, Jie},
-  journal={arXiv preprint arXiv:2107.00645},
-  year={2021}
-}
-
-@article{huang2021shuffle,
-  title={Shuffle Transformer: Rethinking Spatial Shuffle for Vision Transformer},
-  author={Huang, Zilong and Ben, Youcheng and Luo, Guozhong and Cheng, Pei and Yu, Gang and Fu, Bin},
-  journal={arXiv preprint arXiv:2106.03650},
-  year={2021}
-}
-
-@article{touvron2021patchconvnet,
-  title={Augmenting Convolutional networks with attention-based aggregation},
-  author={Hugo Touvron and Matthieu Cord and Alaaeldin El-Nouby and Piotr Bojanowski and Armand Joulin and Gabriel Synnaeve and Jakob Verbeek and Herv'e J'egou},
-  journal={arXiv preprint arXiv:2112.13692},
+@misc{peng2021conformer,
+  title={Conformer: Local Features Coupling Global Representations for Visual Recognition}, 
+  author={Zhiliang Peng and Wei Huang and Shanzhi Gu and Lingxi Xie and Yaowei Wang and Jianbin Jiao and Qixiang Ye},
   year={2021},
+  eprint={2105.03889},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
 }
 
+@misc{huang2021shuffle,
+  title={Shuffle Transformer: Rethinking Spatial Shuffle for Vision Transformer}, 
+  author={Zilong Huang and Youcheng Ben and Guozhong Luo and Pei Cheng and Gang Yu and Bin Fu},
+  year={2021},
+  eprint={2106.03650},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
+
+@misc{dong2022cswin,
+  title={CSWin Transformer: A General Vision Transformer Backbone with Cross-Shaped Windows}, 
+  author={Xiaoyi Dong and Jianmin Bao and Dongdong Chen and Weiming Zhang and Nenghai Yu and Lu Yuan and Dong Chen and Baining Guo},
+  year={2022},
+  eprint={2107.00652},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
+
+@misc{chen2021cyclemlp,
+  title={CycleMLP: A MLP-like Architecture for Dense Prediction}, 
+  author={Shoufa Chen and Enze Xie and Chongjian Ge and Runjian Chen and Ding Liang and Ping Luo},
+  year={2021},
+  eprint={2107.10224},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
+
+@misc{guo2021hiremlp,
+  title={Hire-MLP: Vision MLP via Hierarchical Rearrangement}, 
+  author={Jianyuan Guo and Yehui Tang and Kai Han and Xinghao Chen and Han Wu and Chao Xu and Chang Xu and Yunhe Wang},
+  year={2021},
+  eprint={2108.13341},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
+
+@misc{yu2021metaformer,
+  title={MetaFormer is Actually What You Need for Vision}, 
+  author={Weihao Yu and Mi Luo and Pan Zhou and Chenyang Si and Yichen Zhou and Xinchao Wang and Jiashi Feng and Shuicheng Yan},
+  year={2021},
+  eprint={2111.11418},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
 ```
 
 </details>
 
 
-[xcitt]: https://dl.fbaipublicfiles.com/xcit/xcit_tiny_24_p16_224_dist.pth
-[xcits]: https://dl.fbaipublicfiles.com/xcit/xcit_small_24_p16_224_dist.pth
-[xcitm]: https://dl.fbaipublicfiles.com/xcit/xcit_medium_24_p16_224_dist.pth
 [cswint]: https://github.com/microsoft/CSWin-Transformer/releases/download/v0.1.0/cswin_tiny_224.pth
 [cswins]: https://github.com/microsoft/CSWin-Transformer/releases/download/v0.1.0/cswin_small_224.pth
 [cswinb]: https://github.com/microsoft/CSWin-Transformer/releases/download/v0.1.0/cswin_base_224.pth
-[volod1]: https://github.com/sail-sg/volo/releases/download/volo_1/d1_224_84.2.pth.tar
-[volod2]: https://github.com/sail-sg/volo/releases/download/volo_1/d2_224_85.2.pth.tar
-[volod3]: https://github.com/sail-sg/volo/releases/download/volo_1/d3_224_85.4.pth.tar
 [rests]: https://drive.google.com/file/d/18YGFK_ZqE_AXZ3cMLyM1Q-OnvWj0WlKZ/view?usp=sharing
 [restb]: https://drive.google.com/file/d/1CdjkmikUM8tP6xKPGXXOlWdGJ9heIZqf/view?usp=sharing
 [restl]: https://drive.google.com/file/d/1J60OCXwvlwbNiTwoRj-iLnGaAN9q0-g9/view?usp=sharing
