@@ -11,6 +11,7 @@ from .rest import ResT, rest_settings
 from .conformer import Conformer, conformer_settings
 from .micronet import MicroNet, micronet_settings
 from .poolformer import PoolFormer, poolformer_settings
+from .patchconvnet import PatchConvnet, patchconvnet_settings
 
 
 __all__ = [
@@ -18,7 +19,7 @@ __all__ = [
     'GFNet', 'PVTv2', 'ResT',
     'Conformer', 'Shuffle', 'CSWin', 
     'CycleMLP',
-    'PoolFormer',
+    'PoolFormer', 'PatchConvnet',
     'XciT', 'VOLO',
 ]
 

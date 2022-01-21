@@ -22,6 +22,7 @@
 [shuffle]: https://arxiv.org/abs/2106.03650
 [conformer]: https://arxiv.org/abs/2105.03889v1
 [rest]: https://arxiv.org/abs/2105.13677v3
+[patchconvnet]: https://arxiv.org/abs/2112.13692
 
 [cyclemlp]: https://arxiv.org/abs/2107.10224
 [hiremlp]: https://arxiv.org/abs/2108.13341
@@ -41,6 +42,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 [PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.6 | 14`\|`25`\|`63 | 2`\|`4`\|`10 | [B1][pvt1]\|[B2][pvt2]\|[B4][pvt4]
 [ResT][rest] | 79.6`\|`81.6`\|`83.6 | 14`\|`30`\|`52 | 2`\|`4`\|`8 | [S][rests]\|[B][restb]\|[L][restl]
 ||
+[PatchConvnet][patchconvnet] | 82.1`\|`83.2`\|`83.5 | 25`\|`48`\|`99 | 4`\|`8`\|`16 | [S60][pcs60]\|[S120][pcs120]\|[B60][pcb60]
 [Conformer][conformer] | 81.3`\|`83.4`\|`84.1 | 24`\|`38`\|`83 | 5`\|`11`\|`23 | [T][conformert]\|[S][conformers]\|[B][conformerb]
 [Shuffle][shuffle] | 82.4`\|`83.6`\|`84.0 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][shufflet]\|[S][shuffles]\|[B][shuffleb]
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T][cswint]\|[S][cswins]\|[B][cswinb]
@@ -254,6 +256,13 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
   year={2021}
 }
 
+@article{touvron2021patchconvnet,
+  title={Augmenting Convolutional networks with attention-based aggregation},
+  author={Hugo Touvron and Matthieu Cord and Alaaeldin El-Nouby and Piotr Bojanowski and Armand Joulin and Gabriel Synnaeve and Jakob Verbeek and Herv'e J'egou},
+  journal={arXiv preprint arXiv:2112.13692},
+  year={2021},
+}
+
 ```
 
 </details>
@@ -293,3 +302,6 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
 [rsb18]: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-rsb-weights/resnet18_a1_0-d63eafa0.pth
 [rsb50]: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-rsb-weights/resnet50_a1_0-14fe96d1.pth
 [rsb101]: https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-rsb-weights/resnet101_a1_0-cdcb52a9.pth
+[pcs60]: https://dl.fbaipublicfiles.com/deit/s60_224_1k.pth
+[pcs120]: https://dl.fbaipublicfiles.com/deit/s120_224_1k.pth
+[pcb60]: https://dl.fbaipublicfiles.com/deit/b60_224_1k.pth
