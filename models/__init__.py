@@ -1,9 +1,7 @@
 from pathlib import Path
 from .resnet import ResNet, resnet_settings
-from .xcit import XciT, xcit_settings
 from .cyclemlp import CycleMLP, cyclemlp_settings
 from .cswin import CSWin, cswin_settings
-from .volo import VOLO, volo_settings
 from .gfnet import GFNet, gfnet_settings
 from .pvt import PVTv2, pvtv2_settings
 from .shuffle import Shuffle, shuffle_settings
@@ -12,15 +10,16 @@ from .conformer import Conformer, conformer_settings
 from .micronet import MicroNet, micronet_settings
 from .poolformer import PoolFormer, poolformer_settings
 from .patchconvnet import PatchConvnet, patchconvnet_settings
+from .hiremlp import HireMLP, hiremlp_settings
+from .wavemlp import WaveMLP, wavemlp_settings
 
 
 __all__ = [
     'ResNet', 'MicroNet',  
     'GFNet', 'PVTv2', 'ResT',
     'Conformer', 'Shuffle', 'CSWin', 
-    'CycleMLP',
+    'CycleMLP', 'HireMLP', 'WaveMLP',
     'PoolFormer', 'PatchConvnet',
-    'XciT', 'VOLO',
 ]
 
 

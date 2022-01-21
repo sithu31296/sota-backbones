@@ -24,9 +24,9 @@
 
 [cyclemlp]: https://arxiv.org/abs/2107.10224
 [hiremlp]: https://arxiv.org/abs/2108.13341
-[smlp]: https://arxiv.org/abs/2109.05422
 [poolformer]: https://arxiv.org/abs/2111.11418
 [rsb]: https://arxiv.org/abs/2110.00476
+[wavemlp]: https://arxiv.org/abs/2111.12294
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Variants & Weights
 --- | --- | --- | --- | --- 
@@ -46,8 +46,8 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T][cswint]\|[S][cswins]\|[B][cswinb]
 ||
 [CycleMLP][cyclemlp] | 81.6`\|`83.0`\|`83.2 | 27`\|`52`\|`76 | 4`\|`10`\|`12 | [B2][cycleb2]\|[B4][cycleb4]\|[B5][cycleb5]
-[HireMLP][hiremlp] | 81.8`\|`83.1`\|`83.4 | 33`\|`58`\|`96 | 4`\|`8`\|`14 | S\|B\|L
-[sMLP][smlp] | 81.9`\|`83.1`\|`83.4 | 24`\|`49`\|`66 | 5`\|`10`\|`14 | T\|S\|B
+[HireMLP][hiremlp] | 79.7`\|`82.1`\|`83.2 | 18`\|`33`\|`58 | 2`\|`4`\|`8 | [T][hmlpt]\|[S][hmlps]\|[B][hmlpb]
+[WaveMLP][wavemlp] | 80.9`\|`82.9`\|`83.3 | 17`\|`30`\|`44 | 2`\|`5`\|`8 | T\|S\|M
 
 > Notes: ResNet* is from "ResNet strikes back" paper.
 
@@ -270,6 +270,24 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
   archivePrefix={arXiv},
   primaryClass={cs.CV}
 }
+
+@misc{guo2021hiremlp,
+  title={Hire-MLP: Vision MLP via Hierarchical Rearrangement}, 
+  author={Jianyuan Guo and Yehui Tang and Kai Han and Xinghao Chen and Han Wu and Chao Xu and Chang Xu and Yunhe Wang},
+  year={2021},
+  eprint={2108.13341},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
+
+@misc{tang2021image,
+  title={An Image Patch is a Wave: Phase-Aware Vision MLP}, 
+  author={Yehui Tang and Kai Han and Jianyuan Guo and Chang Xu and Yanxi Li and Chao Xu and Yunhe Wang},
+  year={2021},
+  eprint={2111.12294},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
 ```
 
 </details>
@@ -306,3 +324,6 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
 [pcs60]: https://dl.fbaipublicfiles.com/deit/s60_224_1k.pth
 [pcs120]: https://dl.fbaipublicfiles.com/deit/s120_224_1k.pth
 [pcb60]: https://dl.fbaipublicfiles.com/deit/b60_224_1k.pth
+[hmlpt]: https://github.com/ggjy/Hire-Wave-MLP.pytorch/releases/download/log/hire_mlp_tiny.pth
+[hmlps]: https://github.com/ggjy/Hire-Wave-MLP.pytorch/releases/download/log/hire_mlp_small.pth
+[hmlpb]: https://github.com/ggjy/Hire-Wave-MLP.pytorch/releases/download/log/hire_mlp_base.pth
