@@ -12,10 +12,11 @@ from .poolformer import PoolFormer, poolformer_settings
 from .patchconvnet import PatchConvnet, patchconvnet_settings
 from .hiremlp import HireMLP, hiremlp_settings
 from .wavemlp import WaveMLP, wavemlp_settings
+from .convnext import ConvNeXt, convnext_settings
 
 
 __all__ = [
-    'ResNet', 'MicroNet',  
+    'ResNet', 'MicroNet', 'ConvNeXt',
     'GFNet', 'PVTv2', 'ResT',
     'Conformer', 'Shuffle', 'CSWin', 
     'CycleMLP', 'HireMLP', 'WaveMLP',

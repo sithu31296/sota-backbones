@@ -27,6 +27,7 @@
 [poolformer]: https://arxiv.org/abs/2111.11418
 [rsb]: https://arxiv.org/abs/2110.00476
 [wavemlp]: https://arxiv.org/abs/2111.12294
+[convnext]: https://arxiv.org/abs/2201.03545
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Variants & Weights
 --- | --- | --- | --- | --- 
@@ -34,6 +35,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 [MobileFormer][mobileformer] | 76.7`\|`77.9`\|`79.3 | 9`\|`11`\|`14 | 214M`\|`294M`\|`508M | 214\|294\|508
 ||
 [ResNet*][rsb] | 71.5`\|`80.4`\|`81.5 | 12`\|`26`\|`45 | 2`\|`4`\|`8 | [18][rsb18]\|[50][rsb50]\|[101][rsb101]
+[ConvNeXt][convnext] | 82.1`\|`83.1`\|`83.8 | 28`\|`50`\|`89 | 5`\|`9`\|`15 | [T][convnextt]\|[S][convnexts]\|[B][convnextb]
 ||
 [GFNet][gfnet] | 80.1`\|`81.5`\|`82.9 | 15`\|`32`\|`54 | 2`\|`5`\|`8 | [T][gfnett]\|[S][gfnets]\|[B][gfnetb]
 [PVTv2][pvtv2] | 78.7`\|`82.0`\|`83.6 | 14`\|`25`\|`63 | 2`\|`4`\|`10 | [B1][pvt1]\|[B2][pvt2]\|[B4][pvt4]
@@ -89,6 +91,7 @@ Model Names    Model Variants
 -------------  --------------------------------
 ResNet         ['18', '34', '50', '101', '152']
 MicroNet       ['M1', 'M2', 'M3']
+ConvNeXt       ['T', 'S', 'M']
 GFNet          ['T', 'S', 'B']
 PVTv2          ['B1', 'B2', 'B3', 'B4', 'B5']
 ResT           ['S', 'B', 'L']
@@ -96,6 +99,10 @@ Conformer      ['T', 'S', 'B']
 Shuffle        ['T', 'S', 'B']
 CSWin          ['T', 'S', 'B', 'L']
 CycleMLP       ['B1', 'B2', 'B3', 'B4', 'B5']
+HireMLP        ['T', 'S', 'B']
+WaveMLP        ['T', 'S', 'M']
+PoolFormer     ['S24', 'S36', 'M36']
+PatchConvnet   ['S60', 'S120', 'B60']
 ```
 
 </details>
@@ -288,6 +295,15 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
   archivePrefix={arXiv},
   primaryClass={cs.CV}
 }
+
+@misc{liu2022convnet,
+  title={A ConvNet for the 2020s}, 
+  author={Zhuang Liu and Hanzi Mao and Chao-Yuan Wu and Christoph Feichtenhofer and Trevor Darrell and Saining Xie},
+  year={2022},
+  eprint={2201.03545},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
 ```
 
 </details>
@@ -327,3 +343,6 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
 [hmlpt]: https://github.com/ggjy/Hire-Wave-MLP.pytorch/releases/download/log/hire_mlp_tiny.pth
 [hmlps]: https://github.com/ggjy/Hire-Wave-MLP.pytorch/releases/download/log/hire_mlp_small.pth
 [hmlpb]: https://github.com/ggjy/Hire-Wave-MLP.pytorch/releases/download/log/hire_mlp_base.pth
+[convnextt]: https://dl.fbaipublicfiles.com/convnext/convnext_tiny_1k_224_ema.pth
+[convnexts]: https://dl.fbaipublicfiles.com/convnext/convnext_small_1k_224_ema.pth
+[convnextb]: https://dl.fbaipublicfiles.com/convnext/convnext_base_1k_224_ema.pth

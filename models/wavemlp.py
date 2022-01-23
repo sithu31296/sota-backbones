@@ -110,7 +110,7 @@ wavemlp_settings = {
 
 
 class WaveMLP(nn.Module):     
-    def __init__(self, model_name: str = 'B', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
+    def __init__(self, model_name: str = 'T', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
         assert model_name in wavemlp_settings.keys(), f"WaveMLP model name should be in {list(wavemlp_settings.keys())}"
         layers, mlp_ratios = wavemlp_settings[model_name]
