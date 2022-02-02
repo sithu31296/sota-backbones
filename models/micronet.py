@@ -350,7 +350,11 @@ class MicroNet(nn.Module):
 
 
 if __name__ == '__main__':
-    model = MicroNet('M2', 'checkpoints/micronet/micronet-m2.pth')
-    x = torch.zeros(2, 3, 224, 224)
+    from fvcore.nn import FlopCountAnalysis, flop_count_table
+    model = MicroNet('M3')
+    model.eval()
+    x = torch.zeros(1, 3, 224, 224)
     y = model(x)
     print(y.shape)
+    flops = FlopCountAnalysis(model, x)
+    print(flop_count_table(flops))
