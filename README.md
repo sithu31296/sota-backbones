@@ -28,6 +28,7 @@
 [rsb]: https://arxiv.org/abs/2110.00476
 [wavemlp]: https://arxiv.org/abs/2111.12294
 [convnext]: https://arxiv.org/abs/2201.03545
+[uniformer]: https://arxiv.org/abs/2201.09450
 
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Variants & Weights
 --- | --- | --- | --- | --- 
@@ -45,6 +46,7 @@ Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Var
 [CycleMLP][cyclemlp] | 81.6`\|`83.0`\|`83.2 | 27`\|`52`\|`76 | 4`\|`10`\|`12 | [B2][cycleb2]\|[B4][cycleb4]\|[B5][cycleb5]
 [PatchConvnet][patchconvnet] | 82.1`\|`83.2`\|`83.5 | 25`\|`48`\|`99 | 4`\|`8`\|`16 | [S60][pcs60]\|[S120][pcs120]\|[B60][pcb60]
 [ConvNeXt][convnext] | 82.1`\|`83.1`\|`83.8 | 28`\|`50`\|`89 | 5`\|`9`\|`15 | [T][convnextt]\|[S][convnexts]\|[B][convnextb]
+[UniFormer][uniformer] | 82.9`\|`83.8 | 22`\|`50 | 4`\|`8 | [S][uniformers]\|[B][uniformerb]
 [Shuffle][shuffle] | 82.4`\|`83.6`\|`84.0 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][shufflet]\|[S][shuffles]\|[B][shuffleb]
 [Conformer][conformer] | 81.3`\|`83.4`\|`84.1 | 24`\|`38`\|`83 | 5`\|`11`\|`23 | [T][conformert]\|[S][conformers]\|[B][conformerb]
 [CSWin][cswin] | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T][cswint]\|[S][cswins]\|[B][cswinb]
@@ -101,6 +103,7 @@ HireMLP        ['T', 'S', 'B']
 WaveMLP        ['T', 'S', 'M']
 PoolFormer     ['S24', 'S36', 'M36']
 PatchConvnet   ['S60', 'S120', 'B60']
+UniFormer      ['S', 'B']
 ```
 
 </details>
@@ -302,6 +305,15 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
   archivePrefix={arXiv},
   primaryClass={cs.CV}
 }
+
+@misc{li2022uniformer,
+  title={UniFormer: Unifying Convolution and Self-attention for Visual Recognition}, 
+  author={Kunchang Li and Yali Wang and Junhao Zhang and Peng Gao and Guanglu Song and Yu Liu and Hongsheng Li and Yu Qiao},
+  year={2022},
+  eprint={2201.09450},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
 ```
 
 </details>
@@ -344,3 +356,5 @@ $ python tools/finetune.py --cfg configs/finetune.yaml
 [convnextt]: https://dl.fbaipublicfiles.com/convnext/convnext_tiny_1k_224_ema.pth
 [convnexts]: https://dl.fbaipublicfiles.com/convnext/convnext_small_1k_224_ema.pth
 [convnextb]: https://dl.fbaipublicfiles.com/convnext/convnext_base_1k_224_ema.pth
+[uniformers]: https://drive.google.com/file/d/1-uepH3Q3BhTmWU6HK-sGAGQC_MpfIiPD/view?usp=sharing
+[uniformerb]: https://drive.google.com/file/d/1-wT39QazTGELxgrQIu6J12D3qcla3hui/view?usp=sharing
