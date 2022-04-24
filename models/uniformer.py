@@ -1,6 +1,6 @@
 import torch
 from torch import nn, Tensor
-from layers import MLP, DropPath
+from .layers import MLP, DropPath
 
 
 class CMLP(nn.Module):
