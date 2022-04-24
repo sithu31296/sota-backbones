@@ -48,7 +48,7 @@ VAN | 81.1`\|`82.8`\|`83.9 | 14`\|`27`\|`45 | 3`\|`5`\|`9 | [S][vans]\|[B][vanb]
 ||
 PatchConvnet | 82.1`\|`83.2`\|`83.5 | 25`\|`48`\|`99 | 4`\|`8`\|`16 | [S60][pcs60]\|[S120][pcs120]\|[B60][pcb60]
 ConvNeXt | 82.1`\|`83.1`\|`83.8 | 28`\|`50`\|`89 | 5`\|`9`\|`15 | [T][convnextt]\|[S][convnexts]\|[B][convnextb]
-FocalNet | 82.3`\|`83.5`\|`83.9 | 29`\|`50`\|`89 | 5`\|`9`\|`15 | [T][]\|[S][]\|[B][]
+FocalNet | 82.3`\|`83.5`\|`83.9 | 29`\|`50`\|`89 | 5`\|`9`\|`15 | [T][focalt]\|[S][focals]\|[B][focalb]
 CSWin | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T][cswint]\|[S][cswins]\|[B][cswinb]
 NAT | 83.2`\|`83.7`\|`84.3 | 28`\|`51`\|`90 | 4`\|`8`\|`14 | T\|S\|B
 DaViT | 82.8`\|`84.2`\|`84.6 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][]\|[S][]\|[B]
@@ -198,3 +198,6 @@ Most of the codes are borrowed from [timm](https://github.com/rwightman/pytorch-
 [vans]: https://drive.google.com/file/d/1LFsJHwxAs1TcXAjJ28G86_jwYwV8DzuG/view?usp=sharing
 [vanb]: https://drive.google.com/file/d/1qApsgXCbngNYOji2UzJsfeEsPOu6dBo3/view?usp=sharing
 [vanl]: https://drive.google.com/file/d/10n6u-W3IrqiCD-7wkotejV_1XiS9kuWF/view?usp=sharing
+[focalt]: https://projects4jw.blob.core.windows.net/focalnet/release/classification/focalnet_tiny_lrf.pth
+[focals]: https://projects4jw.blob.core.windows.net/focalnet/release/classification/focalnet_small_lrf.pth
+[focalb]: https://projects4jw.blob.core.windows.net/focalnet/release/classification/focalnet_base_lrf.pth

@@ -4,94 +4,128 @@ from torch import nn, Tensor
 from .layers import DropPath, trunc_normal_
 
 
-class DWConv(nn.Module):
-    def __init__(self, dim=768) -> None:
-        super().__init__()
-        self.dwconv = nn.Conv2d(dim, dim, 3, 1, 1, groups=dim)
-
-    def forward(self, x: Tensor) -> Tensor:
-        return self.dwconv(x)
-
-
 class MLP(nn.Module):
     def __init__(self, dim, hidden_dim, out_dim=None) -> None:
         super().__init__()
         out_dim = out_dim or dim
-        self.fc1 = nn.Conv2d(dim, hidden_dim, 1)
-        self.dwconv = DWConv(hidden_dim)
+        self.fc1 = nn.Linear(dim, hidden_dim)
         self.act = nn.GELU()
-        self.fc2 = nn.Conv2d(hidden_dim, out_dim, 1)
+        self.fc2 = nn.Linear(hidden_dim, out_dim)
 
     def forward(self, x: Tensor) -> Tensor:
-        return self.fc2(self.act(self.dwconv(self.fc1(x))))
+        return self.fc2(self.act(self.fc1(x)))
 
 
-class LKA(nn.Module):
-    def __init__(self, dim) -> None:
+class FocalModulation(nn.Module):
+    def __init__(self, dim, focal_window, focal_level, focal_factor=2) -> None:
         super().__init__()
-        self.conv0 = nn.Conv2d(dim, dim, 5, 1, 2, groups=dim)
-        self.conv_spatial = nn.Conv2d(dim, dim, 7, 1, 9, 3, dim)
-        self.conv1 = nn.Conv2d(dim, dim, 1)
+        self.focal_level = focal_level
+        
+        self.f = nn.Linear(dim, 2 * dim + (focal_level + 1))
+        self.h = nn.Conv2d(dim, dim, 1)
+        self.act = nn.GELU()
+        self.proj = nn.Linear(dim, dim)
+        
+        self.focal_layers = nn.ModuleList([
+            nn.Sequential(
+                nn.Conv2d(dim, dim, (focal_factor * k + focal_window), 1, (focal_factor * k + focal_window)//2, groups=dim, bias=False),
+                nn.GELU()
+            )
+        for k in range(focal_level)])
 
     def forward(self, x: Tensor) -> Tensor:
-        u = x.clone()
-        attn = self.conv1(self.conv_spatial(self.conv0(x)))
-        return u * attn
+        B, H, W, C = x.shape
 
+        # pre linear projection
+        x = self.f(x).permute(0, 3, 1, 2).contiguous()
+        q, ctx, self.gates = torch.split(x, (C, C, self.focal_level + 1), 1)
 
-class Attention(nn.Module):
-    def __init__(self, dim) -> None:
-        super().__init__()
-        self.proj_1 = nn.Conv2d(dim, dim, 1)
-        self.activation = nn.GELU()
-        self.spatial_gating_unit = LKA(dim)
-        self.proj_2 = nn.Conv2d(dim, dim, 1)
+        # context aggregation
+        ctx_all = 0
+        for l in range(self.focal_level):
+            ctx = self.focal_layers[l](ctx)
+            ctx_all = ctx_all + ctx * self.gates[:, l:l+1]
 
-    def forward(self, x: Tensor) -> Tensor:
-        shortcut = x.clone()
-        x = self.proj_2(self.spatial_gating_unit(self.activation(self.proj_1(x))))
-        x = x + shortcut
-        return x
+        ctx_global = self.act(ctx.mean(2, keepdim=True).mean(3, keepdim=True))
+        ctx_all = ctx_all + ctx_global * self.gates[:, self.focal_level:]
+
+        # focal modulation
+        self.modulator = self.h(ctx_all)
+        x_out = q * self.modulator
+        x_out = x_out.permute(0, 2, 3, 1).contiguous()
+
+        # post linear projection
+        x_out = self.proj(x_out)
+        return x_out
     
 
 class Block(nn.Module):
-    def __init__(self, dim, mlp_ratio=4, dpr=0., init_value=1e-2):
+    def __init__(self, dim, focal_window, focal_level, dpr=0.):
         super().__init__()
-        self.norm1 = nn.BatchNorm2d(dim)
-        self.attn = Attention(dim)
+        self.norm1 = nn.LayerNorm(dim)
+        self.modulation = FocalModulation(dim, focal_window, focal_level)
         self.drop_path = DropPath(dpr) if dpr > 0. else nn.Identity()
 
-        self.norm2 = nn.BatchNorm2d(dim)
-        self.mlp = MLP(dim, int(dim*mlp_ratio))
-        
-        self.layer_scale_1 = nn.Parameter(init_value * torch.ones((dim)), requires_grad=True)
-        self.layer_scale_2 = nn.Parameter(init_value * torch.ones((dim)), requires_grad=True)
+        self.norm2 = nn.LayerNorm(dim)
+        self.mlp = MLP(dim, int(dim*4))
 
-    def forward(self, x: Tensor) -> Tensor:
-        x = x + self.drop_path(self.layer_scale_1.unsqueeze(-1).unsqueeze(-1) * self.attn(self.norm1(x))) 
-        x = x + self.drop_path(self.layer_scale_2.unsqueeze(-1).unsqueeze(-1) * self.mlp(self.norm2(x)))
+    def forward(self, x, H, W) -> Tensor:
+        B, _, C = x.shape
+        shortcut = x
+
+        # Focal modulation
+        x = self.norm1(x)
+        x = x.view(B, H, W, C)
+        x = self.modulation(x).view(B, H*W, C)
+
+        # FFN
+        x = shortcut + self.drop_path(x)
+        x = x + self.drop_path(self.mlp(self.norm2(x)))
         return x
 
 
-class OverlapPatchEmbed(nn.Module):
-    """Image to Patch Embedding with overlapping
-    """
-    def __init__(self, patch_size=7, stride=4, in_ch=3, embed_dim=768):
+class PatchEmbed(nn.Module):
+    def __init__(self, patch_size=7, in_ch=3, embed_dim=768):
         super().__init__()
-        self.proj = nn.Conv2d(in_ch, embed_dim, patch_size, stride, patch_size//2)
-        self.norm = nn.BatchNorm2d(embed_dim)
+        self.proj = nn.Conv2d(in_ch, embed_dim, patch_size, patch_size)
+        self.norm = nn.LayerNorm(embed_dim)
 
     def forward(self, x: Tensor):
         x = self.proj(x)
         _, _, H, W = x.shape
+        x = x.flatten(2).transpose(1, 2)
         x = self.norm(x)
         return x, H, W
 
 
+class BasicLayer(nn.Module):
+    def __init__(self, dim, out_dim, depth, focal_window, focal_level, dpr, downsample=None) -> None:
+        super().__init__()
+
+        self.blocks = nn.ModuleList([
+            Block(dim, focal_window, focal_level, dpr[i] if isinstance(dpr, list) else dpr)
+        for i in range(depth)])
+
+        self.downsample = None
+        if downsample is not None:
+            self.downsample = downsample(2, dim, out_dim)
+
+    def forward(self, x, H, W):
+        for blk in self.blocks:
+            x = blk(x, H, W)
+
+        if self.downsample is not None:
+            x_down = x.transpose(1, 2).reshape(x.shape[0], -1, H, W)
+            x_down, Ho, Wo = self.downsample(x_down)
+            return x, H, W, x_down, Ho, Wo
+        else:
+            return x, H, W, x, H, W
+
+
 focalnet_settings = {
-    'T': [[2, 2, 4, 2], [64, 128, 320, 512]],       # [depths, dims]
-    'S': [[3, 3, 12, 3], [64, 128, 320, 512]],
-    'B': [[3, 5, 27, 3], [64, 128, 320, 512]]
+    'T': [[2, 2, 6, 2], 96],       # [depths, dims]
+    'S': [[2, 2, 18, 2], 96],
+    'B': [[2, 2, 18, 2], 128]
 }
 
 
@@ -99,37 +133,34 @@ class FocalNet(nn.Module):
     def __init__(self, model_name: str = 'T', pretrained: str = None, num_classes: int = 1000, *args, **kwargs) -> None:
         super().__init__()
         assert model_name in focalnet_settings.keys(), f"FocalNet model name should be in {list(focalnet_settings.keys())}"
-        depths, embed_dims = focalnet_settings[model_name]
-        drop_path_rate = 0.
-        mlp_ratios = [8, 8, 4, 4]
+        depths, embed_dim = focalnet_settings[model_name]
+        drop_path_rate = 0.1
+        focal_level = 3
+        focal_window = 3
+        embed_dims = [embed_dim * (2 ** i) for i in range(len(depths))]
+
+        self.patch_embed = PatchEmbed(4, 3, embed_dims[0])
 
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))]
-        cur = 0
 
-        for i in range(4):
-            if i == 0:
-                patch_embed = OverlapPatchEmbed(7, 4, 3, embed_dims[i])
-            else:
-                patch_embed = OverlapPatchEmbed(3, 2, embed_dims[i-1], embed_dims[i])
-            
-            block = nn.Sequential(*[
-                Block(embed_dims[i], mlp_ratios[i], dpr[cur+j])
-            for j in range(depths[i])])
+        self.layers = nn.ModuleList()
+        for i in range(len(depths)):
+            layer = BasicLayer(embed_dims[i], embed_dims[i+1] if i < len(depths) - 1 else None, depths[i], focal_window, focal_level, dpr[sum(depths[:i]):sum(depths[:i+1])], PatchEmbed if i < len(depths) - 1 else None)
+            self.layers.append(layer)
 
-            norm = nn.LayerNorm(embed_dims[i], eps=1e-6)
-            cur += depths[i]
-
-            setattr(self, f"patch_embed{i+1}", patch_embed)
-            setattr(self, f"block{i+1}", block)
-            setattr(self, f"norm{i+1}", norm)
-
+        self.norm = nn.LayerNorm(embed_dims[-1])
+        self.avgpool = nn.AdaptiveAvgPool1d(1)
         self.head = nn.Linear(embed_dims[-1], num_classes)
+
+        # to use as a backbone, uncomment below
+        # for i in range(4):
+        #     self.add_module(f"norm{i}", nn.LayerNorm(embed_dims[i]))
 
         self._init_weights(pretrained)
 
     def _init_weights(self, pretrained: str = None) -> None:
         if pretrained:
-            self.load_state_dict(torch.load(pretrained, map_location='cpu')['state_dict'])
+            self.load_state_dict(torch.load(pretrained, map_location='cpu')['model'])
         else:
             for n, m in self.named_modules():
                 if isinstance(m, nn.Linear):
@@ -147,36 +178,30 @@ class FocalNet(nn.Module):
                         m.bias.data.zero_()
                 
     def return_features(self, x):
-        B = x.shape[0]
+        x, Ho, Wo = self.patch_embed(x)
         outs = []
-        
-        for i in range(4):
-            x, H, W = getattr(self, f"patch_embed{i+1}")(x)
-            x = getattr(self, f"block{i+1}")(x)   
-            x = x.flatten(2).transpose(1, 2)
-            x = getattr(self, f"norm{i+1}")(x)
-            x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
-            outs.append(x)
+
+        for i, layer in enumerate(self.layers):
+            out, H, W, x, Ho, Wo = layer(x, Ho, Wo)
+            out = getattr(self, f"norm{i}")(out)
+            out = out.view(x.shape[0], H, W, -1).permute(0, 3, 1, 2).contiguous()
+            outs.append(out)
         return outs
         
     def forward(self, x: torch.Tensor):
-        B = x.shape[0]
-        
-        for i in range(4):
-            x, H, W = getattr(self, f"patch_embed{i+1}")(x)
-            x = getattr(self, f"block{i+1}")(x)
-            x = x.flatten(2).transpose(1, 2)
-            x = getattr(self, f"norm{i+1}")(x)
+        x, H, W = self.patch_embed(x)
 
-            if i != 3:
-                x = x.reshape(B, H, W, -1).permute(0, 3, 1, 2).contiguous()
+        for layer in self.layers:
+            _, _, _, x, H, W = layer(x, H, W)
 
-        x = x.mean(dim=1)
+        x = self.norm(x)
+        x = self.avgpool(x.transpose(1, 2))
+        x = x.flatten(1)
         x = self.head(x)
         return x
 
 if __name__ == '__main__':
-    model = FocalNet('S', 'C:\\Users\\sithu\\Documents\\weights\\backbones\\van\\van_small_811.pth.tar')
+    model = FocalNet('T', 'C:\\Users\\sithu\\Documents\\weights\\backbones\\focalnet\\focalnet_tiny_lrf.pth')
     x = torch.randn(1, 3, 224, 224)
     y = model(x)
     print(y.shape)
