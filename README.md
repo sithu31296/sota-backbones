@@ -25,7 +25,6 @@
 * [ConvNeXt](https://arxiv.org/abs/2201.03545) (CVPR 2022) (Meta Research)
 * [VAN](https://arxiv.org/abs/2202.09741) (ArXiv 2022) (BNRist)
 * [FocalNet](https://arxiv.org/abs/2203.11926) (ArXiv 2022) (Microsoft)
-* [EdgeFormer](https://arxiv.org/abs/2203.03952) (ArXiv 2022) (hkzhang91)
 * [WaveMLP](https://arxiv.org/abs/2111.12294) (CVPR 2022) (HUAWEI Noah's Ark Lab)
 * [DaViT](https://arxiv.org/abs/2204.03645) (ArXiv 2022) (dingmyu)
 * [NAT](https://arxiv.org/abs/2204.07143) (ArXiv 2022) (SHI Lab)
@@ -36,7 +35,6 @@
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Variants & Weights
 --- | --- | --- | --- | --- 
 MicroNet | 51.4`\|`59.4`\|`62.5 | 2`\|`2`\|`3 | 7M`\|`14M`\|`23M | [M1][micronetw]\|[M2][micronetw]\|[M3][micronetw]
-EdgeFormer | 78.6 | 5 | - | S
 ||
 ResNet* | 71.5`\|`80.4`\|`81.5 | 12`\|`26`\|`45 | 2`\|`4`\|`8 | [18][rsb18]\|[50][rsb50]\|[101][rsb101]
 PoolFormer | 80.3`\|`81.4`\|`82.1 | 21`\|`31`\|`56 | 4`\|`5`\|`9 | [S24][pfs24]\|[S36][pfs36]\|[M36][pfm36]
