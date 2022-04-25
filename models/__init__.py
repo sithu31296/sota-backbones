@@ -15,7 +15,7 @@ from .focalnet import FocalNet, focalnet_settings
 
 __all__ = [
     'ResNet', 'MicroNet', 'ConvNeXt', 'VAN',
-    'GFNet', 'PVTv2', 'ResT',
+    'PVTv2', 'ResT',
     'CSWin', 
     'WaveMLP',
     'PoolFormer', 'PatchConvnet', 'UniFormer', 'FocalNet',

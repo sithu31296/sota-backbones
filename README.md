@@ -36,7 +36,7 @@
 Model | ImageNet-1k Top-1 Acc <br><sup>(%) | Params <br><sup>(M)  | GFLOPs | Variants & Weights
 --- | --- | --- | --- | --- 
 MicroNet | 51.4`\|`59.4`\|`62.5 | 2`\|`2`\|`3 | 7M`\|`14M`\|`23M | [M1][micronetw]\|[M2][micronetw]\|[M3][micronetw]
-EdgeFormer | 78.6 | 5 | - | [S][]
+EdgeFormer | 78.6 | 5 | - | S
 ||
 ResNet* | 71.5`\|`80.4`\|`81.5 | 12`\|`26`\|`45 | 2`\|`4`\|`8 | [18][rsb18]\|[50][rsb50]\|[101][rsb101]
 PoolFormer | 80.3`\|`81.4`\|`82.1 | 21`\|`31`\|`56 | 4`\|`5`\|`9 | [S24][pfs24]\|[S36][pfs36]\|[M36][pfm36]
@@ -51,7 +51,7 @@ ConvNeXt | 82.1`\|`83.1`\|`83.8 | 28`\|`50`\|`89 | 5`\|`9`\|`15 | [T][convnextt]
 FocalNet | 82.3`\|`83.5`\|`83.9 | 29`\|`50`\|`89 | 5`\|`9`\|`15 | [T][focalt]\|[S][focals]\|[B][focalb]
 CSWin | 82.7`\|`83.6`\|`84.2 | 23`\|`35`\|`78 | 4`\|`7`\|`15 | [T][cswint]\|[S][cswins]\|[B][cswinb]
 NAT | 83.2`\|`83.7`\|`84.3 | 28`\|`51`\|`90 | 4`\|`8`\|`14 | T\|S\|B
-DaViT | 82.8`\|`84.2`\|`84.6 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | [T][]\|[S][]\|[B]
+DaViT | 82.8`\|`84.2`\|`84.6 | 28`\|`50`\|`88 | 5`\|`9`\|`16 | T\|S\|B
 
 > Notes: ResNet* is from "ResNet strikes back" paper.
 
@@ -94,18 +94,15 @@ Model Names    Model Variants
 ResNet         ['18', '34', '50', '101', '152']
 MicroNet       ['M1', 'M2', 'M3']
 ConvNeXt       ['T', 'S', 'B']
-GFNet          ['T', 'S', 'B']
+VAN            ['S', 'B', 'L']
 PVTv2          ['B1', 'B2', 'B3', 'B4', 'B5']
 ResT           ['S', 'B', 'L']
-Conformer      ['T', 'S', 'B']
-Shuffle        ['T', 'S', 'B']
 CSWin          ['T', 'S', 'B', 'L']
-CycleMLP       ['B1', 'B2', 'B3', 'B4', 'B5']
-HireMLP        ['T', 'S', 'B']
 WaveMLP        ['T', 'S', 'M']
 PoolFormer     ['S24', 'S36', 'M36']
 PatchConvnet   ['S60', 'S120', 'B60']
 UniFormer      ['S', 'B']
+FocalNet       ['T', 'S', 'B']
 ```
 
 </details>
