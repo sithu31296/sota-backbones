@@ -1,34 +1,19 @@
-DEVICE: cuda
-SAVE_DIR: 'output'
+DEVICE: cuda                # Training device (cuda, cpu, cuda:0, cuda:1)
+SAVE_DIR: 'output'          # Model save directory
+DATASET: CIFAR10            # datasets' class names form torchvision.datasets
 
-DATASET:
-  ROOT: ''
+MODEL: VAN                  # model name
+VARIANT: S                  # specific model variants (check by running `python list_models.py`)
+PRETRAINED: '/home/sithu/Documents/weights/backbones/van/van_small_811.pth.tar'
+FREEZE: false               # freeze all layers except the last head
 
-MODEL:
-  NAME: ResT
-  VARIANT: S
-  PRETRAINED: 'checkpoints/rest/rest_small.pth'
-  FREEZE: false
-
-TRAIN:
-  IMAGE_SIZE: [224, 224]
-  EPOCHS: 300
-  BATCH_SIZE: 8
-  EVAL_INTERVAL: 20
-  AMP: true
-  DDP: false
-
-EVAL:
-  IMAGE_SIZE: [224, 224]
-  BATCH_SIZE: 8
-  MODEL_PATH: 'output/rest_S.pth'
-
-OPTIMIZER:
-  NAME: adamw
-  LR: 0.0005
-  DECAY: 0.05
-
-SCHEDULER:
-  NAME: steplr
-  STEP_SIZE: 30
-  GAMMA: 0.1
+IMAGE_SIZE: [32, 32]        # training image size
+EVAL_IMAGE_SIZE: [32, 32]   # evaluation image size
+EPOCHS: 5                   # number of epochs to train
+BATCH_SIZE: 256             # batch size to use
+EVAL_INTERVAL: 1            # evaluation interval
+AMP: false                  # Mixed Precision Training
+LR: 0.00025                 # lr = (batch_size / 1024) * 1e-3
+DECAY: 0.005                # lr decay rate
+STEP_SIZE: 2
+GAMMA: 0.1

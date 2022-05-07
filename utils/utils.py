@@ -9,6 +9,7 @@ from torch import nn, Tensor
 from torch.autograd import profiler
 from typing import Union
 from torch import distributed as dist
+from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn, MofNCompleteColumn, TimeElapsedColumn
 
 
 def fix_seeds(seed: int = 123) -> None:
@@ -91,3 +92,20 @@ def get_params_flops(model: nn.Module, size: tuple):
         print('Install mmcv to get FLOPs. \n`pip install mmcv`')
     print(f"Params (M): {params}")
     print(f"GFLOPs (B): {flops}")
+
+
+def create_progress_bar() -> Progress:
+    progress = Progress(
+        TextColumn("[red]Epoch: {task.fields[epoch]}/{task.fields[epochs]} • [magenta]LR: {task.fields[lr]:.8f} • [blue]Loss: {task.fields[loss]:.6f}", justify="right"),
+        BarColumn(bar_width=None),
+        "[progress.percentage]{task.percentage:>3.1f}%",
+        "•",
+        TextColumn("[green]Iters:"),
+        MofNCompleteColumn(),
+        "•",
+        TimeRemainingColumn(),
+        "/",
+        TimeElapsedColumn()
+    )
+    progress.start()
+    return progress

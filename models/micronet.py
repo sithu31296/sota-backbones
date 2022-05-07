@@ -329,7 +329,15 @@ class MicroNet(nn.Module):
 
     def _init_weights(self, pretrained: str = None) -> None:
         if pretrained:
-            self.load_state_dict(torch.load(pretrained, map_location='cpu'))
+            try:
+                print(f"Loading imagenet pretrained weights from {pretrained}")
+            except RuntimeError:
+                pretrained_dict = torch.load(pretrained, map_location='cpu')
+                pretrained_dict.popitem()   # remove bias
+                pretrained_dict.popitem()   # remove weight
+                self.load_state_dict(pretrained_dict, strict=False)
+            finally:
+                print(f"Loaded imagenet pretrained from {pretrained}")
         else:
             for m in self.modules():
                 if isinstance(m, nn.Conv2d):

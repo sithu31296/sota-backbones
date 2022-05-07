@@ -3,24 +3,24 @@ import torch
 from torchvision import transforms as T
 
 
-def get_train_transforms(cfg):
-    return T.Compose(
-        T.RandomSizedCrop(cfg['TRAIN']['IMAGE_SIZE']),
+def get_train_transforms(size):
+    return T.Compose([
+        T.RandomResizedCrop(size),
         T.RandomHorizontalFlip(),
         T.ColorJitter(0.1, 0.1, 0.1),
         T.AutoAugment(),
         T.ToTensor(),
         T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
         T.RandomErasing(0.2),
-    )
+    ])
 
-def get_val_transforms(cfg):
-    return T.Compose(
-        T.Resize(tuple(map(lambda x: int(x / 0.9), cfg['EVAL']['IMAGE_SIZE']))),    # to main aspect ratio
-        T.CenterCrop(cfg['EVAL']['IMAGE_SIZE']),
+def get_val_transforms(size):
+    return T.Compose([
+        T.Resize(tuple(map(lambda x: int(x / 0.9), size))),    # to main aspect ratio
+        T.CenterCrop(size),
         T.ToTensor(),
         T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    )
+    ])
 
 
 
