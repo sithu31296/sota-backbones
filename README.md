@@ -130,7 +130,7 @@ You will see an output similar to this:
 assests\dog.jpg >>>>> Golden retriever
 ```
 
->> Note: The above code is only for ImageNet pre-trained models. Modify the model's checkpoint loading and class names in `infer.py` for your custom needs.
+> Note: The above code is only for ImageNet pre-trained models. Modify the model's checkpoint loading and class names in `infer.py` for your custom needs.
 
 ### <div align="center">Finetune</div>
 
@@ -205,7 +205,7 @@ Model | PyTorch (FP32) | TensorRT (FP32)
 --- | --- | --- 
 VAN-S | 6 | -
 
->> Latency in milliseconds. Tested with Ryzen 7 4800HS and RTX 1650ti.
+> Latency in milliseconds. Tested with Ryzen 7 4800HS and RTX 1650ti.
 
 ## <div align="center">Acknowledgements</div>
 
